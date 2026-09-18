@@ -16,6 +16,21 @@ Route::get('/login', [AuthController::class, 'showLogin'])
 
 Route::post('/login', [AuthController::class, 'login']);
 
+
+// ==============================
+// LOGIN GOOGLE
+// ==============================
+
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])
+    ->name('google.login');
+
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
+
+// ==============================
+// LOGOUT
+// ==============================
+
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 

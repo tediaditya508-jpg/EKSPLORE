@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,11 +105,15 @@
             color: #2563eb;
         }
 
+        /* ERROR */
+
         .error {
             color: #dc2626;
             font-size: 14px;
             margin-top: 6px;
         }
+
+        /* LOGIN BUTTON */
 
         .login-button {
             width: 100%;
@@ -130,6 +135,45 @@
             background: #1d4ed8;
         }
 
+        /* GOOGLE BUTTON */
+
+        .google-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            width: 100%;
+            padding: 13px;
+            margin-top: 12px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+
+            background: white;
+            color: #374151;
+
+            font-size: 15px;
+            font-weight: bold;
+
+            text-align: center;
+            text-decoration: none;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .google-button:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .google-icon {
+            font-size: 18px;
+        }
+
+        /* FOOTER */
+
         .footer-text {
             text-align: center;
             margin-top: 20px;
@@ -143,11 +187,15 @@
 
     <div class="login-card">
 
+        <!-- LOGO -->
+
         <div class="logo">
             <h1>EKSPLORE</h1>
             <p>Login Siswa</p>
         </div>
 
+
+        <!-- FORM LOGIN EMAIL -->
 
         <form action="{{ route('login') }}" method="POST">
 
@@ -230,6 +278,19 @@
         </form>
 
 
+        <!-- GOOGLE LOGIN -->
+
+        <a
+            href="{{ route('google.login') }}"
+            class="google-button"
+        >
+            <span class="google-icon">G</span>
+            <span>Lanjutkan dengan Google</span>
+        </a>
+
+
+        <!-- FOOTER -->
+
         <div class="footer-text">
             Sistem Ekstrakurikuler SMK Budi Bakti Ciwidey
         </div>
@@ -279,4 +340,5 @@
     </script>
 
 </body>
+
 </html>
