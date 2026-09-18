@@ -113,6 +113,19 @@
             margin-top: 6px;
         }
 
+        /* SUCCESS */
+
+        .success {
+            color: #16a34a;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
         /* LOGIN BUTTON */
 
         .login-button {
@@ -172,6 +185,25 @@
             font-size: 18px;
         }
 
+        /* REGISTER */
+
+        .register-link {
+            text-align: center;
+            margin-top: 18px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
         /* FOOTER */
 
         .footer-text {
@@ -193,6 +225,15 @@
             <h1>EKSPLORE</h1>
             <p>Login Siswa</p>
         </div>
+
+
+        <!-- PESAN BERHASIL -->
+
+        @if (session('success'))
+            <div class="success">
+                {{ session('success') }}
+            </div>
+        @endif
 
 
         <!-- FORM LOGIN EMAIL -->
@@ -287,6 +328,16 @@
             <span class="google-icon">G</span>
             <span>Lanjutkan dengan Google</span>
         </a>
+
+
+        <!-- DAFTAR AKUN -->
+
+        <div class="register-link">
+            Belum punya akun?
+            <a href="{{ route('register') }}">
+                Daftar Akun
+            </a>
+        </div>
 
 
         <!-- FOOTER -->

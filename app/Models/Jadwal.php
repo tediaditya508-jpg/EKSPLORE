@@ -15,8 +15,16 @@ class Jadwal extends Model
         'lokasi',
     ];
 
+    protected $casts = [
+        'jam_mulai' => 'datetime:H:i',
+        'jam_selesai' => 'datetime:H:i',
+    ];
+
     public function ekstrakurikuler(): BelongsTo
     {
-        return $this->belongsTo(Ekstrakurikuler::class, 'ekskul_id');
+        return $this->belongsTo(
+            Ekstrakurikuler::class,
+            'ekskul_id'
+        );
     }
 }

@@ -5,16 +5,22 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EkstrakurikulerController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JadwalController;
 
 
 // ==============================
-// LOGIN SISWA
+// LOGIN DAN REGISTER SISWA
 // ==============================
 
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login');
 
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [AuthController::class, 'register']);
 
 
 // ==============================
@@ -67,6 +73,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/ekskul/{id}', [EkstrakurikulerController::class, 'show'])
         ->name('ekskul.show');
+
+
+    // ==============================
+    // JADWAL
+    // ==============================
+
+    Route::get('/jadwal', [JadwalController::class, 'index'])
+        ->name('jadwal.index');
 
 
     // ==============================
