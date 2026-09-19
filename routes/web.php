@@ -1,31 +1,58 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EkstrakurikulerController;
-use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JadwalController;
 
 
-// ==============================
-// LOGIN DAN REGISTER SISWA
-// ==============================
+/*
+|--------------------------------------------------------------------------
+| HALAMAN UTAMA
+|--------------------------------------------------------------------------
+*/
 
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| LOGIN SISWA
+|--------------------------------------------------------------------------
+*/
+
+// Halaman Login Siswa
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login');
 
-Route::post('/login', [AuthController::class, 'login']);
+// Proses Login Siswa
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.process');
 
+
+/*
+|--------------------------------------------------------------------------
+| REGISTER SISWA
+|--------------------------------------------------------------------------
+*/
+
+// Halaman Register Siswa
 Route::get('/register', [AuthController::class, 'showRegister'])
     ->name('register');
 
-Route::post('/register', [AuthController::class, 'register']);
+// Proses Register Siswa
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.process');
 
 
-// ==============================
-// LOGIN GOOGLE
-// ==============================
+/*
+|--------------------------------------------------------------------------
+| LOGIN GOOGLE SISWA
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])
     ->name('google.login');
@@ -33,63 +60,106 @@ Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 
 
-// ==============================
-// LOGOUT
-// ==============================
+/*
+|--------------------------------------------------------------------------
+| LOGIN PEMBINA
+|--------------------------------------------------------------------------
+*/
 
-Route::post('/logout', [AuthController::class, 'logout'])
-    ->name('logout');
+// Halaman Login Pembina
+Route::get('/pembina/login', [AuthController::class, 'showPembinaLogin'])
+    ->name('pembina.login');
 
-
-// ==============================
-// HALAMAN AWAL
-// ==============================
-
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+// Proses Login Pembina
+Route::post('/pembina/login', [AuthController::class, 'pembinaLogin'])
+    ->name('pembina.login.process');
 
 
-// ==============================
-// HALAMAN YANG HARUS LOGIN
-// ==============================
+/*
+|--------------------------------------------------------------------------
+| LOGIN GOOGLE PEMBINA
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/pembina/auth/google', [AuthController::class, 'redirectPembinaGoogle'])
+    ->name('pembina.google.login');
+
+Route::get('/pembina/auth/google/callback', [AuthController::class, 'handlePembinaGoogleCallback']);
+
+
+/*
+|--------------------------------------------------------------------------
+| LOGIN ADMIN
+|--------------------------------------------------------------------------
+*/
+
+// Halaman Login Admin
+Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])
+    ->name('admin.login');
+
+// Proses Login Admin
+Route::post('/admin/login', [AuthController::class, 'adminLogin'])
+    ->name('admin.login.process');
+
+
+/*
+|--------------------------------------------------------------------------
+| LOGIN GOOGLE ADMIN
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/auth/google', [AuthController::class, 'redirectAdminGoogle'])
+    ->name('admin.google.login');
+
+Route::get('/admin/auth/google/callback', [AuthController::class, 'handleAdminGoogleCallback']);
+
+
+/*
+|--------------------------------------------------------------------------
+| ROUTE YANG MEMBUTUHKAN LOGIN
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware('auth')->group(function () {
 
-    // ==============================
-    // DASHBOARD
-    // ==============================
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD SISWA
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
 
-    // ==============================
-    // EKSTRAKURIKULER
-    // ==============================
+    /*
+    |--------------------------------------------------------------------------
+    | EKSTRAKURIKULER
+    |--------------------------------------------------------------------------
+    */
 
-    Route::get('/ekskul', [EkstrakurikulerController::class, 'index'])
-        ->name('ekskul.index');
+    Route::get('/ekstrakurikuler', [EkstrakurikulerController::class, 'index'])
+    ->name('ekskul.index');
 
-    Route::get('/ekskul/{id}', [EkstrakurikulerController::class, 'show'])
-        ->name('ekskul.show');
+    Route::get('/ekstrakurikuler/{id}', [EkstrakurikulerController::class, 'show'])
+    ->name('ekskul.show');
 
-
-    // ==============================
-    // JADWAL
-    // ==============================
+    /*
+    |--------------------------------------------------------------------------
+    | JADWAL
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/jadwal', [JadwalController::class, 'index'])
         ->name('jadwal.index');
 
 
-    // ==============================
-    // PENDAFTARAN
-    // ==============================
+    /*
+    |--------------------------------------------------------------------------
+    | LOGOUT
+    |--------------------------------------------------------------------------
+    */
 
-    Route::get('/pendaftaran/{id}', [PendaftaranController::class, 'create'])
-        ->name('pendaftaran.create');
-
-    Route::post('/pendaftaran', [PendaftaranController::class, 'store'])
-        ->name('pendaftaran.store');
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
 });
