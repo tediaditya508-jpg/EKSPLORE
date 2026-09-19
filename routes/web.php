@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EkstrakurikulerController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\AnggotaEkskulController;
 
 
 /*
@@ -24,11 +26,9 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 
-// Halaman Login Siswa
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login');
 
-// Proses Login Siswa
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login.process');
 
@@ -39,18 +39,16 @@ Route::post('/login', [AuthController::class, 'login'])
 |--------------------------------------------------------------------------
 */
 
-// Halaman Register Siswa
 Route::get('/register', [AuthController::class, 'showRegister'])
     ->name('register');
 
-// Proses Register Siswa
 Route::post('/register', [AuthController::class, 'register'])
     ->name('register.process');
 
 
 /*
 |--------------------------------------------------------------------------
-| LOGIN GOOGLE SISWA
+| GOOGLE LOGIN SISWA
 |--------------------------------------------------------------------------
 */
 
@@ -66,18 +64,16 @@ Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallbac
 |--------------------------------------------------------------------------
 */
 
-// Halaman Login Pembina
 Route::get('/pembina/login', [AuthController::class, 'showPembinaLogin'])
     ->name('pembina.login');
 
-// Proses Login Pembina
 Route::post('/pembina/login', [AuthController::class, 'pembinaLogin'])
     ->name('pembina.login.process');
 
 
 /*
 |--------------------------------------------------------------------------
-| LOGIN GOOGLE PEMBINA
+| GOOGLE LOGIN PEMBINA
 |--------------------------------------------------------------------------
 */
 
@@ -93,18 +89,16 @@ Route::get('/pembina/auth/google/callback', [AuthController::class, 'handlePembi
 |--------------------------------------------------------------------------
 */
 
-// Halaman Login Admin
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])
     ->name('admin.login');
 
-// Proses Login Admin
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])
     ->name('admin.login.process');
 
 
 /*
 |--------------------------------------------------------------------------
-| LOGIN GOOGLE ADMIN
+| GOOGLE LOGIN ADMIN
 |--------------------------------------------------------------------------
 */
 
@@ -134,15 +128,81 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | DASHBOARD PEMBINA
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/pembina/dashboard', [DashboardController::class, 'pembina'])
+        ->name('pembina.dashboard');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD ADMIN
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/dashboard', [DashboardController::class, 'admin'])
+        ->name('admin.dashboard');
+
+
+    /*
+    |--------------------------------------------------------------------------
     | EKSTRAKURIKULER
     |--------------------------------------------------------------------------
     */
 
     Route::get('/ekstrakurikuler', [EkstrakurikulerController::class, 'index'])
-    ->name('ekskul.index');
+        ->name('ekskul.index');
 
     Route::get('/ekstrakurikuler/{id}', [EkstrakurikulerController::class, 'show'])
-    ->name('ekskul.show');
+        ->name('ekskul.show');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PENDAFTARAN SISWA
+    |--------------------------------------------------------------------------
+    */
+
+    // Pendaftaran saya
+    Route::get('/pendaftaran', [PendaftaranController::class, 'index'])
+        ->name('pendaftaran.index');
+
+    // Form pendaftaran ekskul
+    Route::get('/pendaftaran/{id}', [PendaftaranController::class, 'create'])
+        ->name('pendaftaran.create');
+
+    // Simpan pendaftaran
+    Route::post('/pendaftaran/{id}', [PendaftaranController::class, 'store'])
+        ->name('pendaftaran.store');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PENDAFTARAN PEMBINA
+    |--------------------------------------------------------------------------
+    */
+
+    // Melihat semua siswa yang mendaftar ekskul binaannya
+    Route::get('/pembina/pendaftaran', [PendaftaranController::class, 'pembinaIndex'])
+        ->name('pembina.pendaftaran');
+
+    // Mengubah status menjadi diterima / ditolak
+    Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateStatus'])
+        ->name('pembina.pendaftaran.update');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ANGGOTA EKSKUL PEMBINA
+    |--------------------------------------------------------------------------
+    */
+
+    // Melihat anggota aktif dari ekskul yang dibina
+    Route::get('/pembina/anggota', [AnggotaEkskulController::class, 'index'])
+        ->name('pembina.anggota');
+
 
     /*
     |--------------------------------------------------------------------------

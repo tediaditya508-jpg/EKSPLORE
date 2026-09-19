@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -17,13 +18,11 @@ class AuthController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    // Menampilkan halaman login siswa
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // Proses login siswa dengan email dan password
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -31,7 +30,7 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        // Hanya akun dengan role siswa yang boleh masuk lewat login siswa
+        // Hanya akun siswa
         $credentials['role'] = 'siswa';
 
         if (Auth::attempt($credentials)) {
@@ -54,13 +53,11 @@ class AuthController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    // Menampilkan halaman register siswa
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    // Proses register siswa
     public function register(Request $request)
     {
         $data = $request->validate(
@@ -110,61 +107,257 @@ class AuthController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    // Mengarahkan siswa ke Google
-    public function redirectToGoogle()
+    public function redirectToGoogle(Request $request)
     {
+        // Tandai bahwa Google login dimulai dari halaman siswa
+        $request->session()->put('google_login_role', 'siswa');
+
         return Socialite::driver('google')->redirect();
     }
 
-    // Callback Google siswa
+
+    /*
+    |--------------------------------------------------------------------------
+    | GOOGLE LOGIN PEMBINA
+    |--------------------------------------------------------------------------
+    */
+
+    public function redirectPembinaGoogle(Request $request)
+    {
+        // Tandai bahwa Google login dimulai dari halaman pembina
+        $request->session()->put('google_login_role', 'pembina');
+
+        return Socialite::driver('google')->redirect();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | GOOGLE LOGIN ADMIN
+    |--------------------------------------------------------------------------
+    */
+
+    public function redirectAdminGoogle(Request $request)
+    {
+        // Tandai bahwa Google login dimulai dari halaman admin
+        $request->session()->put('google_login_role', 'admin');
+
+        return Socialite::driver('google')->redirect();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | GOOGLE CALLBACK UTAMA
+    |--------------------------------------------------------------------------
+    */
+
     public function handleGoogleCallback(Request $request)
     {
         try {
+
+            /*
+            |--------------------------------------------------------------------------
+            | Tentukan login berasal dari mana
+            |--------------------------------------------------------------------------
+            */
+
+            $loginRole = $request->session()->pull(
+                'google_login_role',
+                'siswa'
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Ambil data dari Google
+            |--------------------------------------------------------------------------
+            */
+
             $googleUser = Socialite::driver('google')->user();
 
-            // Cari berdasarkan Google ID atau email
+
+            /*
+            |--------------------------------------------------------------------------
+            | Cari akun berdasarkan Google ID atau email
+            |--------------------------------------------------------------------------
+            */
+
             $user = User::where('google_id', $googleUser->getId())
                 ->orWhere('email', $googleUser->getEmail())
                 ->first();
 
-            // Jika belum ada akun
-            if (!$user) {
-                $nama = $googleUser->getName() ?? 'Siswa';
 
-                $user = User::create([
-                    'name' => $nama,
-                    'nama' => $nama,
-                    'email' => $googleUser->getEmail(),
-                    'google_id' => $googleUser->getId(),
-                    'password' => Str::random(32),
-                    'role' => 'siswa',
-                ]);
+            /*
+            |--------------------------------------------------------------------------
+            | GOOGLE LOGIN SISWA
+            |--------------------------------------------------------------------------
+            */
+
+            if ($loginRole === 'siswa') {
+
+                // Jika belum punya akun, buat sebagai siswa
+                if (!$user) {
+
+                    $nama = $googleUser->getName() ?? 'Siswa';
+
+                    $user = User::create([
+                        'name' => $nama,
+                        'nama' => $nama,
+                        'email' => $googleUser->getEmail(),
+                        'google_id' => $googleUser->getId(),
+                        'password' => Str::random(32),
+                        'role' => 'siswa',
+                    ]);
+                }
+
+                // Akun harus siswa
+                if ($user->role !== 'siswa') {
+
+                    return redirect()
+                        ->route('login')
+                        ->withErrors([
+                            'email' => 'Akun Google ini bukan akun siswa.',
+                        ]);
+                }
+
+                // Pastikan Google ID tersimpan
+                if ($user->google_id !== $googleUser->getId()) {
+
+                    $user->update([
+                        'google_id' => $googleUser->getId(),
+                    ]);
+                }
+
+                // Login siswa
+                Auth::login($user);
+
+                $request->session()->regenerate();
+
+                return redirect()->route('dashboard');
             }
 
-            // Jika akun sudah ada tetapi bukan siswa,
-            // jangan izinkan login melalui halaman siswa.
-            if ($user->role !== 'siswa') {
+
+            /*
+            |--------------------------------------------------------------------------
+            | GOOGLE LOGIN PEMBINA
+            |--------------------------------------------------------------------------
+            */
+
+            if ($loginRole === 'pembina') {
+
+                // Akun pembina harus sudah ada
+                if (!$user || $user->role !== 'pembina') {
+
+                    return redirect()
+                        ->route('pembina.login')
+                        ->withErrors([
+                            'email' => 'Akun Google ini tidak terdaftar sebagai Pembina.',
+                        ]);
+                }
+
+                // Pastikan Google ID tersimpan
+                if ($user->google_id !== $googleUser->getId()) {
+
+                    $user->update([
+                        'google_id' => $googleUser->getId(),
+                    ]);
+                }
+
+                // Login pembina
+                Auth::login($user);
+
+                $request->session()->regenerate();
+
+                if (Route::has('pembina.dashboard')) {
+                    return redirect()->route('pembina.dashboard');
+                }
+
+                return redirect()->route('dashboard');
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | GOOGLE LOGIN ADMIN
+            |--------------------------------------------------------------------------
+            */
+
+            if ($loginRole === 'admin') {
+
+                // Akun admin harus sudah ada
+                if (!$user || $user->role !== 'admin') {
+
+                    return redirect()
+                        ->route('admin.login')
+                        ->withErrors([
+                            'email' => 'Akun Google ini tidak terdaftar sebagai Admin.',
+                        ]);
+                }
+
+                // Pastikan Google ID tersimpan
+                if ($user->google_id !== $googleUser->getId()) {
+
+                    $user->update([
+                        'google_id' => $googleUser->getId(),
+                    ]);
+                }
+
+                // Login admin
+                Auth::login($user);
+
+                $request->session()->regenerate();
+
+                if (Route::has('admin.dashboard')) {
+                    return redirect()->route('admin.dashboard');
+                }
+
+                return redirect()->route('dashboard');
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ROLE TIDAK DIKENAL
+            |--------------------------------------------------------------------------
+            */
+
+            return redirect()
+                ->route('login')
+                ->withErrors([
+                    'email' => 'Jenis login Google tidak dikenali.',
+                ]);
+
+        } catch (\Exception $e) {
+
+            /*
+            |--------------------------------------------------------------------------
+            | Jika terjadi error
+            |--------------------------------------------------------------------------
+            */
+
+            $loginRole = $request->session()->pull(
+                'google_login_role',
+                'siswa'
+            );
+
+            if ($loginRole === 'pembina') {
+
                 return redirect()
-                    ->route('login')
+                    ->route('pembina.login')
                     ->withErrors([
-                        'email' => 'Akun Google ini bukan akun siswa.',
+                        'email' => 'Login Google Pembina gagal: ' . $e->getMessage(),
                     ]);
             }
 
-            // Pastikan Google ID tersimpan
-            if ($user->google_id !== $googleUser->getId()) {
-                $user->update([
-                    'google_id' => $googleUser->getId(),
-                ]);
+            if ($loginRole === 'admin') {
+
+                return redirect()
+                    ->route('admin.login')
+                    ->withErrors([
+                        'email' => 'Login Google Admin gagal: ' . $e->getMessage(),
+                    ]);
             }
-
-            Auth::login($user);
-
-            $request->session()->regenerate();
-
-            return redirect()->route('dashboard');
-
-        } catch (\Exception $e) {
 
             return redirect()
                 ->route('login')
@@ -181,13 +374,11 @@ class AuthController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    // Menampilkan halaman login pembina
     public function showPembinaLogin()
     {
         return view('auth.pembina-login');
     }
 
-    // Proses login pembina dengan email dan password
     public function pembinaLogin(Request $request)
     {
         $credentials = $request->validate([
@@ -195,14 +386,17 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        // Hanya akun dengan role pembina
+        // Hanya akun pembina
         $credentials['role'] = 'pembina';
 
         if (Auth::attempt($credentials)) {
+
             $request->session()->regenerate();
 
-            // Sementara menggunakan dashboard utama
-            // sampai dashboard pembina dibuat.
+            if (Route::has('pembina.dashboard')) {
+                return redirect()->route('pembina.dashboard');
+            }
+
             return redirect()->route('dashboard');
         }
 
@@ -216,58 +410,19 @@ class AuthController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | GOOGLE LOGIN PEMBINA
+    | CALLBACK GOOGLE PEMBINA LAMA
     |--------------------------------------------------------------------------
+    |
+    | Tetap disediakan agar route lama tidak rusak.
+    |
     */
 
-    // Mengarahkan pembina ke Google
-    public function redirectPembinaGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-    // Callback Google pembina
     public function handlePembinaGoogleCallback(Request $request)
     {
-        try {
-            $googleUser = Socialite::driver('google')->user();
+        // Gunakan callback utama
+        $request->session()->put('google_login_role', 'pembina');
 
-            // Cari akun berdasarkan Google ID atau email
-            $user = User::where('google_id', $googleUser->getId())
-                ->orWhere('email', $googleUser->getEmail())
-                ->first();
-
-            // Akun pembina harus sudah terdaftar
-            if (!$user || $user->role !== 'pembina') {
-                return redirect()
-                    ->route('pembina.login')
-                    ->withErrors([
-                        'email' => 'Akun Google ini tidak terdaftar sebagai Pembina.',
-                    ]);
-            }
-
-            // Simpan Google ID jika belum tersimpan
-            if ($user->google_id !== $googleUser->getId()) {
-                $user->update([
-                    'google_id' => $googleUser->getId(),
-                ]);
-            }
-
-            Auth::login($user);
-
-            $request->session()->regenerate();
-
-            // Sementara ke dashboard utama
-            return redirect()->route('dashboard');
-
-        } catch (\Exception $e) {
-
-            return redirect()
-                ->route('pembina.login')
-                ->withErrors([
-                    'email' => 'Login Google Pembina gagal: ' . $e->getMessage(),
-                ]);
-        }
+        return $this->handleGoogleCallback($request);
     }
 
 
@@ -277,13 +432,11 @@ class AuthController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    // Menampilkan halaman login admin
     public function showAdminLogin()
     {
         return view('auth.admin-login');
     }
 
-    // Proses login admin dengan email dan password
     public function adminLogin(Request $request)
     {
         $credentials = $request->validate([
@@ -291,14 +444,17 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        // Hanya akun dengan role admin
+        // Hanya akun admin
         $credentials['role'] = 'admin';
 
         if (Auth::attempt($credentials)) {
+
             $request->session()->regenerate();
 
-            // Sementara menggunakan dashboard utama
-            // sampai dashboard admin dibuat.
+            if (Route::has('admin.dashboard')) {
+                return redirect()->route('admin.dashboard');
+            }
+
             return redirect()->route('dashboard');
         }
 
@@ -312,58 +468,16 @@ class AuthController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | GOOGLE LOGIN ADMIN
+    | CALLBACK GOOGLE ADMIN LAMA
     |--------------------------------------------------------------------------
     */
 
-    // Mengarahkan admin ke Google
-    public function redirectAdminGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-    // Callback Google admin
     public function handleAdminGoogleCallback(Request $request)
     {
-        try {
-            $googleUser = Socialite::driver('google')->user();
+        // Gunakan callback utama
+        $request->session()->put('google_login_role', 'admin');
 
-            // Cari akun berdasarkan Google ID atau email
-            $user = User::where('google_id', $googleUser->getId())
-                ->orWhere('email', $googleUser->getEmail())
-                ->first();
-
-            // Akun admin harus sudah terdaftar
-            if (!$user || $user->role !== 'admin') {
-                return redirect()
-                    ->route('admin.login')
-                    ->withErrors([
-                        'email' => 'Akun Google ini tidak terdaftar sebagai Admin.',
-                    ]);
-            }
-
-            // Simpan Google ID jika belum tersimpan
-            if ($user->google_id !== $googleUser->getId()) {
-                $user->update([
-                    'google_id' => $googleUser->getId(),
-                ]);
-            }
-
-            Auth::login($user);
-
-            $request->session()->regenerate();
-
-            // Sementara ke dashboard utama
-            return redirect()->route('dashboard');
-
-        } catch (\Exception $e) {
-
-            return redirect()
-                ->route('admin.login')
-                ->withErrors([
-                    'email' => 'Login Google Admin gagal: ' . $e->getMessage(),
-                ]);
-        }
+        return $this->handleGoogleCallback($request);
     }
 
 

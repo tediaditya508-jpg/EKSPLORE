@@ -12,16 +12,16 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-    'name',
-    'nama',
-    'email',
-    'password',
-    'google_id',
-    'nis',
-    'kelas',
-    'no_hp',
-    'role',
-];
+        'name',
+        'nama',
+        'email',
+        'password',
+        'google_id',
+        'nis',
+        'kelas',
+        'no_hp',
+        'role',
+    ];
 
     protected $hidden = [
         'password',
@@ -36,18 +36,48 @@ class User extends Authenticatable
         ];
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | EKSTRAKURIKULER YANG DIBINA
+    |--------------------------------------------------------------------------
+    */
+
     public function ekstrakurikulerYangDibina(): HasMany
     {
-        return $this->hasMany(Ekstrakurikuler::class, 'pembina_id');
+        return $this->hasMany(
+            Ekstrakurikuler::class,
+            'pembina_id'
+        );
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PENDAFTARAN EKSTRAKURIKULER
+    |--------------------------------------------------------------------------
+    */
 
     public function pendaftaran(): HasMany
     {
-        return $this->hasMany(Pendaftaran::class, 'siswa_id');
+        return $this->hasMany(
+            Pendaftaran::class,
+            'siswa_id'
+        );
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ANGGOTA EKSTRAKURIKULER
+    |--------------------------------------------------------------------------
+    */
 
     public function anggotaEkskul(): HasMany
     {
-        return $this->hasMany(AnggotaEkskul::class, 'siswa_id');
+        return $this->hasMany(
+            AnggotaEkskul::class,
+            'siswa_id'
+        );
     }
 }

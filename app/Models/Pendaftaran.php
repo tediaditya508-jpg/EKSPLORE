@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pendaftaran extends Model
 {
+    use HasFactory;
+
+    protected $table = 'pendaftarans';
+
     protected $fillable = [
         'siswa_id',
         'ekskul_id',
@@ -18,13 +22,30 @@ class Pendaftaran extends Model
         'status',
     ];
 
-    public function siswa(): BelongsTo
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONSHIP KE SISWA
+    |--------------------------------------------------------------------------
+    */
+
+    public function siswa()
     {
         return $this->belongsTo(User::class, 'siswa_id');
     }
 
-    public function ekstrakurikuler(): BelongsTo
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONSHIP KE EKSTRAKURIKULER
+    |--------------------------------------------------------------------------
+    */
+
+    public function ekstrakurikuler()
     {
-        return $this->belongsTo(Ekstrakurikuler::class, 'ekskul_id');
+        return $this->belongsTo(
+            Ekstrakurikuler::class,
+            'ekskul_id'
+        );
     }
 }

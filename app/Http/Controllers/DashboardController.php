@@ -60,7 +60,7 @@ class DashboardController extends Controller
 
 
         // ==========================================
-        // KIRIM DATA KE VIEW
+        // KIRIM DATA KE VIEW SISWA
         // ==========================================
 
         return view('dashboard.index', [
@@ -69,6 +69,34 @@ class DashboardController extends Controller
             'jadwalHariIni' => $jadwalHariIni,
             'pengumuman' => $pengumuman,
             'dataDashboard' => $dataDashboard,
+        ]);
+    }
+
+
+    // ==========================================
+    // DASHBOARD PEMBINA
+    // ==========================================
+
+    public function pembina()
+    {
+        $pembina = Auth::user();
+
+        return view('dashboard.pembina', [
+            'pembina' => $pembina,
+        ]);
+    }
+
+
+    // ==========================================
+    // DASHBOARD ADMIN
+    // ==========================================
+
+    public function admin()
+    {
+        $admin = Auth::user();
+
+        return view('dashboard.admin', [
+            'admin' => $admin,
         ]);
     }
 }
