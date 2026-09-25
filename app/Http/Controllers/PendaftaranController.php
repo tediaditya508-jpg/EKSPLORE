@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ekstrakurikuler;
 use App\Models\Pendaftaran;
 use App\Models\AnggotaEkskul;
+use App\Models\Notifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,9 +19,15 @@ class PendaftaranController extends Controller
 
     public function create($id)
     {
+        // Pastikan pengguna sudah login
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $siswa = Auth::user();
 
-        if ($siswa->role !== 'siswa') {
+        // Pastikan akun yang digunakan adalah akun siswa
+        if (!$siswa || $siswa->role !== 'siswa') {
             return redirect()
                 ->route('dashboard')
                 ->withErrors([
@@ -32,6 +39,7 @@ class PendaftaranController extends Controller
 
         return view('pendaftaran.create', [
             'ekskul' => $ekskul,
+            'siswa' => $siswa,
         ]);
     }
 
@@ -46,7 +54,7 @@ class PendaftaranController extends Controller
     {
         $siswa = Auth::user();
 
-        if ($siswa->role !== 'siswa') {
+        if (!$siswa || $siswa->role !== 'siswa') {
             return redirect()
                 ->route('dashboard')
                 ->withErrors([
@@ -106,7 +114,7 @@ class PendaftaranController extends Controller
     {
         $siswa = Auth::user();
 
-        if ($siswa->role !== 'siswa') {
+        if (!$siswa || $siswa->role !== 'siswa') {
             return redirect()
                 ->route('dashboard')
                 ->withErrors([
@@ -143,17 +151,11 @@ class PendaftaranController extends Controller
                 ]);
         }
 
-        /*
-        | Ambil ID semua ekskul yang dibina Pembina yang sedang login.
-        */
         $ekskulIds = Ekstrakurikuler::where(
             'pembina_id',
             $pembina->id
         )->pluck('id');
 
-        /*
-        | Ambil semua pendaftaran dari ekskul tersebut.
-        */
         $pendaftaran = Pendaftaran::with([
             'siswa',
             'ekstrakurikuler',
@@ -193,10 +195,8 @@ class PendaftaranController extends Controller
         $pendaftaran = Pendaftaran::with('ekstrakurikuler')
             ->findOrFail($id);
 
-        /*
-        | Pastikan ekskul tersebut memang dibina
-        | oleh Pembina yang sedang login.
-        */
+        // Pastikan pembina hanya dapat memproses pendaftaran
+        // dari ekstrakurikuler yang menjadi tanggung jawabnya.
         if (
             !$pendaftaran->ekstrakurikuler ||
             (int) $pendaftaran->ekstrakurikuler->pembina_id !== (int) $pembina->id
@@ -208,21 +208,16 @@ class PendaftaranController extends Controller
                 ]);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | UPDATE STATUS PENDAFTARAN
-        |--------------------------------------------------------------------------
-        */
+        // Pendaftaran yang sudah diproses tidak boleh diproses ulang.
+        if ($pendaftaran->status !== 'menunggu') {
+            return back()->withErrors([
+                'status' => 'Pendaftaran ini sudah diproses sebelumnya.',
+            ]);
+        }
 
         $pendaftaran->update([
             'status' => $data['status'],
         ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | JIKA DITERIMA → OTOMATIS MENJADI ANGGOTA EKSKUL
-        |--------------------------------------------------------------------------
-        */
 
         if ($data['status'] === 'diterima') {
             AnggotaEkskul::updateOrCreate(
@@ -237,16 +232,153 @@ class PendaftaranController extends Controller
             );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | JIKA DITOLAK → TIDAK MENJADI ANGGOTA
-        |--------------------------------------------------------------------------
-        */
+        if ($data['status'] === 'ditolak') {
+            AnggotaEkskul::where('siswa_id', $pendaftaran->siswa_id)
+                ->where('ekskul_id', $pendaftaran->ekskul_id)
+                ->delete();
+        }
+
+        $namaEkskul = $pendaftaran->ekstrakurikuler->nama_ekskul
+            ?? $pendaftaran->ekstrakurikuler->nama
+            ?? 'Ekstrakurikuler';
+
+        if ($data['status'] === 'diterima') {
+            Notifikasi::create([
+                'user_id' => $pendaftaran->siswa_id,
+                'judul' => 'Pendaftaran Ekskul Diterima',
+                'pesan' => 'Selamat! Pendaftaran kamu pada ekskul "' .
+                    $namaEkskul .
+                    '" telah diterima. Sekarang kamu sudah menjadi anggota ekskul tersebut.',
+                'dibaca' => false,
+            ]);
+        } else {
+            Notifikasi::create([
+                'user_id' => $pendaftaran->siswa_id,
+                'judul' => 'Pendaftaran Ekskul Ditolak',
+                'pesan' => 'Pendaftaran kamu pada ekskul "' .
+                    $namaEkskul .
+                    '" ditolak oleh pembina.',
+                'dibaca' => false,
+            ]);
+        }
+
+        return back()->with(
+            'success',
+            'Status pendaftaran berhasil diperbarui menjadi ' .
+            $data['status'] .
+            '.'
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DAFTAR PENDAFTAR - ADMIN
+    |--------------------------------------------------------------------------
+    */
+
+    public function adminIndex()
+    {
+        $admin = Auth::user();
+
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()
+                ->route('dashboard')
+                ->withErrors([
+                    'akses' => 'Halaman ini hanya dapat diakses oleh admin.',
+                ]);
+        }
+
+        $pendaftaran = Pendaftaran::with([
+            'siswa',
+            'ekstrakurikuler',
+        ])
+            ->latest()
+            ->get();
+
+        return view('pendaftaran.admin', [
+            'pendaftaran' => $pendaftaran,
+        ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE STATUS PENDAFTARAN - ADMIN
+    |--------------------------------------------------------------------------
+    */
+
+    public function adminUpdateStatus(Request $request, $id)
+    {
+        $admin = Auth::user();
+
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()
+                ->route('dashboard')
+                ->withErrors([
+                    'akses' => 'Hanya admin yang dapat mengubah status pendaftaran.',
+                ]);
+        }
+
+        $data = $request->validate([
+            'status' => ['required', 'in:diterima,ditolak'],
+        ]);
+
+        $pendaftaran = Pendaftaran::with('ekstrakurikuler')
+            ->findOrFail($id);
+
+        // Pendaftaran yang sudah diproses tidak boleh diproses ulang.
+        if ($pendaftaran->status !== 'menunggu') {
+            return back()->withErrors([
+                'status' => 'Pendaftaran ini sudah diproses sebelumnya.',
+            ]);
+        }
+
+        $pendaftaran->update([
+            'status' => $data['status'],
+        ]);
+
+        if ($data['status'] === 'diterima') {
+            AnggotaEkskul::updateOrCreate(
+                [
+                    'siswa_id' => $pendaftaran->siswa_id,
+                    'ekskul_id' => $pendaftaran->ekskul_id,
+                ],
+                [
+                    'tanggal_daftar' => now()->toDateString(),
+                    'status' => 'aktif',
+                ]
+            );
+        }
 
         if ($data['status'] === 'ditolak') {
             AnggotaEkskul::where('siswa_id', $pendaftaran->siswa_id)
                 ->where('ekskul_id', $pendaftaran->ekskul_id)
                 ->delete();
+        }
+
+        $namaEkskul = $pendaftaran->ekstrakurikuler->nama_ekskul
+            ?? $pendaftaran->ekstrakurikuler->nama
+            ?? 'Ekstrakurikuler';
+
+        if ($data['status'] === 'diterima') {
+            Notifikasi::create([
+                'user_id' => $pendaftaran->siswa_id,
+                'judul' => 'Pendaftaran Ekskul Diterima',
+                'pesan' => 'Selamat! Pendaftaran kamu pada ekskul "' .
+                    $namaEkskul .
+                    '" telah diterima oleh admin. Sekarang kamu sudah menjadi anggota ekskul tersebut.',
+                'dibaca' => false,
+            ]);
+        } else {
+            Notifikasi::create([
+                'user_id' => $pendaftaran->siswa_id,
+                'judul' => 'Pendaftaran Ekskul Ditolak',
+                'pesan' => 'Pendaftaran kamu pada ekskul "' .
+                    $namaEkskul .
+                    '" ditolak oleh admin.',
+                'dibaca' => false,
+            ]);
         }
 
         return back()->with(

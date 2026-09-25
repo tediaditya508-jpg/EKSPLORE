@@ -20,6 +20,7 @@ class User extends Authenticatable
         'nis',
         'kelas',
         'no_hp',
+        'foto',
         'role',
     ];
 

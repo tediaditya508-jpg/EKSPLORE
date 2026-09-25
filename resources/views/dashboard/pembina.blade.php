@@ -71,6 +71,15 @@
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            color: #1f2937;
+            text-decoration: none;
+            display: block;
+            transition: 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
         }
 
         .card h3 {
@@ -115,6 +124,7 @@
 <body>
 
     <nav class="navbar">
+
         <div class="logo">
             EKSPLORE
         </div>
@@ -122,6 +132,7 @@
         <div class="role">
             Dashboard Pembina
         </div>
+
     </nav>
 
 
@@ -142,43 +153,174 @@
 
         <section class="cards">
 
-            <div class="card">
-                <h3>📚 Ekstrakurikuler</h3>
+            {{-- EKSTRAKURIKULER PEMBINA --}}
+
+            <a
+                href="{{ route('pembina.ekstrakurikuler') }}"
+                class="card"
+            >
+
+                <h3>
+                    📚 Ekstrakurikuler
+                </h3>
 
                 <p>
-                    Kelola ekstrakurikuler yang Anda bina.
+                    Lihat ekstrakurikuler yang Anda bina.
                 </p>
-            </div>
+
+            </a>
 
 
-            <div class="card">
-                <h3>📅 Jadwal</h3>
+            {{-- JADWAL PEMBINA --}}
+
+            <a
+                href="{{ route('pembina.jadwal') }}"
+                class="card"
+            >
+
+                <h3>
+                    📅 Jadwal
+                </h3>
 
                 <p>
-                    Lihat dan kelola jadwal kegiatan ekstrakurikuler.
+                    Lihat dan kelola jadwal kegiatan
+                    ekstrakurikuler.
                 </p>
-            </div>
+
+            </a>
 
 
-            <div class="card">
-                <h3>👥 Anggota</h3>
+            {{-- ANGGOTA PEMBINA --}}
+
+            <a
+                href="{{ route('pembina.anggota') }}"
+                class="card"
+            >
+
+                <h3>
+                    👥 Anggota
+                </h3>
 
                 <p>
-                    Kelola data siswa yang mengikuti ekstrakurikuler.
+                    Kelola data siswa yang mengikuti
+                    ekstrakurikuler.
                 </p>
-            </div>
+
+            </a>
+
+
+            {{-- ABSENSI PEMBINA --}}
+
+            <a
+                href="{{ route('pembina.absensi') }}"
+                class="card"
+            >
+
+                <h3>
+                    📝 Absensi
+                </h3>
+
+                <p>
+                    Isi dan lihat riwayat kehadiran
+                    anggota ekstrakurikuler.
+                </p>
+
+            </a>
+
+
+            {{-- PENDAFTARAN PEMBINA --}}
+
+            <a
+                href="{{ route('pembina.pendaftaran') }}"
+                class="card"
+            >
+
+                <h3>
+                    📋 Pendaftaran
+                </h3>
+
+                <p>
+                    Lihat dan proses pendaftaran siswa
+                    yang ingin mengikuti ekstrakurikuler.
+                </p>
+
+            </a>
+
+
+            {{-- PRESTASI PEMBINA --}}
+
+            <a
+                href="{{ route('pembina.prestasi') }}"
+                class="card"
+            >
+
+                <h3>
+                    🏆 Prestasi
+                </h3>
+
+                <p>
+                    Kelola dan tambahkan prestasi
+                    ekstrakurikuler yang Anda bina.
+                </p>
+
+            </a>
+
+
+            {{-- GALERI PEMBINA --}}
+
+            <a
+                href="{{ route('pembina.galeri') }}"
+                class="card"
+            >
+
+                <h3>
+                    🖼️ Galeri
+                </h3>
+
+                <p>
+                    Kelola dan tambahkan dokumentasi
+                    kegiatan ekstrakurikuler yang Anda bina.
+                </p>
+
+            </a>
+
+
+            {{-- PENGUMUMAN PEMBINA --}}
+
+            <a
+                href="{{ route('pembina.pengumuman') }}"
+                class="card"
+            >
+
+                <h3>
+                    📢 Pengumuman
+                </h3>
+
+                <p>
+                    Kelola dan buat pengumuman untuk
+                    siswa yang mengikuti kegiatan ekstrakurikuler.
+                </p>
+
+            </a>
 
         </section>
 
 
+        {{-- LOGOUT --}}
+
         <div class="logout">
 
-            <form action="{{ route('logout') }}" method="POST">
+            <form
+                action="{{ route('logout') }}"
+                method="POST"
+            >
+
                 @csrf
 
                 <button type="submit">
                     Logout
                 </button>
+
             </form>
 
         </div>

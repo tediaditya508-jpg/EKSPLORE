@@ -25,6 +25,14 @@
             margin: 40px auto;
         }
 
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
         .header {
             background: white;
             padding: 25px;
@@ -42,68 +50,10 @@
             color: #6b7280;
         }
 
-        .back {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-        }
-
-        .card h2 {
-            margin-bottom: 20px;
-            font-size: 22px;
-        }
-
-        .member {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .member:last-child {
-            border-bottom: none;
-        }
-
-        .member-info h3 {
-            margin-bottom: 6px;
-        }
-
-        .member-info p {
-            color: #6b7280;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .status {
-            background: #dcfce7;
-            color: #166534;
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 30px;
-            color: #6b7280;
-        }
-
         .summary {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
             margin-bottom: 25px;
         }
 
@@ -125,11 +75,76 @@
             font-size: 28px;
         }
 
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-title {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .member {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .member:last-child {
+            margin-bottom: 0;
+        }
+
+        .member h3 {
+            margin-bottom: 15px;
+            font-size: 19px;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .label {
+            color: #6b7280;
+        }
+
+        .value {
+            font-weight: 500;
+        }
+
+        .status {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+
         @media (max-width: 600px) {
-            .member {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+                gap: 3px;
+                margin-bottom: 10px;
             }
         }
     </style>
@@ -143,64 +158,109 @@
         ← Kembali ke Dashboard
     </a>
 
+
     <div class="header">
+
         <h1>Anggota Ekskul</h1>
+
         <p>
             Daftar siswa yang menjadi anggota aktif ekstrakurikuler yang Anda bina.
         </p>
+
     </div>
+
 
     <div class="summary">
 
         <div class="summary-card">
+
             <span>Total Ekskul Dibina</span>
-            <strong>{{ $ekskul->count() }}</strong>
+
+            <strong>
+                {{ $ekskul->count() }}
+            </strong>
+
         </div>
 
+
         <div class="summary-card">
+
             <span>Total Anggota Aktif</span>
-            <strong>{{ $anggota->count() }}</strong>
+
+            <strong>
+                {{ $anggota->count() }}
+            </strong>
+
         </div>
 
     </div>
+
 
     @forelse ($ekskul as $item)
 
         <div class="card">
 
-            <h2>{{ $item->nama_ekskul }}</h2>
+            <h2 class="card-title">
+                📚 {{ $item->nama_ekskul }}
+            </h2>
+
 
             @php
                 $anggotaEkskul = $anggota->where('ekskul_id', $item->id);
             @endphp
 
+
             @forelse ($anggotaEkskul as $member)
 
                 <div class="member">
 
-                    <div class="member-info">
+                    <h3>
+                        👤 {{ $member->siswa->nama ?? $member->siswa->name ?? 'Nama tidak tersedia' }}
+                    </h3>
 
-                        <h3>
-                            {{ $member->siswa->nama ?? $member->siswa->name ?? 'Nama tidak tersedia' }}
-                        </h3>
 
-                        <p>
-                            Email:
+                    <div class="info">
+
+                        <div class="label">
+                            Ekskul yang diikuti
+                        </div>
+
+                        <div class="value">
+                            {{ $member->ekstrakurikuler->nama_ekskul ?? $item->nama_ekskul }}
+                        </div>
+
+
+                        <div class="label">
+                            Email
+                        </div>
+
+                        <div class="value">
                             {{ $member->siswa->email ?? '-' }}
-                        </p>
+                        </div>
 
-                        <p>
-                            Tanggal Bergabung:
+
+                        <div class="label">
+                            Tanggal Bergabung
+                        </div>
+
+                        <div class="value">
                             {{ $member->tanggal_daftar
                                 ? \Carbon\Carbon::parse($member->tanggal_daftar)->translatedFormat('d F Y')
                                 : '-' }}
-                        </p>
+                        </div>
+
+
+                        <div class="label">
+                            Status
+                        </div>
+
+                        <div class="value">
+                            <span class="status">
+                                {{ ucfirst($member->status) }}
+                            </span>
+                        </div>
 
                     </div>
-
-                    <span class="status">
-                        {{ ucfirst($member->status) }}
-                    </span>
 
                 </div>
 
@@ -217,9 +277,11 @@
     @empty
 
         <div class="card">
+
             <div class="empty">
                 Anda belum memiliki ekstrakurikuler yang dibina.
             </div>
+
         </div>
 
     @endforelse

@@ -42,4 +42,30 @@ class AnggotaEkskulController extends Controller
             'anggota' => $anggota,
         ]);
     }
+
+    public function adminIndex()
+    {
+        $admin = Auth::user();
+
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()
+                ->route('dashboard')
+                ->withErrors([
+                    'akses' => 'Halaman ini hanya dapat diakses oleh admin.',
+                ]);
+        }
+
+        $anggota = AnggotaEkskul::with([
+            'siswa',
+            'ekstrakurikuler',
+        ])
+            ->where('status', 'aktif')
+            ->latest()
+            ->get();
+
+        return view('anggota.admin', [
+            'admin' => $admin,
+            'anggota' => $anggota,
+        ]);
+    }
 }
