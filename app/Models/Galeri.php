@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Galeri extends Model
 {
-    protected $table = 'galeris';
+    protected $table = 'galeri';
 
     protected $fillable = [
         'ekskul_id',

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Jadwal extends Model
 {
+    protected $table = 'jadwal';
+
     protected $fillable = [
         'ekskul_id',
         'hari',

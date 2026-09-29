@@ -11,15 +11,13 @@ return new class extends Migration
      */
    public function up(): void
 {
-    Schema::create('galeris', function (Blueprint $table) {
+    Schema::create('pengumuman', function (Blueprint $table) {
         $table->id();
 
-        $table->foreignId('ekskul_id')
-              ->constrained('ekstrakurikulers')
-              ->cascadeOnDelete();
-
-        $table->string('gambar');
-        $table->string('keterangan')->nullable();
+        $table->string('judul');
+        $table->text('isi');
+        $table->date('tanggal');
+        $table->string('gambar')->nullable();
 
         $table->timestamps();
     });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('galeris');
+        Schema::dropIfExists('pengumuman');
     }
 };

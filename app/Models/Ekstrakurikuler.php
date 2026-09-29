@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Ekstrakurikuler extends Model
 {
+    protected $table = 'ekstrakurikuler';
+
     protected $fillable = [
         'nama_ekskul',
         'deskripsi',

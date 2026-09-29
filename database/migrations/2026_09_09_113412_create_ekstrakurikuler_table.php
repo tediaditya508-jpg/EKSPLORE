@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('ekstrakurikulers', function (Blueprint $table) {
+        Schema::create('ekstrakurikuler', function (Blueprint $table) {
             $table->id();
 
             $table->string('nama_ekskul');
@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->foreignId('pembina_id')
                   ->nullable()
-                  ->constrained('users')
+                  ->constrained('user')
                   ->nullOnDelete();
 
             $table->string('jadwal')->nullable();
@@ -33,6 +33,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('ekstrakurikulers');
+        Schema::dropIfExists('ekstrakurikuler');
     }
 };
