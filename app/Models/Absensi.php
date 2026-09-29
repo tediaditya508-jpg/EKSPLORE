@@ -8,7 +8,7 @@ use App\Models\AnggotaEkskul;
 
 class Absensi extends Model
 {
-    protected $table = 'absensis';
+    protected $table = 'absensi';
 
     protected $fillable = [
         'anggota_id',
