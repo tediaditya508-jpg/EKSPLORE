@@ -222,6 +222,33 @@
                     <div class="info">
 
                         <div class="label">
+                            NIS
+                        </div>
+
+                        <div class="value">
+                            {{ $member->siswa->nis ?? '-' }}
+                        </div>
+
+
+                        <div class="label">
+                            Kelas
+                        </div>
+
+                        <div class="value">
+                            {{ $member->siswa->kelas ?? '-' }}
+                        </div>
+
+
+                        <div class="label">
+                            No. HP
+                        </div>
+
+                        <div class="value">
+                            {{ $member->siswa->no_hp ?? '-' }}
+                        </div>
+
+
+                        <div class="label">
                             Ekskul yang diikuti
                         </div>
 

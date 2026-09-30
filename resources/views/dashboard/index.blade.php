@@ -394,6 +394,94 @@
 
 
         /* =========================================
+           NILAI KEHADIRAN
+        ========================================= */
+
+        .nilai-item {
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 14px;
+
+            background: #f8fafc;
+
+            border: 1px solid #f1f5f9;
+
+            border-radius: 12px;
+
+            margin-bottom: 10px;
+
+            transition: .2s;
+        }
+
+        .nilai-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .nilai-item:hover {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .nilai-icon {
+            width: 45px;
+            height: 45px;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+
+            background: #dcfce7;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .nilai-info {
+            flex: 1;
+        }
+
+        .nilai-info strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-size: 14px;
+        }
+
+        .nilai-info span {
+            color: var(--text-secondary);
+
+            font-size: 12px;
+        }
+
+        .nilai-badge {
+            min-width: 52px;
+
+            padding: 9px 12px;
+
+            background: #eff6ff;
+
+            border: 1px solid #bfdbfe;
+
+            border-radius: 10px;
+
+            color: var(--primary);
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            text-align: center;
+        }
+
+
+        /* =========================================
            PENGUMUMAN
         ========================================= */
 
@@ -632,6 +720,15 @@
 
             .ekskul-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .nilai-item {
+                gap: 10px;
+            }
+
+            .nilai-badge {
+                min-width: 48px;
+                padding: 8px 10px;
             }
         }
     </style>
@@ -962,6 +1059,76 @@
                         <br><br>
 
                         Belum ada jadwal ekstrakurikuler.
+
+                    </div>
+
+                @endforelse
+
+            </div>
+
+
+
+            <!-- NILAI KEHADIRAN -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h3>
+                        🎯 Nilai Kehadiran Terbaru
+                    </h3>
+
+                    <a href="{{ route('kehadiran.index') }}">
+                        Lihat semua
+                    </a>
+
+                </div>
+
+
+                @forelse ($nilaiAbsensi as $item)
+
+                    <div class="nilai-item">
+
+                        <div class="nilai-icon">
+                            🎯
+                        </div>
+
+
+                        <div class="nilai-info">
+
+                            <strong>
+                                {{ $item->anggota->ekstrakurikuler->nama_ekskul ?? 'Ekskul' }}
+                            </strong>
+
+                            <span>
+
+                                📅
+                                {{ $item->tanggal?->format('d-m-Y') ?? '-' }}
+
+                                •
+
+                                ✅ Hadir
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="nilai-badge">
+                            {{ $item->nilai }}
+                        </div>
+
+                    </div>
+
+                @empty
+
+                    <div class="empty">
+
+                        🎯
+
+                        <br><br>
+
+                        Belum ada nilai kehadiran.
 
                     </div>
 

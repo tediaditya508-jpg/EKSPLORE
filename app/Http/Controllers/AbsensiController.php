@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AbsensiController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | ABSENSI PEMBINA
+    |--------------------------------------------------------------------------
+    */
+
     public function pembina()
     {
         $pembina = Auth::user();
@@ -32,6 +38,12 @@ class AbsensiController extends Controller
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | PEMBINA MENYIMPAN ABSENSI
+    |--------------------------------------------------------------------------
+    */
+
     public function store(Request $request)
     {
         $pembina = Auth::user();
@@ -45,10 +57,33 @@ class AbsensiController extends Controller
         }
 
         $data = $request->validate([
-            'anggota_id' => ['required', 'exists:anggota_ekskuls,id'],
-            'tanggal' => ['required', 'date'],
-            'status' => ['required', 'in:hadir,izin,sakit,alpa'],
-            'keterangan' => ['nullable', 'string', 'max:500'],
+            'anggota_id' => [
+                'required',
+                'exists:anggota_ekskul,id',
+            ],
+
+            'tanggal' => [
+                'required',
+                'date',
+            ],
+
+            'status' => [
+                'required',
+                'in:hadir,izin,sakit,alpa',
+            ],
+
+            'nilai' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'max:100',
+            ],
+
+            'keterangan' => [
+                'nullable',
+                'string',
+                'max:500',
+            ],
         ]);
 
         $anggota = \App\Models\AnggotaEkskul::with('ekstrakurikuler')
@@ -63,6 +98,18 @@ class AbsensiController extends Controller
             ]);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | NILAI HANYA UNTUK HADIR
+        |--------------------------------------------------------------------------
+        */
+
+        $nilai = null;
+
+        if ($data['status'] === 'hadir') {
+            $nilai = $data['nilai'] ?? null;
+        }
+
         Absensi::updateOrCreate(
             [
                 'anggota_id' => $data['anggota_id'],
@@ -70,6 +117,7 @@ class AbsensiController extends Controller
             ],
             [
                 'status' => $data['status'],
+                'nilai' => $nilai,
                 'keterangan' => $data['keterangan'] ?? null,
             ]
         );
@@ -121,6 +169,101 @@ class AbsensiController extends Controller
             'jumlahSakit' => $jumlahSakit,
             'jumlahAlpa' => $jumlahAlpa,
         ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SISWA MENGAJUKAN IZIN / SAKIT
+    |--------------------------------------------------------------------------
+    */
+
+    public function storeSiswa(Request $request)
+    {
+        $siswa = Auth::user();
+
+        if (!$siswa || $siswa->role !== 'siswa') {
+            return redirect()
+                ->route('dashboard')
+                ->withErrors([
+                    'akses' => 'Hanya siswa yang dapat mengisi izin atau sakit.',
+                ]);
+        }
+
+        $data = $request->validate([
+            'anggota_id' => [
+                'required',
+                'exists:anggota_ekskul,id',
+            ],
+
+            'tanggal' => [
+                'required',
+                'date',
+            ],
+
+            'status' => [
+                'required',
+                'in:izin,sakit',
+            ],
+
+            'keterangan' => [
+                'required',
+                'string',
+                'max:500',
+            ],
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | PASTIKAN ANGGOTA ADALAH MILIK SISWA YANG LOGIN
+        |--------------------------------------------------------------------------
+        */
+
+        $anggota = \App\Models\AnggotaEkskul::with('ekstrakurikuler')
+            ->where('id', $data['anggota_id'])
+            ->where('siswa_id', $siswa->id)
+            ->first();
+
+        if (!$anggota) {
+            return back()->withErrors([
+                'akses' => 'Kamu tidak terdaftar sebagai anggota ekskul ini.',
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CEK APAKAH ABSENSI TANGGAL TERSEBUT SUDAH ADA
+        |--------------------------------------------------------------------------
+        */
+
+        $absensiHariIni = Absensi::where('anggota_id', $data['anggota_id'])
+            ->whereDate('tanggal', $data['tanggal'])
+            ->first();
+
+        if ($absensiHariIni) {
+            return back()->withErrors([
+                'tanggal' => 'Absensi untuk tanggal tersebut sudah diisi.',
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SIMPAN IZIN / SAKIT
+        |--------------------------------------------------------------------------
+        */
+
+        Absensi::create([
+            'anggota_id' => $data['anggota_id'],
+            'tanggal' => $data['tanggal'],
+            'status' => $data['status'],
+            'nilai' => null,
+            'keterangan' => $data['keterangan'],
+        ]);
+
+        return back()->with(
+            'success',
+            'Pengajuan izin/sakit berhasil dikirim.'
+        );
     }
 
 

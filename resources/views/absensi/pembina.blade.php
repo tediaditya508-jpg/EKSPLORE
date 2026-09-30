@@ -149,6 +149,13 @@
             border-color: #2563eb;
         }
 
+        .nilai-info {
+            display: block;
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
         .btn {
             border: none;
             padding: 11px 18px;
@@ -251,6 +258,11 @@
             color: #4b5563;
         }
 
+        .nilai {
+            color: #1d4ed8;
+            font-weight: bold;
+        }
+
         .status-hadir {
             color: #166534;
             font-weight: bold;
@@ -269,6 +281,75 @@
         .status-alpa {
             color: #991b1b;
             font-weight: bold;
+        }
+
+        /* PENGAJUAN SISWA */
+
+        .pengajuan-box {
+            margin-top: 15px;
+            padding: 14px 16px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-left: 5px solid #f59e0b;
+            border-radius: 10px;
+            color: #92400e;
+            font-weight: bold;
+        }
+
+        .keterangan-box {
+            margin-top: 15px;
+            padding: 14px 16px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-left: 5px solid #2563eb;
+            border-radius: 10px;
+        }
+
+        .keterangan-box strong {
+            color: #374151;
+        }
+
+        .keterangan-text {
+            margin-top: 8px;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .status-badge.hadir {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.izin {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.sakit {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-badge.alpa {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .nilai-box {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: #eff6ff;
+            border-radius: 9px;
+            color: #1d4ed8;
+            font-weight: bold;
+            display: inline-block;
         }
 
         @media (max-width: 700px) {
@@ -318,7 +399,6 @@
 
     <main class="container">
 
-
         <a
             href="{{ route('pembina.dashboard') }}"
             class="back"
@@ -345,9 +425,7 @@
         @if (session('success'))
 
             <div class="success">
-
                 {{ session('success') }}
-
             </div>
 
         @endif
@@ -372,16 +450,14 @@
         @endif
 
 
-        {{-- FORM ABSENSI --}}
+        {{-- FORM ABSENSI PEMBINA --}}
 
         @forelse ($ekskul as $item)
 
             <section class="ekskul-card">
 
                 <h2 class="ekskul-title">
-
                     📚 {{ $item->nama_ekskul }}
-
                 </h2>
 
 
@@ -390,10 +466,7 @@
                     <div class="anggota-card">
 
                         <h3>
-
-                            👤
-                            {{ $anggota->siswa->name ?? '-' }}
-
+                            👤 {{ $anggota->siswa->name ?? '-' }}
                         </h3>
 
 
@@ -404,7 +477,6 @@
 
                             @csrf
 
-
                             <input
                                 type="hidden"
                                 name="anggota_id"
@@ -413,7 +485,6 @@
 
 
                             <div class="form-grid">
-
 
                                 {{-- TANGGAL --}}
 
@@ -443,6 +514,7 @@
 
                                     <select
                                         name="status"
+                                        class="status-select"
                                         required
                                     >
 
@@ -467,6 +539,31 @@
                                         </option>
 
                                     </select>
+
+                                </div>
+
+
+                                {{-- NILAI --}}
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Nilai
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        name="nilai"
+                                        class="nilai-input"
+                                        min="0"
+                                        max="100"
+                                        step="1"
+                                        placeholder="0 - 100"
+                                    >
+
+                                    <small class="nilai-info">
+                                        Nilai 0-100. Wajib diisi jika status Hadir.
+                                    </small>
 
                                 </div>
 
@@ -503,9 +600,7 @@
                 @empty
 
                     <div class="empty">
-
                         Belum ada anggota aktif pada ekskul ini.
-
                     </div>
 
                 @endforelse
@@ -560,6 +655,7 @@
                 })
                 ->get();
 
+
                 $jumlahHadir = $semuaAbsensi
                     ->where('status', 'hadir')
                     ->count();
@@ -580,7 +676,6 @@
 
 
             <div class="rekap-grid">
-
 
                 <div class="rekap-box hadir">
 
@@ -639,6 +734,7 @@
             <p style="color:#6b7280;">
 
                 Total data absensi:
+
                 <strong>
                     {{ $semuaAbsensi->count() }}
                 </strong>
@@ -649,13 +745,13 @@
 
 
         {{-- ========================================================= --}}
-        {{-- RIWAYAT ABSENSI --}}
+        {{-- RIWAYAT ABSENSI DAN PENGAJUAN SISWA --}}
         {{-- ========================================================= --}}
 
         <section class="ekskul-card riwayat">
 
             <h2 class="ekskul-title">
-                📋 Riwayat Absensi
+                📋 Riwayat Absensi & Pengajuan Siswa
             </h2>
 
 
@@ -673,12 +769,8 @@
 
                 <div class="riwayat-item">
 
-
                     <h3>
-
-                        👤
-                        {{ $absensi->anggota->siswa->name ?? '-' }}
-
+                        👤 {{ $absensi->anggota->siswa->name ?? '-' }}
                     </h3>
 
 
@@ -707,31 +799,30 @@
                     <p>
 
                         <strong>
-                            Status:
+                            📌 Status:
                         </strong>
-
 
                         @if ($absensi->status === 'hadir')
 
-                            <span class="status-hadir">
+                            <span class="status-badge hadir">
                                 ✅ Hadir
                             </span>
 
                         @elseif ($absensi->status === 'izin')
 
-                            <span class="status-izin">
+                            <span class="status-badge izin">
                                 🟡 Izin
                             </span>
 
                         @elseif ($absensi->status === 'sakit')
 
-                            <span class="status-sakit">
+                            <span class="status-badge sakit">
                                 🔵 Sakit
                             </span>
 
                         @elseif ($absensi->status === 'alpa')
 
-                            <span class="status-alpa">
+                            <span class="status-badge alpa">
                                 ❌ Alpa
                             </span>
 
@@ -744,20 +835,58 @@
                     </p>
 
 
+                    {{-- KETERANGAN SISWA --}}
+
                     @if ($absensi->keterangan)
 
-                        <p>
+                        <div class="keterangan-box">
 
                             <strong>
                                 📝 Keterangan:
                             </strong>
 
-                            {{ $absensi->keterangan }}
+                            <div class="keterangan-text">
+                                {{ $absensi->keterangan }}
+                            </div>
 
-                        </p>
+                        </div>
 
                     @endif
 
+
+                    {{-- NILAI HANYA UNTUK HADIR --}}
+
+                    @if (
+                        $absensi->status === 'hadir' &&
+                        $absensi->nilai !== null
+                    )
+
+                        <div class="nilai-box">
+
+                            🎯 Nilai:
+                            {{ $absensi->nilai }}
+
+                        </div>
+
+                    @endif
+
+
+                    {{-- PENANDA PENGAJUAN IZIN / SAKIT DARI SISWA --}}
+
+                    @if (
+                        $absensi->status === 'izin' ||
+                        $absensi->status === 'sakit'
+                    )
+
+                        <div class="pengajuan-box">
+
+                            📩 Pengajuan
+                            {{ $absensi->status === 'izin' ? 'Izin' : 'Sakit' }}
+                            dari siswa
+
+                        </div>
+
+                    @endif
 
                 </div>
 
@@ -776,6 +905,63 @@
 
     </main>
 
+
+    {{-- ========================================================= --}}
+    {{-- JAVASCRIPT NILAI --}}
+    {{-- ========================================================= --}}
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const forms = document.querySelectorAll('form');
+
+            forms.forEach(function (form) {
+
+                const statusSelect =
+                    form.querySelector('.status-select');
+
+                const nilaiInput =
+                    form.querySelector('.nilai-input');
+
+
+                if (!statusSelect || !nilaiInput) {
+                    return;
+                }
+
+
+                function updateNilai() {
+
+                    if (statusSelect.value === 'hadir') {
+
+                        nilaiInput.required = true;
+                        nilaiInput.disabled = false;
+
+                    } else {
+
+                        nilaiInput.required = false;
+                        nilaiInput.value = '';
+                        nilaiInput.disabled = true;
+
+                    }
+
+                }
+
+
+                statusSelect.addEventListener(
+                    'change',
+                    updateNilai
+                );
+
+
+                updateNilai();
+
+            });
+
+        });
+
+    </script>
+
 </body>
 
-</html>
+</html> 

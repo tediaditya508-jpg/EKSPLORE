@@ -30,7 +30,6 @@
         .navbar {
             background: #111827;
             color: white;
-
             padding: 18px 40px;
 
             display: flex;
@@ -59,9 +58,7 @@
 
         .container {
             max-width: 1250px;
-
             margin: 40px auto;
-
             padding: 0 20px;
         }
 
@@ -71,9 +68,7 @@
 
         .header {
             background: white;
-
             padding: 30px;
-
             border-radius: 15px;
 
             box-shadow:
@@ -88,7 +83,6 @@
 
         .header p {
             color: #6b7280;
-
             line-height: 1.6;
         }
 
@@ -98,13 +92,10 @@
 
         .success {
             background: #dcfce7;
-
             color: #166534;
 
             padding: 14px 18px;
-
             border-radius: 10px;
-
             margin-bottom: 20px;
         }
 
@@ -114,13 +105,10 @@
 
         .error {
             background: #fee2e2;
-
             color: #991b1b;
 
             padding: 14px 18px;
-
             border-radius: 10px;
-
             margin-bottom: 20px;
         }
 
@@ -165,7 +153,6 @@
 
         thead {
             background: #111827;
-
             color: white;
         }
 
@@ -179,7 +166,7 @@
 
             font-size: 14px;
 
-            vertical-align: top;
+            vertical-align: middle;
         }
 
         tbody tr:hover {
@@ -187,19 +174,44 @@
         }
 
         /* =========================
+           KOLOM STATUS
+        ========================= */
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 130px;
+            min-width: 130px;
+            white-space: nowrap;
+        }
+
+        /* =========================
            STATUS
         ========================= */
 
         .status {
-            display: inline-block;
+            display: inline-flex;
 
-            padding: 6px 11px;
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 5px;
+
+            padding: 7px 12px;
 
             border-radius: 20px;
 
             font-size: 12px;
 
             font-weight: bold;
+
+            line-height: 1;
+
+            white-space: nowrap;
+
+            min-width: 100px;
+
+            text-align: center;
         }
 
         .status-menunggu {
@@ -218,6 +230,25 @@
             background: #fee2e2;
 
             color: #991b1b;
+        }
+
+        /* =========================
+           AKSI
+        ========================= */
+
+        th:nth-child(9),
+        td:nth-child(9) {
+            min-width: 150px;
+        }
+
+        .action-buttons {
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 8px;
         }
 
         /* =========================
@@ -240,6 +271,10 @@
             cursor: pointer;
 
             transition: 0.2s ease;
+
+            min-width: 82px;
+
+            text-align: center;
         }
 
         .button:hover {
@@ -260,6 +295,26 @@
 
         .button-reject:hover {
             background: #b91c1c;
+        }
+
+        /* =========================
+           AKSI SUDAH DIPROSES
+        ========================= */
+
+        .already-accepted {
+            color: #166534;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        .already-rejected {
+            color: #991b1b;
+
+            font-weight: bold;
+
+            white-space: nowrap;
         }
 
         /* =========================
@@ -290,6 +345,8 @@
             line-height: 1.5;
 
             color: #4b5563;
+
+            word-break: break-word;
         }
 
         /* =========================
@@ -562,25 +619,28 @@
                                     @if ($item->status === 'menunggu')
 
                                         <span class="status status-menunggu">
-                                            ⏳ Menunggu
+                                            <span>⏳</span>
+                                            <span>Menunggu</span>
                                         </span>
 
                                     @elseif ($item->status === 'diterima')
 
                                         <span class="status status-diterima">
-                                            ✓ Diterima
+                                            <span>✓</span>
+                                            <span>Diterima</span>
                                         </span>
 
                                     @elseif ($item->status === 'ditolak')
 
                                         <span class="status status-ditolak">
-                                            ✕ Ditolak
+                                            <span>✕</span>
+                                            <span>Ditolak</span>
                                         </span>
 
                                     @else
 
                                         <span class="status status-menunggu">
-                                            {{ ucfirst($item->status ?? '-') }}
+                                            <span>{{ ucfirst($item->status ?? '-') }}</span>
                                         </span>
 
                                     @endif
@@ -594,13 +654,8 @@
 
                                     @if ($item->status === 'menunggu')
 
-                                        <div
-                                            style="
-                                                display: flex;
-                                                gap: 8px;
-                                                flex-direction: column;
-                                            "
-                                        >
+                                        <div class="action-buttons">
+
 
                                             {{-- TERIMA --}}
 
@@ -661,13 +716,13 @@
 
                                     @elseif ($item->status === 'diterima')
 
-                                        <span style="color:#166534;font-weight:bold;">
+                                        <span class="already-accepted">
                                             ✓ Sudah diterima
                                         </span>
 
                                     @elseif ($item->status === 'ditolak')
 
-                                        <span style="color:#991b1b;font-weight:bold;">
+                                        <span class="already-rejected">
                                             ✕ Sudah ditolak
                                         </span>
 

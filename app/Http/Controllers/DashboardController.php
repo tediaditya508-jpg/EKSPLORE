@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ekstrakurikuler;
 use App\Models\Jadwal;
 use App\Models\Pengumuman;
+use App\Models\Absensi;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -34,6 +35,9 @@ class DashboardController extends Controller
         // ==========================================
 
         $jadwalHariIni = Jadwal::with('ekstrakurikuler')
+            ->whereHas('ekstrakurikuler.anggota', function ($query) use ($siswa) {
+            $query->where('siswa_id', $siswa->id);
+     })
             ->orderBy('jam_mulai')
             ->take(5)
             ->get();
@@ -44,6 +48,23 @@ class DashboardController extends Controller
         // ==========================================
 
         $pengumuman = Pengumuman::latest('tanggal')
+            ->take(5)
+            ->get();
+
+
+        // ==========================================
+        // NILAI KEHADIRAN SISWA
+        // ==========================================
+
+        $nilaiAbsensi = Absensi::with([
+                'anggota.ekstrakurikuler'
+            ])
+            ->whereHas('anggota', function ($query) use ($siswa) {
+                $query->where('siswa_id', $siswa->id);
+            })
+            ->where('status', 'hadir')
+            ->whereNotNull('nilai')
+            ->latest('tanggal')
             ->take(5)
             ->get();
 
@@ -68,6 +89,7 @@ class DashboardController extends Controller
             'ekskul' => $ekskul,
             'jadwalHariIni' => $jadwalHariIni,
             'pengumuman' => $pengumuman,
+            'nilaiAbsensi' => $nilaiAbsensi,
             'dataDashboard' => $dataDashboard,
         ]);
     }

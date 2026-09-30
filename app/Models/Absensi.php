@@ -10,13 +10,13 @@ class Absensi extends Model
 {
     protected $table = 'absensi';
 
-    protected $fillable = [
-        'anggota_id',
-        'tanggal',
-        'status',
-        'keterangan',
-    ];
-
+   protected $fillable = [
+    'anggota_id',
+    'tanggal',
+    'status',
+    'nilai',
+    'keterangan',
+];
     protected $casts = [
         'tanggal' => 'date',
     ];

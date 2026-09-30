@@ -141,7 +141,7 @@
             box-shadow:
                 0 4px 15px rgba(0, 0, 0, 0.06);
 
-            overflow-x: auto;
+            overflow: hidden;
         }
 
         .card-header {
@@ -191,21 +191,31 @@
         }
 
         /* =========================
-           TABLE
+           TABLE WRAPPER
         ========================= */
 
         .table-wrapper {
             width: 100%;
 
             overflow-x: auto;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 10px;
         }
+
+        /* =========================
+           TABLE
+        ========================= */
 
         table {
             width: 100%;
 
-            min-width: 1050px;
+            min-width: 1100px;
 
-            border-collapse: collapse;
+            border-collapse: separate;
+
+            border-spacing: 0;
 
             table-layout: fixed;
         }
@@ -226,18 +236,51 @@
 
             vertical-align: middle;
 
+            border-right: 1px solid #d1d5db;
+
             border-bottom: 1px solid #e5e7eb;
         }
+
+        /* =========================
+           HEADER TABLE
+        ========================= */
 
         th {
             font-weight: bold;
 
             white-space: nowrap;
+
+            border-right: 1px solid #374151;
         }
 
-        td {
-            white-space: nowrap;
+        th:last-child,
+        td:last-child {
+            border-right: none;
         }
+
+        /* =========================
+           BARIS TERAKHIR
+        ========================= */
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* =========================
+           ISI KOLOM
+        ========================= */
+
+        td {
+            white-space: normal;
+
+            overflow-wrap: anywhere;
+
+            word-break: break-word;
+        }
+
+        /* =========================
+           HOVER BARIS
+        ========================= */
 
         tbody tr:hover {
             background: #f9fafb;
@@ -252,31 +295,87 @@
         }
 
         .col-nama {
-            width: 180px;
+            width: 190px;
         }
 
         .col-email {
-            width: 250px;
+            width: 270px;
         }
 
         .col-nis {
-            width: 90px;
+            width: 100px;
         }
 
         .col-kelas {
-            width: 90px;
+            width: 110px;
         }
 
         .col-role {
-            width: 105px;
-        }
-
-        .col-terdaftar {
             width: 115px;
         }
 
+        .col-terdaftar {
+            width: 125px;
+        }
+
         .col-aksi {
-            width: 190px;
+            width: 230px;
+        }
+
+        /* =========================
+           KOLOM NAMA
+        ========================= */
+
+        td:nth-child(2) {
+            line-height: 1.5;
+
+            overflow-wrap: anywhere;
+
+            word-break: break-word;
+        }
+
+        /* =========================
+           KOLOM EMAIL
+        ========================= */
+
+        td:nth-child(3) {
+            line-height: 1.5;
+
+            overflow-wrap: anywhere;
+
+            word-break: break-word;
+        }
+
+        /* =========================
+           NIS
+        ========================= */
+
+        td:nth-child(4) {
+            white-space: nowrap;
+        }
+
+        /* =========================
+           KELAS
+        ========================= */
+
+        td:nth-child(5) {
+            white-space: nowrap;
+        }
+
+        /* =========================
+           ROLE
+        ========================= */
+
+        td:nth-child(6) {
+            white-space: nowrap;
+        }
+
+        /* =========================
+           TANGGAL
+        ========================= */
+
+        td:nth-child(7) {
+            white-space: nowrap;
         }
 
         /* =========================
@@ -331,6 +430,8 @@
             gap: 8px;
 
             white-space: nowrap;
+
+            flex-wrap: nowrap;
         }
 
         /* =========================
@@ -355,6 +456,8 @@
             font-weight: bold;
 
             transition: 0.2s ease;
+
+            white-space: nowrap;
         }
 
         .button-edit:hover {
@@ -387,6 +490,8 @@
             cursor: pointer;
 
             transition: 0.2s ease;
+
+            white-space: nowrap;
         }
 
         .button-delete:hover {
@@ -425,6 +530,10 @@
                 padding: 25px;
             }
 
+            .card {
+                padding: 18px;
+            }
+
             .card-header {
                 flex-direction: column;
 
@@ -435,6 +544,10 @@
                 width: 100%;
 
                 text-align: center;
+            }
+
+            table {
+                min-width: 1100px;
             }
 
         }
@@ -771,6 +884,7 @@
                                                     style="
                                                         color: #9ca3af;
                                                         font-size: 12px;
+                                                        white-space: nowrap;
                                                     "
                                                 >
                                                     Akun sedang digunakan

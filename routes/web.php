@@ -269,6 +269,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/jadwal', [JadwalController::class, 'adminIndex'])
         ->name('admin.jadwal');
 
+        Route::get('/admin/jadwal/tambah', [JadwalController::class, 'create'])
+        ->name('admin.jadwal.create');
+
+    Route::post('/admin/jadwal', [JadwalController::class, 'store'])
+        ->name('admin.jadwal.store');
+
+    Route::get('/admin/jadwal/{id}/edit', [JadwalController::class, 'edit'])
+        ->name('admin.jadwal.edit');
+
+    Route::put('/admin/jadwal/{id}', [JadwalController::class, 'update'])
+        ->name('admin.jadwal.update');
+
+    Route::delete('/admin/jadwal/{id}', [JadwalController::class, 'destroy'])
+        ->name('admin.jadwal.destroy');
+
 
     /*
     |--------------------------------------------------------------------------
@@ -484,6 +499,9 @@ Route::middleware('auth')->group(function () {
     // Melihat riwayat kehadiran siswa
     Route::get('/kehadiran', [AbsensiController::class, 'siswa'])
         ->name('kehadiran.index');
+
+    Route::post('/kehadiran', [AbsensiController::class, 'storeSiswa'])
+        ->name('kehadiran.storeSiswa');
 
 
     /*

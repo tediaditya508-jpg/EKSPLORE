@@ -127,6 +127,109 @@
             margin-bottom: 20px;
         }
 
+        /* FORM IZIN / SAKIT */
+
+        .form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .form-card h2 {
+            color: #172b4d;
+            margin-bottom: 8px;
+        }
+
+        .form-description {
+            color: #6b7280;
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            outline: none;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-help {
+            display: block;
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .btn-ajukan {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 13px 18px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-ajukan:hover {
+            background: #1d4ed8;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-error ul {
+            margin-left: 20px;
+        }
+
         .attendance-item {
             border: 1px solid #e5e7eb;
             border-radius: 14px;
@@ -176,6 +279,36 @@
             color: #991b1b;
         }
 
+        /* NILAI */
+
+        .nilai-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            padding: 8px 14px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+        }
+
+        .nilai-label {
+            color: #374151;
+            font-weight: bold;
+        }
+
+        .nilai {
+            color: #1d4ed8;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .nilai-belum {
+            color: #6b7280;
+            font-size: 14px;
+            font-style: italic;
+        }
+
         .empty {
             text-align: center;
             padding: 45px 20px;
@@ -206,7 +339,8 @@
                 padding: 22px;
             }
 
-            .card {
+            .card,
+            .form-card {
                 padding: 20px;
             }
         }
@@ -258,10 +392,46 @@
             </h1>
 
             <p>
-                Lihat riwayat kehadiran kamu pada kegiatan ekstrakurikuler.
+                Lihat riwayat kehadiran dan nilai kamu pada kegiatan ekstrakurikuler.
             </p>
 
         </section>
+
+
+        {{-- PESAN BERHASIL --}}
+
+        @if (session('success'))
+
+            <div class="alert-success">
+                ✅ {{ session('success') }}
+            </div>
+
+        @endif
+
+
+        {{-- PESAN ERROR --}}
+
+        @if ($errors->any())
+
+            <div class="alert-error">
+
+                <strong>
+                    Terjadi kesalahan:
+                </strong>
+
+                <ul>
+                    @foreach ($errors->all() as $error)
+
+                        <li>
+                            {{ $error }}
+                        </li>
+
+                    @endforeach
+                </ul>
+
+            </div>
+
+        @endif
 
 
         {{-- REKAP KEHADIRAN --}}
@@ -322,6 +492,145 @@
         </section>
 
 
+        {{-- FORM AJUKAN IZIN / SAKIT --}}
+
+        <section class="form-card">
+
+            <h2>
+                📝 Ajukan Izin / Sakit
+            </h2>
+
+            <p class="form-description">
+                Jika kamu tidak dapat mengikuti kegiatan ekstrakurikuler,
+                kamu dapat mengajukan izin atau sakit kepada pembina.
+            </p>
+
+
+            <form
+                action="{{ route('kehadiran.storeSiswa') }}"
+                method="POST"
+            >
+
+                @csrf
+
+
+                <div class="form-group">
+
+                    <label for="anggota_id">
+                        📚 Ekstrakurikuler
+                    </label>
+
+                    <select
+                        name="anggota_id"
+                        id="anggota_id"
+                        required
+                    >
+
+                        <option value="">
+                            -- Pilih Ekstrakurikuler --
+                        </option>
+
+                        @foreach ($absensi->pluck('anggota')->filter()->unique('id') as $anggota)
+
+                            <option
+                                value="{{ $anggota->id }}"
+                            >
+                                {{ $anggota->ekstrakurikuler->nama_ekskul ?? 'Ekstrakurikuler' }}
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                    <small class="form-help">
+                        Pilih ekstrakurikuler yang ingin kamu ajukan izin atau sakit.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="tanggal">
+                        📅 Tanggal
+                    </label>
+
+                    <input
+                        type="date"
+                        name="tanggal"
+                        id="tanggal"
+                        value="{{ old('tanggal', date('Y-m-d')) }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="status">
+                        📌 Status
+                    </label>
+
+                    <select
+                        name="status"
+                        id="status"
+                        required
+                    >
+
+                        <option value="">
+                            -- Pilih Status --
+                        </option>
+
+                        <option value="izin" {{ old('status') === 'izin' ? 'selected' : '' }}>
+                            🟡 Izin
+                        </option>
+
+                        <option value="sakit" {{ old('status') === 'sakit' ? 'selected' : '' }}>
+                            🔵 Sakit
+                        </option>
+
+                    </select>
+
+                    <small class="form-help">
+                        Siswa hanya dapat mengajukan Izin atau Sakit.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="keterangan">
+                        📝 Keterangan
+                    </label>
+
+                    <textarea
+                        name="keterangan"
+                        id="keterangan"
+                        placeholder="Contoh: Tidak dapat mengikuti kegiatan karena ada keperluan keluarga."
+                        required
+                    >{{ old('keterangan') }}</textarea>
+
+                    <small class="form-help">
+                        Jelaskan alasan izin atau sakit secara singkat.
+                    </small>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-ajukan"
+                >
+                    📤 Ajukan Izin / Sakit
+                </button>
+
+            </form>
+
+        </section>
+
+
         {{-- RIWAYAT KEHADIRAN --}}
 
         <section class="card">
@@ -341,18 +650,22 @@
 
 
                     <p>
+
                         <strong>
                             📅 Tanggal:
                         </strong>
 
                         {{ $item->tanggal?->format('d-m-Y') ?? '-' }}
+
                     </p>
 
 
                     <p>
+
                         <strong>
                             Status:
                         </strong>
+
 
                         @if ($item->status === 'hadir')
 
@@ -389,14 +702,57 @@
                     </p>
 
 
+                    {{-- NILAI --}}
+
+                    @if ($item->nilai !== null)
+
+                        <p>
+
+                            <strong>
+                                🎯 Nilai:
+                            </strong>
+
+                            <span class="nilai-box">
+
+                                <span class="nilai-label">
+                                    Nilai
+                                </span>
+
+                                <span class="nilai">
+                                    {{ $item->nilai }}
+                                </span>
+
+                            </span>
+
+                        </p>
+
+                    @elseif ($item->status === 'hadir')
+
+                        <p>
+
+                            <strong>
+                                🎯 Nilai:
+                            </strong>
+
+                            <span class="nilai-belum">
+                                Belum diberikan
+                            </span>
+
+                        </p>
+
+                    @endif
+
+
                     @if ($item->keterangan)
 
                         <p>
+
                             <strong>
                                 📝 Keterangan:
                             </strong>
 
                             {{ $item->keterangan }}
+
                         </p>
 
                     @endif
