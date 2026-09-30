@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ekstrakurikuler;
 use App\Models\Pengumuman;
+use App\Models\AnggotaEkskul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +28,14 @@ class PengumumanController extends Controller
                 ]);
         }
 
-        $pengumuman = Pengumuman::latest('tanggal')->get();
+        // Hanya pengumuman dari ekskul yang diikuti siswa
+        $ekskulIds = AnggotaEkskul::where('siswa_id', $siswa->id)
+            ->pluck('ekskul_id');
+
+        $pengumuman = Pengumuman::with('ekstrakurikuler')
+            ->whereIn('ekskul_id', $ekskulIds)
+            ->latest('tanggal')
+            ->get();
 
         return view('pengumuman.index', [
             'siswa' => $siswa,
@@ -53,7 +62,9 @@ class PengumumanController extends Controller
                 ]);
         }
 
-        $pengumuman = Pengumuman::latest('tanggal')->get();
+        $pengumuman = Pengumuman::with('ekstrakurikuler')
+            ->latest('tanggal')
+            ->get();
 
         return view('pengumuman.pembina', [
             'pembina' => $pembina,
@@ -80,8 +91,14 @@ class PengumumanController extends Controller
                 ]);
         }
 
+        // Data ekstrakurikuler untuk pilihan pengumuman
+        $ekskul = Ekstrakurikuler::where('pembina_id', $pembina->id)
+    ->orderBy('nama_ekskul')
+    ->get();
+
         return view('pengumuman.pembina-create', [
             'pembina' => $pembina,
+            'ekskul' => $ekskul,
         ]);
     }
 
@@ -105,6 +122,11 @@ class PengumumanController extends Controller
         }
 
         $data = $request->validate([
+            'ekskul_id' => [
+                'required',
+                'exists:ekstrakurikuler,id',
+            ],
+
             'judul' => [
                 'required',
                 'string',
@@ -127,6 +149,9 @@ class PengumumanController extends Controller
                 'max:255',
             ],
         ], [
+            'ekskul_id.required' => 'Ekstrakurikuler wajib dipilih.',
+            'ekskul_id.exists' => 'Ekstrakurikuler yang dipilih tidak ditemukan.',
+
             'judul.required' => 'Judul pengumuman wajib diisi.',
             'judul.max' => 'Judul pengumuman maksimal 255 karakter.',
 
@@ -139,6 +164,7 @@ class PengumumanController extends Controller
         ]);
 
         Pengumuman::create([
+            'ekskul_id' => $data['ekskul_id'],
             'judul' => $data['judul'],
             'isi' => $data['isi'],
             'tanggal' => $data['tanggal'],
@@ -169,7 +195,9 @@ class PengumumanController extends Controller
                 ]);
         }
 
-        $pengumuman = Pengumuman::latest('tanggal')->get();
+        $pengumuman = Pengumuman::with('ekstrakurikuler')
+            ->latest('tanggal')
+            ->get();
 
         return view('pengumuman.admin', [
             'admin' => $admin,

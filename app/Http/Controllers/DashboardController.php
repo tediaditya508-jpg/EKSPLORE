@@ -45,11 +45,18 @@ class DashboardController extends Controller
 
         // ==========================================
         // PENGUMUMAN
+        // HANYA DARI EKSKUL YANG DIIKUTI SISWA
         // ==========================================
 
-        $pengumuman = Pengumuman::latest('tanggal')
-            ->take(5)
-            ->get();
+    $pengumuman = Pengumuman::with([
+    'ekstrakurikuler.pembina'
+    ])
+    ->whereHas('ekstrakurikuler.anggota', function ($query) use ($siswa) {
+        $query->where('siswa_id', $siswa->id);
+    })
+    ->latest('tanggal')
+    ->take(5)
+    ->get();
 
 
         // ==========================================
@@ -74,9 +81,9 @@ class DashboardController extends Controller
         // ==========================================
 
         $dataDashboard = [
-            'jumlahEkskul' => $jumlahEkskul,
-            'jumlahJadwal' => Jadwal::count(),
-            'jumlahPengumuman' => Pengumuman::count(),
+        'jumlahEkskul' => $jumlahEkskul,
+        'jumlahJadwal' => Jadwal::count(),
+        'jumlahPengumuman' => $pengumuman->count(),
         ];
 
 

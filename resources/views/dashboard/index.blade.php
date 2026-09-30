@@ -829,6 +829,30 @@
             <span>Profil</span>
         </a>
 
+        <form action="{{ route('logout') }}" method="POST" style="margin: 0;"
+      onsubmit="return confirm('Apakah Anda yakin ingin keluar?');">
+    @csrf
+
+    <button type="submit" style="
+        width: 100%;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 11px;
+        color: #dc2626;
+        font-size: 14px;
+        text-align: left;
+        transition: .2s;
+    ">
+        <span class="menu-icon">🚪</span>
+        <span>Logout</span>
+    </button>
+</form>
+
     </nav>
 
 </aside>
@@ -1229,64 +1253,101 @@
         <div>
 
 
-            <!-- PENGUMUMAN -->
+        <!-- =================================
+            PENGUMUMAN
+        ================================== -->
 
-            <div class="card">
+    <div class="card">
 
-                <div class="card-header">
+    <div class="card-header">
 
-                    <h3>
-                        📢 Pengumuman
-                    </h3>
+        <h3>
+            📢 Pengumuman
+        </h3>
 
-                    <a href="{{ route('pengumuman.index') }}">
-                        Semua
-                    </a>
+        <a href="{{ route('pengumuman.index') }}">
+            Semua
+        </a>
 
-                </div>
-
-
-                @forelse ($pengumuman as $item)
-
-                    <div class="announcement-item">
-
-                        <strong>
-                            {{ $item->judul }}
-                        </strong>
+    </div>
 
 
-                        <p>
-                            {{ $item->isi }}
-                        </p>
+    @forelse ($pengumuman as $item)
+
+        <div class="announcement-item">
+
+            <!-- JUDUL -->
+            <strong>
+                {{ $item->judul }}
+            </strong>
 
 
-                        <span class="announcement-date">
+            <!-- EKSKUL -->
+            <span style="
+                display: inline-block;
+                margin-top: 5px;
+                margin-bottom: 7px;
+                padding: 5px 9px;
+                background: #eff6ff;
+                color: #2563eb;
+                border-radius: 8px;
+                font-size: 11px;
+                font-weight: bold;
+            ">
+                🎯
+                {{ $item->ekstrakurikuler?->nama_ekskul ?? 'Semua Ekskul' }}
+            </span>
 
-                            {{
-                                \Carbon\Carbon::parse(
-                                    $item->tanggal
-                                )->format('d M Y')
-                            }}
 
-                        </span>
+            <!-- PEMBINA / GURU -->
+            <span style="
+                display: block;
+                color: #6b7280;
+                font-size: 11px;
+                margin-bottom: 8px;
+            ">
+                👨‍🏫
+                Pembina:
+                {{ $item->ekstrakurikuler?->pembina?->name ?? 'Belum ditentukan' }}
+            </span>
 
-                    </div>
 
-                @empty
+            <!-- ISI -->
+            <p>
+                {{ $item->isi }}
+            </p>
 
-                    <div class="empty">
 
-                        📢
+            <!-- TANGGAL -->
+            <span class="announcement-date">
 
-                        <br><br>
+                📅
 
-                        Belum ada pengumuman.
+                {{
+                    \Carbon\Carbon::parse(
+                        $item->tanggal
+                    )->format('d M Y')
+                }}
 
-                    </div>
+            </span>
 
-                @endforelse
+        </div>
 
-            </div>
+    @empty
+
+        <div class="empty">
+
+            📢
+
+            <br><br>
+
+            Belum ada pengumuman.
+
+        </div>
+
+    @endforelse
+
+</div>
 
 
 

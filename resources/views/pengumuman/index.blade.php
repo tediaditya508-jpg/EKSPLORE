@@ -83,6 +83,32 @@
             color: #111827;
         }
 
+        /* ================================
+           EKSTRAKURIKULER
+        ================================= */
+
+        .announcement-ekskul {
+            display: inline-block;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* ================================
+           PEMBINA
+        ================================= */
+
+        .announcement-pembina {
+            display: block;
+            margin-bottom: 12px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
         .announcement-date {
             display: inline-block;
             font-size: 13px;
@@ -114,6 +140,7 @@
         }
 
         @media (max-width: 600px) {
+
             .container {
                 width: 92%;
             }
@@ -147,6 +174,7 @@
 
 
     <main class="page">
+
         <div class="container">
 
             <h1 class="page-title">
@@ -164,15 +192,35 @@
 
                     <div class="announcement-card">
 
+                        <!-- JUDUL -->
                         <h2 class="announcement-title">
                             {{ $item->judul }}
                         </h2>
 
+
+                        <!-- EKSTRAKURIKULER -->
+                        <span class="announcement-ekskul">
+                            🎯
+                            {{ $item->ekstrakurikuler?->nama_ekskul ?? 'Ekskul tidak ditemukan' }}
+                        </span>
+
+
+                        <!-- PEMBINA -->
+                        <span class="announcement-pembina">
+                            👨‍🏫
+                            Pembina:
+                            {{ $item->ekstrakurikuler?->pembina?->name ?? 'Belum ditentukan' }}
+                        </span>
+
+
+                        <!-- TANGGAL -->
                         <span class="announcement-date">
                             📅
                             {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}
                         </span>
 
+
+                        <!-- ISI -->
                         <p class="announcement-content">
                             {{ $item->isi }}
                         </p>
@@ -202,6 +250,7 @@
             </div>
 
         </div>
+
     </main>
 
 </body>
