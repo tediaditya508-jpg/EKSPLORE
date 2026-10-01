@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -26,10 +27,9 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string'],
         ]);
-
         // Hanya akun siswa
         $credentials['role'] = 'siswa';
 
@@ -65,14 +65,18 @@ class AuthController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => [
                     'required',
-                    'email',
+                    'string',
+                    'email:dns',
                     'max:255',
                     'unique:user,email',
                 ],
                 'password' => [
                     'required',
                     'string',
-                    'min:8',
+                    Password::min(8)
+                        ->letters()
+                        ->numbers()
+                        ->mixedCase(),
                     'confirmed',
                 ],
             ],
@@ -327,7 +331,6 @@ class AuthController extends Controller
                 ->withErrors([
                     'email' => 'Jenis login Google tidak dikenali.',
                 ]);
-
         } catch (\Exception $e) {
 
             /*
@@ -382,8 +385,8 @@ class AuthController extends Controller
     public function pembinaLogin(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string'],
         ]);
 
         // Hanya akun pembina
@@ -440,8 +443,8 @@ class AuthController extends Controller
     public function adminLogin(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string'],
         ]);
 
         // Hanya akun admin

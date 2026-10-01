@@ -73,7 +73,7 @@ class GaleriController extends Controller
         $data = $request->validate([
             'ekskul_id' => [
                 'required',
-                'exists:ekstrakurikulers,id',
+                'exists:ekstrakurikuler,id',
             ],
             'gambar' => [
                 'required',

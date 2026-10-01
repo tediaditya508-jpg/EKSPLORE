@@ -61,7 +61,9 @@ class ProfileController extends Controller
             'no_hp' => [
                 'nullable',
                 'string',
-                'max:20',
+                'regex:/^([0-9\s\-\+\(\)]*)$/',
+                'min:10',
+                'max:15',
             ],
         ]);
 

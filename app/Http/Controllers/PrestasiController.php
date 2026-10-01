@@ -83,7 +83,7 @@ class PrestasiController extends Controller
         }
 
         $data = $request->validate([
-            'ekskul_id' => ['required', 'exists:ekstrakurikulers,id'],
+            'ekskul_id' => ['required', 'exists:ekstrakurikuler,id'],
             'nama_prestasi' => ['required', 'string', 'max:255'],
             'tingkat' => ['required', 'string', 'max:100'],
             'tanggal' => ['nullable', 'date'],

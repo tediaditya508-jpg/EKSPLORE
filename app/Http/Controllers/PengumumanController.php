@@ -136,6 +136,7 @@ class PengumumanController extends Controller
             'isi' => [
                 'required',
                 'string',
+                'max:255',
             ],
 
             'tanggal' => [
@@ -258,6 +259,7 @@ class PengumumanController extends Controller
             'isi' => [
                 'required',
                 'string',
+                'max:255',
             ],
 
             'tanggal' => [
