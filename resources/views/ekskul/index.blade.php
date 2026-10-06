@@ -213,9 +213,9 @@
                             @if (!empty($item->gambar))
 
                                 <img
-                                    src="{{ $item->gambar }}"
-                                    alt="{{ $item->nama_ekskul }}"
-                                >
+                            src="{{ asset('storage/' . $item->gambar) }}"
+                            alt="{{ $item->nama_ekskul }}"
+                            >
 
                             @else
 

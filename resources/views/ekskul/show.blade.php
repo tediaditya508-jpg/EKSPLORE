@@ -39,6 +39,25 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
+        .gambar-detail {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 25px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 80px;
+        }
+
+        .gambar-detail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .header {
             margin-bottom: 25px;
         }
@@ -90,6 +109,10 @@
             .info {
                 grid-template-columns: 1fr;
             }
+
+            .gambar-detail {
+                height: 220px;
+            }
         }
     </style>
 </head>
@@ -104,12 +127,34 @@
 
     <div class="card">
 
+        {{-- GAMBAR EKSTRAKURIKULER --}}
+        <div class="gambar-detail">
+
+            @if (!empty($ekskul->gambar))
+
+                <img
+                    src="{{ asset('storage/' . $ekskul->gambar) }}"
+                    alt="{{ $ekskul->nama_ekskul }}"
+                >
+
+            @else
+
+                🎯
+
+            @endif
+
+        </div>
+
         <div class="header">
-            <h1>{{ $ekskul->nama_ekskul }}</h1>
+
+            <h1>
+                {{ $ekskul->nama_ekskul }}
+            </h1>
 
             <p>
                 {{ $ekskul->deskripsi ?? 'Belum ada deskripsi untuk ekstrakurikuler ini.' }}
             </p>
+
         </div>
 
         <div class="info">
@@ -141,7 +186,10 @@
 
         </div>
 
-        <a href="{{ route('pendaftaran.create', $ekskul->id) }}" class="btn">
+        <a
+            href="{{ route('pendaftaran.create', $ekskul->id) }}"
+            class="btn"
+        >
             Daftar Ekskul
         </a>
 

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
@@ -30,6 +32,7 @@ class AuthController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string'],
         ]);
+
         // Hanya akun siswa
         $credentials['role'] = 'siswa';
 
@@ -113,7 +116,6 @@ class AuthController extends Controller
 
     public function redirectToGoogle(Request $request)
     {
-        // Tandai bahwa Google login dimulai dari halaman siswa
         $request->session()->put('google_login_role', 'siswa');
 
         return Socialite::driver('google')->redirect();
@@ -128,7 +130,6 @@ class AuthController extends Controller
 
     public function redirectPembinaGoogle(Request $request)
     {
-        // Tandai bahwa Google login dimulai dari halaman pembina
         $request->session()->put('google_login_role', 'pembina');
 
         return Socialite::driver('google')->redirect();
@@ -143,7 +144,6 @@ class AuthController extends Controller
 
     public function redirectAdminGoogle(Request $request)
     {
-        // Tandai bahwa Google login dimulai dari halaman admin
         $request->session()->put('google_login_role', 'admin');
 
         return Socialite::driver('google')->redirect();
@@ -160,32 +160,12 @@ class AuthController extends Controller
     {
         try {
 
-            /*
-            |--------------------------------------------------------------------------
-            | Tentukan login berasal dari mana
-            |--------------------------------------------------------------------------
-            */
-
             $loginRole = $request->session()->pull(
                 'google_login_role',
                 'siswa'
             );
 
-
-            /*
-            |--------------------------------------------------------------------------
-            | Ambil data dari Google
-            |--------------------------------------------------------------------------
-            */
-
             $googleUser = Socialite::driver('google')->user();
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | Cari akun berdasarkan Google ID atau email
-            |--------------------------------------------------------------------------
-            */
 
             $user = User::where('google_id', $googleUser->getId())
                 ->orWhere('email', $googleUser->getEmail())
@@ -200,7 +180,6 @@ class AuthController extends Controller
 
             if ($loginRole === 'siswa') {
 
-                // Jika belum punya akun, buat sebagai siswa
                 if (!$user) {
 
                     $nama = $googleUser->getName() ?? 'Siswa';
@@ -215,7 +194,6 @@ class AuthController extends Controller
                     ]);
                 }
 
-                // Akun harus siswa
                 if ($user->role !== 'siswa') {
 
                     return redirect()
@@ -225,7 +203,6 @@ class AuthController extends Controller
                         ]);
                 }
 
-                // Pastikan Google ID tersimpan
                 if ($user->google_id !== $googleUser->getId()) {
 
                     $user->update([
@@ -233,7 +210,6 @@ class AuthController extends Controller
                     ]);
                 }
 
-                // Login siswa
                 Auth::login($user);
 
                 $request->session()->regenerate();
@@ -250,7 +226,6 @@ class AuthController extends Controller
 
             if ($loginRole === 'pembina') {
 
-                // Akun pembina harus sudah ada
                 if (!$user || $user->role !== 'pembina') {
 
                     return redirect()
@@ -260,7 +235,6 @@ class AuthController extends Controller
                         ]);
                 }
 
-                // Pastikan Google ID tersimpan
                 if ($user->google_id !== $googleUser->getId()) {
 
                     $user->update([
@@ -268,7 +242,6 @@ class AuthController extends Controller
                     ]);
                 }
 
-                // Login pembina
                 Auth::login($user);
 
                 $request->session()->regenerate();
@@ -289,7 +262,6 @@ class AuthController extends Controller
 
             if ($loginRole === 'admin') {
 
-                // Akun admin harus sudah ada
                 if (!$user || $user->role !== 'admin') {
 
                     return redirect()
@@ -299,7 +271,6 @@ class AuthController extends Controller
                         ]);
                 }
 
-                // Pastikan Google ID tersimpan
                 if ($user->google_id !== $googleUser->getId()) {
 
                     $user->update([
@@ -307,7 +278,6 @@ class AuthController extends Controller
                     ]);
                 }
 
-                // Login admin
                 Auth::login($user);
 
                 $request->session()->regenerate();
@@ -320,24 +290,13 @@ class AuthController extends Controller
             }
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | ROLE TIDAK DIKENAL
-            |--------------------------------------------------------------------------
-            */
-
             return redirect()
                 ->route('login')
                 ->withErrors([
                     'email' => 'Jenis login Google tidak dikenali.',
                 ]);
-        } catch (\Exception $e) {
 
-            /*
-            |--------------------------------------------------------------------------
-            | Jika terjadi error
-            |--------------------------------------------------------------------------
-            */
+        } catch (\Exception $e) {
 
             $loginRole = $request->session()->pull(
                 'google_login_role',
@@ -389,7 +348,6 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        // Hanya akun pembina
         $credentials['role'] = 'pembina';
 
         if (Auth::attempt($credentials)) {
@@ -415,14 +373,10 @@ class AuthController extends Controller
     |--------------------------------------------------------------------------
     | CALLBACK GOOGLE PEMBINA LAMA
     |--------------------------------------------------------------------------
-    |
-    | Tetap disediakan agar route lama tidak rusak.
-    |
     */
 
     public function handlePembinaGoogleCallback(Request $request)
     {
-        // Gunakan callback utama
         $request->session()->put('google_login_role', 'pembina');
 
         return $this->handleGoogleCallback($request);
@@ -447,7 +401,6 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        // Hanya akun admin
         $credentials['role'] = 'admin';
 
         if (Auth::attempt($credentials)) {
@@ -477,10 +430,241 @@ class AuthController extends Controller
 
     public function handleAdminGoogleCallback(Request $request)
     {
-        // Gunakan callback utama
         $request->session()->put('google_login_role', 'admin');
 
         return $this->handleGoogleCallback($request);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LUPA PASSWORD
+    |--------------------------------------------------------------------------
+    */
+
+    public function showForgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $data = $request->validate([
+            'identifier' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+        ], [
+            'identifier.required' => 'Email atau nomor HP wajib diisi.',
+            'identifier.string' => 'Email atau nomor HP harus berupa teks.',
+            'identifier.max' => 'Email atau nomor HP terlalu panjang.',
+        ]);
+
+        $identifier = trim($data['identifier']);
+
+        // Cari akun siswa berdasarkan email atau nomor HP
+        $user = User::where('role', 'siswa')
+            ->where(function ($query) use ($identifier) {
+                $query->where('email', $identifier)
+                    ->orWhere('no_hp', $identifier);
+            })
+            ->first();
+
+        // Akun tidak ditemukan
+        if (!$user) {
+            return back()
+                ->withErrors([
+                    'identifier' => 'Email atau nomor HP tidak ditemukan pada akun siswa.',
+                ])
+                ->withInput();
+        }
+
+        // Reset password melalui email
+        if ($user->email === $identifier) {
+
+            $token = Str::random(64);
+
+            DB::table('password_reset_tokens')->updateOrInsert(
+                ['email' => $user->email],
+                [
+                    'token' => Hash::make($token),
+                    'created_at' => now(),
+                ]
+            );
+
+            $resetUrl = url(
+                '/reset-password/' . $token .
+                '?email=' . urlencode($user->email)
+            );
+
+            Mail::send(
+                'emails.reset-password',
+                [
+                    'user' => $user,
+                    'resetUrl' => $resetUrl,
+                ],
+                function ($message) use ($user) {
+                    $message->to($user->email)
+                        ->subject('Reset Password EKSPLORE');
+                }
+            );
+
+            return back()->with(
+                'success',
+                'Link reset password telah dikirim ke email akun kamu.'
+            );
+        }
+
+        // Reset melalui nomor HP belum dibuat
+        return back()
+            ->withErrors([
+                'identifier' => 'Untuk saat ini reset password menggunakan nomor HP belum tersedia. Gunakan email akun siswa.',
+            ])
+            ->withInput();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TAMPILKAN FORM RESET PASSWORD
+    |--------------------------------------------------------------------------
+    */
+
+    public function showResetPassword(Request $request, $token)
+    {
+        $email = $request->query('email');
+
+        if (!$email) {
+            return redirect()
+                ->route('password.request')
+                ->withErrors([
+                    'identifier' => 'Link reset password tidak valid.',
+                ]);
+        }
+
+        $reset = DB::table('password_reset_tokens')
+            ->where('email', $email)
+            ->first();
+
+        if (!$reset) {
+            return redirect()
+                ->route('password.request')
+                ->withErrors([
+                    'identifier' => 'Link reset password tidak ditemukan atau sudah digunakan.',
+                ]);
+        }
+
+        if (now()->diffInMinutes($reset->created_at) > 60) {
+            DB::table('password_reset_tokens')
+                ->where('email', $email)
+                ->delete();
+
+            return redirect()
+                ->route('password.request')
+                ->withErrors([
+                    'identifier' => 'Link reset password sudah kedaluwarsa. Silakan minta link baru.',
+                ]);
+        }
+
+        if (!Hash::check($token, $reset->token)) {
+            return redirect()
+                ->route('password.request')
+                ->withErrors([
+                    'identifier' => 'Link reset password tidak valid.',
+                ]);
+        }
+
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $email,
+        ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SIMPAN PASSWORD BARU
+    |--------------------------------------------------------------------------
+    */
+
+    public function resetPassword(Request $request)
+    {
+        $data = $request->validate([
+            'token' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->letters()
+                    ->numbers()
+                    ->mixedCase(),
+                'confirmed',
+            ],
+        ], [
+            'token.required' => 'Token reset password tidak ditemukan.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'password.required' => 'Password baru wajib diisi.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        ]);
+
+        $reset = DB::table('password_reset_tokens')
+            ->where('email', $data['email'])
+            ->first();
+
+        if (!$reset) {
+            return back()
+                ->withErrors([
+                    'password' => 'Link reset password tidak valid atau sudah digunakan.',
+                ]);
+        }
+
+        if (now()->diffInMinutes($reset->created_at) > 60) {
+            DB::table('password_reset_tokens')
+                ->where('email', $data['email'])
+                ->delete();
+
+            return back()
+                ->withErrors([
+                    'password' => 'Link reset password sudah kedaluwarsa.',
+                ]);
+        }
+
+        if (!Hash::check($data['token'], $reset->token)) {
+            return back()
+                ->withErrors([
+                    'password' => 'Token reset password tidak valid.',
+                ]);
+        }
+
+        $user = User::where('email', $data['email'])
+            ->where('role', 'siswa')
+            ->first();
+
+        if (!$user) {
+            return back()
+                ->withErrors([
+                    'password' => 'Akun siswa tidak ditemukan.',
+                ]);
+        }
+
+        $user->update([
+            'password' => Hash::make($data['password']),
+        ]);
+
+        // Token hanya bisa digunakan satu kali
+        DB::table('password_reset_tokens')
+            ->where('email', $data['email'])
+            ->delete();
+
+        return redirect()
+            ->route('login')
+            ->with(
+                'success',
+                'Password berhasil diubah. Silakan login menggunakan password baru.'
+            );
     }
 
 

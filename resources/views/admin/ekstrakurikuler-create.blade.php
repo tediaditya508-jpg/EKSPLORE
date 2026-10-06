@@ -221,7 +221,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.ekstrakurikuler.store') }}" method="POST">
+            <form action="{{ route('admin.ekstrakurikuler.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Nama Ekskul --}}
@@ -395,11 +395,10 @@
                     </label>
 
                     <input
-                        type="text"
-                        id="gambar"
-                        name="gambar"
-                        value="{{ old('gambar') }}"
-                        placeholder="Contoh: futsal.jpg"
+                    type="file"
+                    id="gambar"
+                    name="gambar"
+                    accept=".jpg,.jpeg,.png,.webp"
                     >
 
                     @error('gambar')

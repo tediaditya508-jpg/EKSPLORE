@@ -318,10 +318,13 @@ class AdminController extends Controller
                     'max:255',
                 ],
 
+                // DIUBAH: sekarang menerima file gambar
                 'gambar' => [
                     'nullable',
-                    'string',
-                    'max:255',
+                    'file',
+                    'image',
+                    'mimes:jpg,jpeg,png,webp',
+                    'max:2048',
                 ],
 
                 'kuota' => [
@@ -341,6 +344,9 @@ class AdminController extends Controller
                 'pembina_id.exists' => 'Pembina yang dipilih tidak ditemukan.',
                 'kuota.integer' => 'Kuota harus berupa angka.',
                 'kuota.min' => 'Kuota minimal 1.',
+                'gambar.image' => 'File gambar harus berupa gambar.',
+                'gambar.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
+                'gambar.max' => 'Ukuran gambar maksimal 2 MB.',
             ]
         );
 
@@ -358,6 +364,13 @@ class AdminController extends Controller
             }
         }
 
+        // DIUBAH: simpan file gambar ke storage
+        $gambar = null;
+
+        if (!empty($data['gambar'])) {
+            $gambar = $data['gambar']->store('ekstrakurikuler', 'public');
+        }
+
         Ekstrakurikuler::create([
             'nama_ekskul' => $data['nama_ekskul'],
             'deskripsi' => $data['deskripsi'] ?? null,
@@ -365,7 +378,7 @@ class AdminController extends Controller
             'jadwal' => $data['jadwal'] ?? null,
             'jam' => $data['jam'] ?? null,
             'lokasi' => $data['lokasi'] ?? null,
-            'gambar' => $data['gambar'] ?? null,
+            'gambar' => $gambar,
             'kuota' => $data['kuota'] ?? null,
             'persyaratan' => $data['persyaratan'] ?? null,
         ]);
