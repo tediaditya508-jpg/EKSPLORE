@@ -14,6 +14,7 @@ use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\NotifikasiController; 
 use App\Http\Controllers\ProfileController; 
 use App\Http\Controllers\GaleriController; 
+use App\Http\Controllers\Admin\ExportSiswaController;
  
  
  
@@ -363,6 +364,9 @@ Route::middleware('auth')->group(function () {
     // Melihat ringkasan data dan aktivitas ekstrakurikuler 
     Route::get('/admin/laporan', [AdminController::class, 'laporan']) 
         ->name('admin.laporan'); 
+
+    Route::get('/admin/export-siswa', [ExportSiswaController::class, 'export'])
+        ->name('admin.export-siswa');
  
  
     /* 

@@ -348,6 +348,10 @@
                 yang terdaftar dalam sistem EKSPLORE.
             </p>
 
+            <a href="{{ route('admin.export-siswa') }}" class="button-add">
+                📥 Download Data Siswa Excel
+            </a>
+
         </div>
 
 
