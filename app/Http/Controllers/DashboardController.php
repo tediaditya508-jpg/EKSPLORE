@@ -12,6 +12,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
+
+    abort_unless(
+    in_array(Auth::user()?->role, ['siswa', 'admin']),
+    403
+);
         // ==========================================
         // DATA SISWA YANG SEDANG LOGIN
         // ==========================================
@@ -108,6 +113,11 @@ class DashboardController extends Controller
 
     public function pembina()
     {
+        abort_unless(
+    in_array(Auth::user()?->role, ['pembina', 'admin']),
+    403
+);
+
         $pembina = Auth::user();
 
         return view('dashboard.pembina', [
@@ -122,6 +132,8 @@ class DashboardController extends Controller
 
     public function admin()
     {
+        abort_unless(Auth::user()?->role === 'admin', 403);
+        
         $admin = Auth::user();
 
         return view('dashboard.admin', [

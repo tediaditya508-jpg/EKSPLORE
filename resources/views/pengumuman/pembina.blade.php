@@ -177,6 +177,11 @@
                 {{ $item->judul }}
             </h2>
 
+            <p style="margin: 0 0 10px; color: #2563eb; font-weight: bold;">
+             Ekskul:
+            {{ $item->ekstrakurikuler->nama_ekskul ?? 'Ekskul tidak tersedia' }}
+            </p>
+
             <div class="tanggal">
                 📅
                 {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}

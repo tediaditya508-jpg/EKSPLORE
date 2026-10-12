@@ -50,27 +50,34 @@ class PengumumanController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function pembinaIndex()
-    {
-        $pembina = Auth::user();
+    
+public function pembinaIndex()
+{
+    $pembina = Auth::user();
 
-        if (!$pembina || $pembina->role !== 'pembina') {
-            return redirect()
-                ->route('dashboard')
-                ->withErrors([
-                    'akses' => 'Halaman ini hanya dapat diakses oleh pembina.',
-                ]);
-        }
-
-        $pengumuman = Pengumuman::with('ekstrakurikuler')
-            ->latest('tanggal')
-            ->get();
-
-        return view('pengumuman.pembina', [
-            'pembina' => $pembina,
-            'pengumuman' => $pengumuman,
-        ]);
+    if (!$pembina || $pembina->role !== 'pembina') {
+        return redirect()
+            ->route('dashboard')
+            ->withErrors([
+                'akses' => 'Halaman ini hanya dapat diakses oleh pembina.',
+            ]);
     }
+
+    // Ambil ID ekskul yang menjadi tanggung jawab pembina
+    $ekskulIds = Ekstrakurikuler::where('pembina_id', $pembina->id)
+        ->pluck('id');
+
+    // Tampilkan hanya pengumuman dari ekskul milik pembina
+    $pengumuman = Pengumuman::with('ekstrakurikuler')
+        ->whereIn('ekskul_id', $ekskulIds)
+        ->latest('tanggal')
+        ->get();
+
+    return view('pengumuman.pembina', [
+        'pembina' => $pembina,
+        'pengumuman' => $pengumuman,
+    ]);
+}
 
 
     /*
@@ -109,73 +116,53 @@ class PengumumanController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function pembinaStore(Request $request)
-    {
-        $pembina = Auth::user();
+public function pembinaStore(Request $request)
+{
+    $pembina = Auth::user();
 
-        if (!$pembina || $pembina->role !== 'pembina') {
-            return redirect()
-                ->route('dashboard')
-                ->withErrors([
-                    'akses' => 'Halaman ini hanya dapat diakses oleh pembina.',
-                ]);
-        }
-
-        $data = $request->validate([
-            'ekskul_id' => [
-                'required',
-                'exists:ekstrakurikuler,id',
-            ],
-
-            'judul' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'isi' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'tanggal' => [
-                'required',
-                'date',
-            ],
-
-            'gambar' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-        ], [
-            'ekskul_id.required' => 'Ekstrakurikuler wajib dipilih.',
-            'ekskul_id.exists' => 'Ekstrakurikuler yang dipilih tidak ditemukan.',
-
-            'judul.required' => 'Judul pengumuman wajib diisi.',
-            'judul.max' => 'Judul pengumuman maksimal 255 karakter.',
-
-            'isi.required' => 'Isi pengumuman wajib diisi.',
-
-            'tanggal.required' => 'Tanggal pengumuman wajib diisi.',
-            'tanggal.date' => 'Format tanggal tidak valid.',
-
-            'gambar.max' => 'Nama/path gambar maksimal 255 karakter.',
-        ]);
-
-        Pengumuman::create([
-            'ekskul_id' => $data['ekskul_id'],
-            'judul' => $data['judul'],
-            'isi' => $data['isi'],
-            'tanggal' => $data['tanggal'],
-            'gambar' => $data['gambar'] ?? null,
-        ]);
-
+    if (!$pembina || $pembina->role !== 'pembina') {
         return redirect()
-            ->route('pembina.pengumuman')
-            ->with('success', 'Pengumuman berhasil ditambahkan.');
+            ->route('dashboard')
+            ->withErrors([
+                'akses' => 'Halaman ini hanya dapat diakses oleh pembina.',
+            ]);
     }
+
+    $data = $request->validate([
+        'ekskul_id' => [
+            'required',
+            'integer',
+            \Illuminate\Validation\Rule::exists('ekstrakurikuler', 'id')
+                ->where('pembina_id', $pembina->id),
+        ],
+        'judul' => ['required', 'string', 'max:255'],
+        'isi' => ['required', 'string', 'max:255'],
+        'tanggal' => ['required', 'date'],
+        'gambar' => ['nullable', 'string', 'max:255'],
+    ], [
+        'ekskul_id.required' => 'Ekstrakurikuler wajib dipilih.',
+        'ekskul_id.exists' => 'Ekskul tidak ditemukan atau bukan tanggung jawab Anda.',
+        'judul.required' => 'Judul pengumuman wajib diisi.',
+        'judul.max' => 'Judul pengumuman maksimal 255 karakter.',
+        'isi.required' => 'Isi pengumuman wajib diisi.',
+        'tanggal.required' => 'Tanggal pengumuman wajib diisi.',
+        'tanggal.date' => 'Format tanggal tidak valid.',
+        'gambar.max' => 'Nama/path gambar maksimal 255 karakter.',
+    ]);
+
+    Pengumuman::create([
+        'ekskul_id' => $data['ekskul_id'],
+        'judul' => $data['judul'],
+        'isi' => $data['isi'],
+        'tanggal' => $data['tanggal'],
+        'gambar' => $data['gambar'] ?? null,
+    ]);
+
+    return redirect()
+        ->route('pembina.pengumuman')
+        ->with('success', 'Pengumuman berhasil ditambahkan.');
+}
+
 
 
     /*
