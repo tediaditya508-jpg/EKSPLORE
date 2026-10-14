@@ -485,7 +485,7 @@ class AuthController extends Controller
 
             $token = Str::random(64);
 
-            DB::table('password_reset_tokens')->updateOrInsert(
+            DB::table('password_reset_token')->updateOrInsert(
                 ['email' => $user->email],
                 [
                     'token' => Hash::make($token),
@@ -543,7 +543,7 @@ class AuthController extends Controller
                 ]);
         }
 
-        $reset = DB::table('password_reset_tokens')
+        $reset = DB::table('password_reset_token')
             ->where('email', $email)
             ->first();
 
@@ -556,7 +556,7 @@ class AuthController extends Controller
         }
 
         if (now()->diffInMinutes($reset->created_at) > 60) {
-            DB::table('password_reset_tokens')
+            DB::table('password_reset_token')
                 ->where('email', $email)
                 ->delete();
 
@@ -610,7 +610,7 @@ class AuthController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
-        $reset = DB::table('password_reset_tokens')
+        $reset = DB::table('password_reset_token')
             ->where('email', $data['email'])
             ->first();
 
@@ -622,7 +622,7 @@ class AuthController extends Controller
         }
 
         if (now()->diffInMinutes($reset->created_at) > 60) {
-            DB::table('password_reset_tokens')
+            DB::table('password_reset_token')
                 ->where('email', $data['email'])
                 ->delete();
 
@@ -655,7 +655,7 @@ class AuthController extends Controller
         ]);
 
         // Token hanya bisa digunakan satu kali
-        DB::table('password_reset_tokens')
+        DB::table('password_reset_token')
             ->where('email', $data['email'])
             ->delete();
 
