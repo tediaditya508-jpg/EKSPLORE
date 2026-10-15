@@ -7,6 +7,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (DB::getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::statement('
             ALTER TABLE absensi
             DROP CONSTRAINT IF EXISTS absensis_status_check
@@ -21,6 +25,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::statement('
             ALTER TABLE absensi
             DROP CONSTRAINT IF EXISTS absensi_status_check
