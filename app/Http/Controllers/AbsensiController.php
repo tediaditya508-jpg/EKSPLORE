@@ -135,6 +135,7 @@ class AbsensiController extends Controller
     |--------------------------------------------------------------------------
     */
 
+
     public function siswa()
     {
         $siswa = Auth::user();
@@ -146,6 +147,11 @@ class AbsensiController extends Controller
                     'akses' => 'Halaman ini hanya dapat diakses oleh siswa.',
                 ]);
         }
+
+        $anggota = \App\Models\AnggotaEkskul::with('ekstrakurikuler')
+            ->where('siswa_id', $siswa->id)
+            ->where('status', 'aktif')
+            ->get();
 
         $absensi = Absensi::with([
             'anggota.ekstrakurikuler',
@@ -163,6 +169,7 @@ class AbsensiController extends Controller
 
         return view('absensi.siswa', [
             'siswa' => $siswa,
+            'anggota' => $anggota,
             'absensi' => $absensi,
             'jumlahHadir' => $jumlahHadir,
             'jumlahIzin' => $jumlahIzin,
@@ -170,6 +177,7 @@ class AbsensiController extends Controller
             'jumlahAlpa' => $jumlahAlpa,
         ]);
     }
+
 
 
     /*

@@ -39,7 +39,7 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
@@ -58,6 +58,7 @@
 
         .header p {
             color: #6b7280;
+            line-height: 1.6;
         }
 
         .card {
@@ -78,6 +79,7 @@
 
         table {
             width: 100%;
+            min-width: 850px;
             border-collapse: collapse;
         }
 
@@ -91,16 +93,56 @@
         th {
             background: #f9fafb;
             font-size: 14px;
+            white-space: nowrap;
         }
 
         td {
             font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .badge-rutin {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-event {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .nama-ekskul {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .nama-event {
+            font-weight: bold;
+            color: #92400e;
+        }
+
+        .jam {
+            white-space: nowrap;
+        }
+
+        .lokasi {
+            color: #6b7280;
         }
 
         .empty {
             text-align: center;
-            padding: 30px;
+            padding: 35px 20px;
             color: #6b7280;
+            line-height: 1.7;
         }
 
         .back {
@@ -126,9 +168,9 @@
                 margin: 25px auto;
             }
 
-            th,
-            td {
-                white-space: nowrap;
+            .header,
+            .card {
+                padding: 20px;
             }
         }
     </style>
@@ -137,100 +179,103 @@
 <body>
 
     <nav class="navbar">
-
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-        <div class="role">
-            Jadwal Pembina
-        </div>
-
+        <div class="logo">EKSPLORE</div>
+        <div class="role">Jadwal Pembina</div>
     </nav>
-
 
     <main class="container">
 
         <section class="header">
-
-            <h1>
-                📅 Jadwal Ekskul
-            </h1>
-
+            <h1>📅 Jadwal Ekskul</h1>
             <p>
-                Jadwal ekstrakurikuler yang Anda bina.
+                Lihat jadwal rutin dan event dari ekstrakurikuler yang Anda bina.
             </p>
-
         </section>
 
+        <section class="card">
+            <h2>📚 Jadwal Kegiatan</h2>
 
-        @forelse ($jadwal as $item)
+            @if ($jadwal->count() > 0)
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ekstrakurikuler</th>
+                                <th>Jenis</th>
+                                <th>Nama Kegiatan</th>
+                                <th>Hari / Tanggal</th>
+                                <th>Jam</th>
+                                <th>Lokasi</th>
+                            </tr>
+                        </thead>
 
-            @if ($loop->first)
-                <section class="card">
-
-                    <h2>
-                        📚 Jadwal Kegiatan
-                    </h2>
-
-                    <div class="table-wrapper">
-
-                        <table>
-
-                            <thead>
+                        <tbody>
+                            @foreach ($jadwal as $item)
                                 <tr>
-                                    <th>Ekskul</th>
-                                    <th>Hari</th>
-                                    <th>Jam</th>
-                                    <th>Lokasi</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-            @endif
-
-                                <tr>
-                                    <td>
-                                        {{ $item->ekstrakurikuler->nama_ekskul ?? '-' }}
+                                    <td class="nama-ekskul">
+                                        {{ $item->ekstrakurikuler->nama_ekskul
+                                            ?? $item->ekstrakurikuler->nama
+                                            ?? '-' }}
                                     </td>
 
                                     <td>
-                                        {{ $item->hari ?? '-' }}
+                                        @if (($item->jenis ?? 'rutin') === 'event')
+                                            <span class="badge badge-event">
+                                                Event
+                                            </span>
+                                        @else
+                                            <span class="badge badge-rutin">
+                                                Rutin
+                                            </span>
+                                        @endif
                                     </td>
 
                                     <td>
-                                        {{ $item->jam_mulai ?? '-' }}
-                                        -
-                                        {{ $item->jam_selesai ?? '-' }}
+                                        @if (($item->jenis ?? 'rutin') === 'event')
+                                            <span class="nama-event">
+                                                {{ $item->nama_event ?: 'Event ekstrakurikuler' }}
+                                            </span>
+                                        @else
+                                            Kegiatan rutin
+                                        @endif
                                     </td>
 
                                     <td>
+                                        @if (($item->jenis ?? 'rutin') === 'event')
+                                            @if ($item->tanggal_event)
+                                                {{ \Carbon\Carbon::parse($item->tanggal_event)->format('d-m-Y') }}
+                                            @else
+                                                -
+                                            @endif
+                                        @else
+                                            {{ $item->hari ?? '-' }}
+                                        @endif
+                                    </td>
+
+                                    <td class="jam">
+                                        @if ($item->jam_mulai && $item->jam_selesai)
+                                            {{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }}
+                                            -
+                                            {{ \Carbon\Carbon::parse($item->jam_selesai)->format('H:i') }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+
+                                    <td class="lokasi">
                                         {{ $item->lokasi ?? '-' }}
                                     </td>
                                 </tr>
-
-            @if ($loop->last)
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </section>
-            @endif
-
-        @empty
-
-            <section class="card">
-
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
                 <div class="empty">
                     Belum ada jadwal untuk ekstrakurikuler yang Anda bina.
                 </div>
-
-            </section>
-
-        @endforelse
-
+            @endif
+        </section>
 
         <a href="{{ route('pembina.dashboard') }}" class="back">
             ← Kembali ke Dashboard

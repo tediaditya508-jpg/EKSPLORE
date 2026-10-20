@@ -15,6 +15,9 @@ class Jadwal extends Model
         'jam_mulai',
         'jam_selesai',
         'lokasi',
+        'jenis',
+        'nama_event',
+        'tanggal_event',
     ];
 
     public function ekstrakurikuler(): BelongsTo

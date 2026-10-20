@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Jadwal Ekskul - Admin | EKSPLORE</title>
 
     <style>
@@ -25,12 +24,15 @@
             margin: 40px auto;
         }
 
-        .header {
+        .header, .card {
             background: white;
-            padding: 25px 30px;
             border-radius: 16px;
-            margin-bottom: 25px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .header {
+            padding: 25px 30px;
+            margin-bottom: 25px;
         }
 
         .header h1 {
@@ -60,10 +62,7 @@
         }
 
         .card {
-            background: white;
-            border-radius: 16px;
             padding: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
             overflow-x: auto;
         }
 
@@ -139,7 +138,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 950px;
+            min-width: 1050px;
         }
 
         thead {
@@ -170,6 +169,25 @@
         .nama-ekskul {
             font-weight: bold;
             color: #111827;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .badge-rutin {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-event {
+            background: #fef3c7;
+            color: #92400e;
         }
 
         .hari {
@@ -270,64 +288,46 @@
             .header-actions {
                 width: 100%;
                 justify-content: space-between;
+                flex-wrap: wrap;
             }
         }
     </style>
 </head>
 
 <body>
-
 <div class="container">
 
-    <!-- HEADER -->
     <div class="header">
-
         <h1>📅 Jadwal Ekstrakurikuler</h1>
-
-        <p>
-            Kelola dan lihat seluruh jadwal kegiatan ekstrakurikuler.
-        </p>
+        <p>Kelola dan lihat seluruh jadwal rutin serta event ekstrakurikuler.</p>
 
         <a href="{{ route('admin.dashboard') }}" class="back-button">
             ← Kembali ke Dashboard
         </a>
-
     </div>
 
-
-    <!-- PESAN BERHASIL -->
     @if (session('success'))
         <div class="alert alert-success">
             ✅ {{ session('success') }}
         </div>
     @endif
 
-
-    <!-- PESAN ERROR -->
     @if ($errors->any())
         <div class="alert alert-error">
-
             <strong>❌ Terjadi kesalahan:</strong>
-
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-
         </div>
     @endif
 
-
-    <!-- DATA JADWAL -->
     <div class="card">
-
         <div class="card-header">
-
             <h2>Daftar Jadwal</h2>
 
             <div class="header-actions">
-
                 <div class="total">
                     Total {{ $jadwal->count() }} Jadwal
                 </div>
@@ -335,21 +335,18 @@
                 <a href="{{ route('admin.jadwal.create') }}" class="btn-tambah">
                     ➕ Tambah Jadwal
                 </a>
-
             </div>
-
         </div>
 
-
         @if ($jadwal->count() > 0)
-
             <table>
-
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Ekstrakurikuler</th>
-                        <th>Hari</th>
+                        <th>Jenis</th>
+                        <th>Nama Kegiatan</th>
+                        <th>Hari / Tanggal</th>
                         <th>Jam</th>
                         <th>Lokasi</th>
                         <th>Aksi</th>
@@ -357,14 +354,9 @@
                 </thead>
 
                 <tbody>
-
                     @foreach ($jadwal as $item)
-
                         <tr>
-
-                            <td>
-                                {{ $loop->iteration }}
-                            </td>
+                            <td>{{ $loop->iteration }}</td>
 
                             <td class="nama-ekskul">
                                 {{ $item->ekstrakurikuler->nama_ekskul
@@ -372,35 +364,48 @@
                                     ?? '-' }}
                             </td>
 
-                            <td class="hari">
-                                {{ $item->hari ?? '-' }}
-                            </td>
-
-                            <td class="jam">
-
-                                @if ($item->jam_mulai && $item->jam_selesai)
-
-                                    {{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }}
-                                    -
-                                    {{ \Carbon\Carbon::parse($item->jam_selesai)->format('H:i') }}
-
+                            <td>
+                                @if (($item->jenis ?? 'rutin') === 'event')
+                                    <span class="badge badge-event">Event</span>
                                 @else
-
-                                    -
-
+                                    <span class="badge badge-rutin">Rutin</span>
                                 @endif
-
-                            </td>
-
-                            <td class="lokasi">
-                                {{ $item->lokasi ?? '-' }}
                             </td>
 
                             <td>
+                                @if (($item->jenis ?? 'rutin') === 'event')
+                                    {{ $item->nama_event ?: 'Event ekstrakurikuler' }}
+                                @else
+                                    Kegiatan rutin
+                                @endif
+                            </td>
 
+                            <td class="hari">
+                                @if (($item->jenis ?? 'rutin') === 'event')
+                                    @if ($item->tanggal_event)
+                                        {{ \Carbon\Carbon::parse($item->tanggal_event)->format('d-m-Y') }}
+                                    @else
+                                        -
+                                    @endif
+                                @else
+                                    {{ $item->hari ?? '-' }}
+                                @endif
+                            </td>
+
+                            <td class="jam">
+                                @if ($item->jam_mulai && $item->jam_selesai)
+                                    {{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }}
+                                    -
+                                    {{ \Carbon\Carbon::parse($item->jam_selesai)->format('H:i') }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+
+                            <td class="lokasi">{{ $item->lokasi ?? '-' }}</td>
+
+                            <td>
                                 <div class="aksi">
-
-                                    <!-- EDIT -->
                                     <a
                                         href="{{ route('admin.jadwal.edit', $item->id) }}"
                                         class="btn-edit"
@@ -408,68 +413,36 @@
                                         ✏️ Edit
                                     </a>
 
-
-                                    <!-- HAPUS -->
                                     <form
                                         action="{{ route('admin.jadwal.destroy', $item->id) }}"
                                         method="POST"
                                         onsubmit="return confirm('Yakin ingin menghapus jadwal ini?');"
                                     >
-
                                         @csrf
                                         @method('DELETE')
 
-                                        <button
-                                            type="submit"
-                                            class="btn-hapus"
-                                        >
+                                        <button type="submit" class="btn-hapus">
                                             🗑️ Hapus
                                         </button>
-
                                     </form>
-
                                 </div>
-
                             </td>
-
                         </tr>
-
                     @endforeach
-
                 </tbody>
-
             </table>
-
         @else
-
             <div class="empty">
+                <div class="empty-icon">📅</div>
+                <h3>Belum Ada Jadwal</h3>
+                <p>Belum terdapat jadwal ekstrakurikuler yang tersedia.</p>
 
-                <div class="empty-icon">
-                    📅
-                </div>
-
-                <h3>
-                    Belum Ada Jadwal
-                </h3>
-
-                <p>
-                    Belum terdapat jadwal ekstrakurikuler yang tersedia.
-                </p>
-
-                <a
-                    href="{{ route('admin.jadwal.create') }}"
-                    class="btn-tambah"
-                >
+                <a href="{{ route('admin.jadwal.create') }}" class="btn-tambah">
                     ➕ Tambah Jadwal Pertama
                 </a>
-
             </div>
-
         @endif
-
     </div>
-
 </div>
-
 </body>
 </html>

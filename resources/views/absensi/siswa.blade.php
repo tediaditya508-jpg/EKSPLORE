@@ -377,10 +377,7 @@
 
     <main class="container">
 
-        <a
-            href="{{ route('dashboard') }}"
-            class="back"
-        >
+        <a href="{{ route('dashboard') }}" class="back">
             ← Kembali ke Dashboard
         </a>
 
@@ -401,11 +398,9 @@
         {{-- PESAN BERHASIL --}}
 
         @if (session('success'))
-
             <div class="alert-success">
                 ✅ {{ session('success') }}
             </div>
-
         @endif
 
 
@@ -421,11 +416,9 @@
 
                 <ul>
                     @foreach ($errors->all() as $error)
-
                         <li>
                             {{ $error }}
                         </li>
-
                     @endforeach
                 </ul>
 
@@ -506,10 +499,7 @@
             </p>
 
 
-            <form
-                action="{{ route('kehadiran.storeSiswa') }}"
-                method="POST"
-            >
+            <form action="{{ route('kehadiran.storeSiswa') }}" method="POST">
 
                 @csrf
 
@@ -520,24 +510,17 @@
                         📚 Ekstrakurikuler
                     </label>
 
-                    <select
-                        name="anggota_id"
-                        id="anggota_id"
-                        required
-                    >
+                    <select name="anggota_id" id="anggota_id" required>
 
                         <option value="">
                             -- Pilih Ekstrakurikuler --
                         </option>
 
-                        @foreach ($absensi->pluck('anggota')->filter()->unique('id') as $anggota)
-
-                            <option
-                                value="{{ $anggota->id }}"
-                            >
-                                {{ $anggota->ekstrakurikuler->nama_ekskul ?? 'Ekstrakurikuler' }}
+                        @foreach ($anggota as $itemAnggota)
+                            <option value="{{ $itemAnggota->id }}"
+                                {{ (string) old('anggota_id') === (string) $itemAnggota->id ? 'selected' : '' }}>
+                                {{ $itemAnggota->ekstrakurikuler->nama_ekskul ?? 'Ekstrakurikuler' }}
                             </option>
-
                         @endforeach
 
                     </select>
@@ -555,13 +538,8 @@
                         📅 Tanggal
                     </label>
 
-                    <input
-                        type="date"
-                        name="tanggal"
-                        id="tanggal"
-                        value="{{ old('tanggal', date('Y-m-d')) }}"
-                        required
-                    >
+                    <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}"
+                        required>
 
                 </div>
 
@@ -572,11 +550,7 @@
                         📌 Status
                     </label>
 
-                    <select
-                        name="status"
-                        id="status"
-                        required
-                    >
+                    <select name="status" id="status" required>
 
                         <option value="">
                             -- Pilih Status --
@@ -605,12 +579,8 @@
                         📝 Keterangan
                     </label>
 
-                    <textarea
-                        name="keterangan"
-                        id="keterangan"
-                        placeholder="Contoh: Tidak dapat mengikuti kegiatan karena ada keperluan keluarga."
-                        required
-                    >{{ old('keterangan') }}</textarea>
+                    <textarea name="keterangan" id="keterangan"
+                        placeholder="Contoh: Tidak dapat mengikuti kegiatan karena ada keperluan keluarga." required>{{ old('keterangan') }}</textarea>
 
                     <small class="form-help">
                         Jelaskan alasan izin atau sakit secara singkat.
@@ -619,10 +589,7 @@
                 </div>
 
 
-                <button
-                    type="submit"
-                    class="btn-ajukan"
-                >
+                <button type="submit" class="btn-ajukan">
                     📤 Ajukan Izin / Sakit
                 </button>
 
@@ -641,7 +608,6 @@
 
 
             @forelse ($absensi as $item)
-
                 <div class="attendance-item">
 
                     <h3>
@@ -668,35 +634,25 @@
 
 
                         @if ($item->status === 'hadir')
-
                             <span class="status status-hadir">
                                 ✅ Hadir
                             </span>
-
                         @elseif ($item->status === 'izin')
-
                             <span class="status status-izin">
                                 🟡 Izin
                             </span>
-
                         @elseif ($item->status === 'sakit')
-
                             <span class="status status-sakit">
                                 🔵 Sakit
                             </span>
-
                         @elseif ($item->status === 'alpa')
-
                             <span class="status status-alpa">
                                 ❌ Alpa
                             </span>
-
                         @else
-
                             <span class="status">
                                 {{ ucfirst($item->status) }}
                             </span>
-
                         @endif
 
                     </p>
@@ -705,7 +661,6 @@
                     {{-- NILAI --}}
 
                     @if ($item->nilai !== null)
-
                         <p>
 
                             <strong>
@@ -725,9 +680,7 @@
                             </span>
 
                         </p>
-
                     @elseif ($item->status === 'hadir')
-
                         <p>
 
                             <strong>
@@ -739,12 +692,10 @@
                             </span>
 
                         </p>
-
                     @endif
 
 
                     @if ($item->keterangan)
-
                         <p>
 
                             <strong>
@@ -754,7 +705,6 @@
                             {{ $item->keterangan }}
 
                         </p>
-
                     @endif
 
                 </div>
@@ -776,7 +726,6 @@
                     </p>
 
                 </div>
-
             @endforelse
 
         </section>
