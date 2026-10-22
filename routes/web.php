@@ -571,3 +571,8 @@ Route::middleware('auth')->group(function () {
         ->name('logout'); 
  
 });
+
+
+Route::get('/preview-hp', function () {
+    return view('preview-hp');
+})->name('preview.hp');
