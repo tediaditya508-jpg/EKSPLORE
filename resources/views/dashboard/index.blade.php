@@ -220,6 +220,7 @@
                 color: #9ca3af;
                 font-size: 12px;
             }
+            
 
 
             /* =========================================
@@ -1029,12 +1030,392 @@
     }
 }
 
+        
+
+/* =========================================
+   NAVBAR DESKTOP DAN MOBILE EKSPLORE
+========================================= */
+
+.mobile-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 24px;
+    background: #ffffff;
+    color: #2563eb;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+}
+
+.mobile-navbar-brand {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-right: auto;
+}
+
+.mobile-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 25px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.mobile-sidebar-overlay {
+    display: none;
+}
+
+/* TAMPILAN HP */
+@media (max-width: 700px) {
+    .mobile-navbar {
+        display: flex;
+        min-height: 58px;
+        padding: 10px 14px;
+        background: #111111;
+        color: #ffffff;
+    }
+
+    .mobile-navbar-brand {
+        font-size: 17px;
+        color: #ffffff;
+    }
+
+    .mobile-menu-button {
+        display: flex;
+        background: transparent;
+        color: #ffffff;
+    }
+
+    .sidebar {
+    position: fixed !important;
+    top: 58px;
+    left: 0;
+    bottom: 0;
+    width: 220px !important;
+    max-width: 85vw;
+    height: calc(100vh - 58px);
+    height: calc(100dvh - 58px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1100;
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--white);
+    transition: transform 0.25s ease, visibility 0.25s ease;
+    transform: translateX(-100%);
+    visibility: hidden;
+}
+
+.sidebar.mobile-open {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+    .mobile-sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 950;
+    }
+
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 14px;
+        min-width: 0;
+    }
+
+    .quick-info {
+        grid-template-columns: 1fr;
+    }
+
+    .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ekskul-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 360px) {
+    .ekskul-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .main {
+        padding: 10px;
+    }
+}
+
+        
+
+/* =========================================
+   NAVBAR EKSPLORE - LAPTOP, TABLET, DAN HP
+========================================= */
+
+.mobile-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    min-height: 64px;
+    padding: 10px 20px;
+    background: #ffffff;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 1200;
+}
+
+.mobile-navbar-brand {
+    margin-right: auto;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #111827;
+}
+
+.mobile-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 40px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.mobile-menu-button:hover {
+    background: #1d4ed8;
+}
+
+.mobile-sidebar-overlay {
+    display: none;
+}
+
+.mobile-sidebar-overlay.show {
+    display: block;
+    position: fixed;
+    inset: 64px 0 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1090;
+}
+
+/* SIDEBAR DESKTOP */
+.sidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    height: calc(100vh - 64px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    z-index: 1100;
+    transition: transform 0.25s ease;
+}
+
+.sidebar.desktop-hidden {
+    transform: translateX(-100%);
+}
+
+.main {
+    min-width: 0;
+    transition: margin-left 0.25s ease, width 0.25s ease;
+}
+
+.main.desktop-full-width {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+/* TABLET DAN HP */
+@media (max-width: 700px) {
+    .mobile-navbar {
+        min-height: 58px;
+        padding: 10px 14px;
+    }
+
+    .mobile-navbar-brand {
+        font-size: 17px;
+    }
+
+    .mobile-sidebar-overlay.show {
+        inset: 58px 0 0;
+    }
+
+    .sidebar {
+        top: 58px;
+        bottom: 0;
+        left: 0;
+        width: 220px !important;
+        max-width: 85vw;
+        height: calc(100vh - 58px);
+        height: calc(100dvh - 58px);
+        padding: 18px 10px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: #ffffff;
+        border-right: 1px solid #e5e7eb;
+        border-bottom: none;
+        transform: translateX(-100%);
+        visibility: hidden;
+        transition: transform 0.25s ease, visibility 0.25s ease;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .sidebar.desktop-hidden {
+        transform: translateX(-100%);
+    }
+
+    .main,
+    .main.desktop-full-width {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 14px;
+    }
+
+    .brand h1 {
+        font-size: 18px;
+    }
+
+    .menu a {
+        gap: 9px;
+        padding: 11px 8px;
+        font-size: 12px;
+    }
+
+    .quick-info {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .ekskul-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .topbar {
+        gap: 10px;
+    }
+
+    .welcome {
+        min-width: 0;
+    }
+
+    .welcome h2 {
+        font-size: 19px;
+        overflow-wrap: anywhere;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .card {
+        min-width: 0;
+        padding: 14px;
+    }
+
+    .schedule-item,
+    .nilai-item {
+        min-width: 0;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .schedule-info,
+    .nilai-info {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+}
+
+/* HP DENGAN LAYAR KECIL */
+@media (max-width: 360px) {
+    .mobile-navbar {
+        padding: 9px 10px;
+    }
+
+    .mobile-navbar-brand {
+        font-size: 16px;
+    }
+
+    .main,
+    .main.desktop-full-width {
+        padding: 10px;
+    }
+
+    .ekskul-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .card {
+        padding: 11px;
+    }
+}
+
+
         </style>
 
     </head>
 
 
     <body>
+
+        
+<!-- NAVBAR HAMBURGER MOBILE EKSPLORE -->
+
+<header class="mobile-navbar">
+    <div class="mobile-navbar-left">
+        <button
+            type="button"
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            aria-label="Buka menu"
+            aria-expanded="false"
+        >☰</button>
+
+    </div>
+</header>
+
+<div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+></div>
 
 
     <!-- =========================================
@@ -1677,6 +2058,64 @@
         </div>
 
     </main>
+        
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuButton = document.getElementById('mobileMenuButton'); // Sesuaikan dengan id tombol hamburger kamu
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('mobileSidebarOverlay');
+    const main = document.querySelector('.main');
+
+    if (!menuButton || !sidebar) {
+        return;
+    }
+
+    // Fungsi cek apakah mode HP / layar kecil
+    function isMobile() {
+        return window.innerWidth <= 700;
+    }
+
+    // Logika Klik Tombol Hamburger (Toggle Buka / Tutup)
+    menuButton.addEventListener('click', function (e) {
+        e.stopPropagation();
+        
+        if (isMobile()) {
+            // Untuk Tampilan HP: Toggle class 'mobile-open'
+            sidebar.classList.toggle('mobile-open');
+            if (overlay) {
+                overlay.classList.toggle('show');
+            }
+        } else {
+            // Untuk Tampilan Desktop: Toggle class 'desktop-hidden'
+            sidebar.classList.toggle('desktop-hidden');
+            if (main) {
+                main.classList.toggle('desktop-full-width');
+            }
+        }
+    });
+
+    // Klik di luar sidebar / overlay untuk menutup
+    if (overlay) {
+        overlay.addEventListener('click', function () {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('show');
+        });
+    }
+
+    // Klik menu di dalam sidebar (khusus mobile) agar otomatis menutup saat diklik
+    sidebar.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            if (isMobile()) {
+                sidebar.classList.remove('mobile-open');
+                if (overlay) {
+                    overlay.classList.remove('show');
+                }
+            }
+        });
+    });
+});
+</script>
 
     </body>
 

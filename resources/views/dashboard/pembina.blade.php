@@ -40,6 +40,26 @@
 
         /* SIDEBAR */
 
+        /* TOMBOL HAMBURGER PEMBINA */
+.menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    color: #1d4ed8;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.menu-toggle:hover {
+    background: #eff6ff;
+}
+
         .sidebar {
             width: 255px;
             flex-shrink: 0;
@@ -535,6 +555,176 @@
                 font-size: 19px;
             }
         }
+
+            /* HAMBURGER RESPONSIVE PEMBINA */
+@media (max-width: 800px) {
+    .dashboard-layout {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        width: 255px;
+        height: 100vh;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        visibility: hidden;
+        transition:
+    transform 0.22s ease-in-out,
+    visibility 0.22s ease-in-out;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+    }
+
+    .dashboard-content {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .navbar {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+        /* HAMBURGER PEMBINA - SEMUA PERANGKAT */
+.dashboard-layout {
+    flex-direction: row;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 255px;
+    height: 100vh;
+    flex-shrink: 0;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s ease;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.dashboard-content {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 auto;
+    transition: margin-left 0.25s ease, width 0.25s ease;
+}
+
+@media (min-width: 801px) {
+    .dashboard-layout.sidebar-open .dashboard-content {
+        margin-left: 255px;
+        width: calc(100% - 255px);
+    }
+
+    .dashboard-layout:not(.sidebar-open) .dashboard-content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+.navbar {
+    flex-direction: row;
+    align-items: center;
+}
+
+.menu-toggle {
+    display: inline-flex;
+}
+
+@media (max-width: 800px) {
+    .dashboard-layout {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 255px;
+        height: 100vh;
+        padding: 20px 16px;
+    }
+
+    .navbar {
+        flex-direction: row;
+        align-items: center;
+        padding: 17px 20px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+}
+
+   /* SIDEBAR HP - KONTEN TIDAK TERTUTUP */
+@media (max-width: 800px) {
+    .dashboard-layout {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .sidebar {
+        position: sticky;
+        top: 0;
+        left: auto;
+        width: min(255px, 70vw);
+        max-width: 255px;
+        height: 100vh;
+        flex: 0 0 min(255px, 70vw);
+        transform: none;
+        visibility: visible;
+        overflow-y: auto;
+    }
+
+    .dashboard-layout:not(.sidebar-open) .sidebar {
+        display: none;
+    }
+
+    .dashboard-content {
+        flex: 1 1 0;
+        width: 0;
+        min-width: 0;
+        margin-left: 0;
+    }
+
+    .navbar {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .navbar-title {
+        font-size: 17px;
+    }
+
+    .navbar-subtitle {
+        font-size: 11px;
+    }
+
+    .role-badge {
+        padding: 7px 9px;
+        font-size: 10px;
+    }
+}
+
     </style>
 </head>
 
@@ -543,7 +733,7 @@
 <div class="dashboard-layout">
 
     {{-- SIDEBAR PEMBINA --}}
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebarPembina">
 
         <div>
             <div class="sidebar-brand">EKSPLORE</div>
@@ -616,7 +806,15 @@
     <div class="dashboard-content">
 
         <header class="navbar">
-            <div>
+             <button
+        type="button"
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Buka atau tutup menu"
+        aria-expanded="false"
+        aria-controls="sidebarPembina"
+    >☰</button>
+    <div>
                 <div class="navbar-title">Dashboard Pembina</div>
                 <div class="navbar-subtitle">Kelola kegiatan ekstrakurikuler sekolah</div>
             </div>
@@ -810,6 +1008,28 @@
     </div>
 
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebarPembina');
+    const layout = document.querySelector('.dashboard-layout');
+
+    if (!menuToggle || !sidebar || !layout) return;
+
+    // Sidebar terbuka saat dashboard pertama kali dimuat
+    sidebar.classList.add('active');
+    layout.classList.add('sidebar-open');
+    menuToggle.setAttribute('aria-expanded', 'true');
+
+    // Tombol hamburger untuk buka dan tutup sidebar
+    menuToggle.addEventListener('click', function () {
+        const isOpen = sidebar.classList.toggle('active');
+
+        layout.classList.toggle('sidebar-open', isOpen);
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+});
+</script>
 
 </body>
 </html>

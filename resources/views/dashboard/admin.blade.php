@@ -232,6 +232,176 @@
 
         }
 
+        
+/* =========================
+   HAMBURGER NAVBAR ADMIN
+========================= */
+
+.navbar {
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #374151;
+    border-radius: 9px;
+    background: #1f2937;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.menu-toggle:hover {
+    background: #374151;
+}
+
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 250px;
+    height: 100vh;
+    padding: 24px 16px;
+    overflow-y: auto;
+    background: #111827;
+    color: #ffffff;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.25s ease-in-out,
+                visibility 0.25s ease-in-out;
+}
+
+.admin-sidebar.active {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.admin-sidebar h2 {
+    margin-bottom: 24px;
+    font-size: 20px;
+}
+
+.admin-sidebar a {
+    display: block;
+    padding: 12px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    color: #e5e7eb;
+    text-decoration: none;
+}
+
+.admin-sidebar a:hover {
+    background: #374151;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .menu-toggle {
+        order: -1;
+    }
+
+    .admin-sidebar {
+        width: min(250px, 80vw);
+    }
+}
+
+
+/* PERBAIKAN NAVBAR HAMBURGER ADMIN */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    min-height: 76px;
+    padding: 16px 24px;
+}
+
+.navbar .menu-toggle {
+    display: inline-flex !important;
+    position: relative;
+    z-index: 1003;
+    flex: 0 0 42px;
+}
+
+.navbar .logo {
+    font-size: 22px;
+}
+
+.navbar .role {
+    margin-left: auto;
+}
+
+.admin-sidebar {
+    position: fixed !important;
+    top: 76px;
+    bottom: 0;
+    left: 0;
+    z-index: 1001;
+    width: min(250px, 80vw);
+    height: auto;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.25s ease-in-out,
+                visibility 0.25s ease-in-out;
+}
+
+.admin-sidebar.active {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .navbar .logo {
+        font-size: 19px;
+    }
+
+    .navbar .role {
+        font-size: 12px;
+    }
+
+    .container {
+        margin: 24px auto;
+        padding: 0 14px;
+    }
+
+    .welcome {
+        padding: 22px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+
     </style>
 
 </head>
@@ -246,6 +416,16 @@
 
     <nav class="navbar">
 
+         <button
+        type="button"
+        class="menu-toggle"
+        id="adminMenuToggle"
+        aria-label="Buka atau tutup menu"
+        aria-expanded="false"
+        aria-controls="adminSidebar"
+    >
+        ☰
+    </button>
 
         <div class="logo">
 
@@ -262,6 +442,25 @@
 
 
     </nav>
+
+    
+<aside class="admin-sidebar" id="adminSidebar">
+
+    <h2>Menu Admin</h2>
+
+    <a href="{{ route('admin.ekstrakurikuler') }}">Ekstrakurikuler</a>
+    <a href="{{ route('admin.pengguna') }}">Pengguna</a>
+    <a href="{{ route('admin.jadwal') }}">Jadwal</a>
+    <a href="{{ route('admin.pendaftaran') }}">Pendaftaran</a>
+    <a href="{{ route('admin.anggota') }}">Anggota</a>
+    <a href="{{ route('admin.absensi') }}">Absensi</a>
+    <a href="{{ route('admin.prestasi') }}">Prestasi</a>
+    <a href="{{ route('admin.pengumuman') }}">Pengumuman</a>
+    <a href="{{ route('admin.galeri') }}">Galeri</a>
+    <a href="{{ route('admin.laporan') }}">Laporan</a>
+
+</aside>
+
 
 
 
@@ -689,6 +888,28 @@
 
 
     </main>
+
+    
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toggle = document.getElementById('adminMenuToggle');
+    const sidebar = document.getElementById('adminSidebar');
+
+    if (!toggle || !sidebar) return;
+    sidebar.classList.remove('active');
+toggle.setAttribute('aria-expanded', 'false');
+
+    toggle.addEventListener('click', function () {
+        const isOpen = sidebar.classList.toggle('active');
+
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.setAttribute(
+            'aria-label',
+            isOpen ? 'Tutup menu' : 'Buka menu'
+        );
+    });
+});
+</script>
 
 
 </body>
