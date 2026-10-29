@@ -163,6 +163,7 @@ Route::middleware('auth')->group(function () {
     */ 
  
     Route::get('/dashboard', [DashboardController::class, 'index']) 
+        ->middleware('role:siswa,admin')
         ->name('dashboard'); 
  
  
@@ -199,6 +200,7 @@ Route::middleware('auth')->group(function () {
     */ 
  
     Route::get('/pembina/dashboard', [DashboardController::class, 'pembina']) 
+        ->middleware('role:pembina,admin')
         ->name('pembina.dashboard'); 
  
  
@@ -219,45 +221,53 @@ Route::middleware('auth')->group(function () {
     */ 
  
     Route::get('/admin/dashboard', [DashboardController::class, 'admin']) 
+        ->middleware('role:admin')
         ->name('admin.dashboard'); 
  
  
-    /* 
-    |-------------------------------------------------------------------------- 
-    | KELOLA EKSTRAKURIKULER ADMIN 
-    |-------------------------------------------------------------------------- 
-    */ 
- 
-    // Daftar ekstrakurikuler 
-    Route::get('/admin/ekstrakurikuler', [AdminController::class, 'ekstrakurikuler']) 
-        ->name('admin.ekstrakurikuler'); 
- 
-    // Form tambah ekstrakurikuler 
-    Route::get('/admin/ekstrakurikuler/tambah', [AdminController::class, 'createEkstrakurikuler']) 
-        ->name('admin.ekstrakurikuler.create'); 
- 
-    // Simpan ekstrakurikuler baru 
-    Route::post('/admin/ekstrakurikuler', [AdminController::class, 'storeEkstrakurikuler']) 
-        ->name('admin.ekstrakurikuler.store'); 
- 
-    // Form edit ekstrakurikuler 
-    Route::get('/admin/ekstrakurikuler/{id}/edit', [AdminController::class, 'editEkstrakurikuler']) 
-        ->name('admin.ekstrakurikuler.edit'); 
- 
-    // Update ekstrakurikuler 
-    Route::put('/admin/ekstrakurikuler/{id}', [AdminController::class, 'updateEkstrakurikuler']) 
-        ->name('admin.ekstrakurikuler.update'); 
- 
-    // Hapus ekstrakurikuler 
-    Route::delete('/admin/ekstrakurikuler/{id}', [AdminController::class, 'destroyEkstrakurikuler']) 
-        ->name('admin.ekstrakurikuler.destroy'); 
- 
+   
+    /*
+    |--------------------------------------------------------------------------
+    | KELOLA EKSTRAKURIKULER ADMIN
+    |--------------------------------------------------------------------------
+    */
+
+    Route::middleware('role:admin')->group(function () {
+
+        // Daftar ekstrakurikuler
+        Route::get('/admin/ekstrakurikuler', [AdminController::class, 'ekstrakurikuler'])
+            ->name('admin.ekstrakurikuler');
+
+        // Form tambah ekstrakurikuler
+        Route::get('/admin/ekstrakurikuler/tambah', [AdminController::class, 'createEkstrakurikuler'])
+            ->name('admin.ekstrakurikuler.create');
+
+        // Simpan ekstrakurikuler baru
+        Route::post('/admin/ekstrakurikuler', [AdminController::class, 'storeEkstrakurikuler'])
+            ->name('admin.ekstrakurikuler.store');
+
+        // Form edit ekstrakurikuler
+        Route::get('/admin/ekstrakurikuler/{id}/edit', [AdminController::class, 'editEkstrakurikuler'])
+            ->name('admin.ekstrakurikuler.edit');
+
+        // Update ekstrakurikuler
+        Route::put('/admin/ekstrakurikuler/{id}', [AdminController::class, 'updateEkstrakurikuler'])
+            ->name('admin.ekstrakurikuler.update');
+
+        // Hapus ekstrakurikuler
+        Route::delete('/admin/ekstrakurikuler/{id}', [AdminController::class, 'destroyEkstrakurikuler'])
+            ->name('admin.ekstrakurikuler.destroy');
+
+    });
+
  
     /* 
     |-------------------------------------------------------------------------- 
     | PENDAFTARAN ADMIN 
     |-------------------------------------------------------------------------- 
     */ 
+
+    Route::middleware('role:admin')->group(function () {
  
     // Melihat semua pendaftaran siswa 
     Route::get('/admin/pendaftaran', [PendaftaranController::class, 'adminIndex']) 
@@ -266,6 +276,7 @@ Route::middleware('auth')->group(function () {
     // Mengubah status pendaftaran menjadi diterima / ditolak 
     Route::put('/admin/pendaftaran/{id}', [PendaftaranController::class, 'adminUpdateStatus']) 
         ->name('admin.pendaftaran.update'); 
+            });
  
  
     /* 
@@ -275,15 +286,22 @@ Route::middleware('auth')->group(function () {
     */ 
  
     // Melihat semua anggota aktif ekstrakurikuler 
+
+     // ANGGOTA EKSKUL ADMIN
+    Route::middleware('role:admin')->group(function () {
+
     Route::get('/admin/anggota', [AnggotaEkskulController::class, 'adminIndex']) 
         ->name('admin.anggota'); 
  
- 
+    });
+
     /* 
     |-------------------------------------------------------------------------- 
     | JADWAL ADMIN 
     |-------------------------------------------------------------------------- 
     */ 
+
+    Route::middleware('role:admin')->group(function () {
  
     // Melihat semua jadwal ekstrakurikuler 
     Route::get('/admin/jadwal', [JadwalController::class, 'adminIndex']) 
@@ -303,6 +321,9 @@ Route::middleware('auth')->group(function () {
  
     Route::delete('/admin/jadwal/{id}', [JadwalController::class, 'destroy']) 
         ->name('admin.jadwal.destroy'); 
+            });
+
+            
  
  
     /* 
@@ -310,10 +331,14 @@ Route::middleware('auth')->group(function () {
     | ABSENSI ADMIN 
     |-------------------------------------------------------------------------- 
     */ 
+
+    Route::middleware('role:admin')->group(function () {
  
     // Melihat seluruh data absensi siswa 
     Route::get('/admin/absensi', [AbsensiController::class, 'adminIndex']) 
         ->name('admin.absensi'); 
+
+        });
  
  
     /* 
@@ -321,10 +346,14 @@ Route::middleware('auth')->group(function () {
     | PRESTASI ADMIN 
     |-------------------------------------------------------------------------- 
     */ 
+
+      Route::middleware('role:admin')->group(function () {
  
     // Melihat seluruh prestasi ekstrakurikuler 
     Route::get('/admin/prestasi', [PrestasiController::class, 'adminIndex']) 
         ->name('admin.prestasi'); 
+
+           });
  
  
     /* 
@@ -334,6 +363,9 @@ Route::middleware('auth')->group(function () {
     */ 
  
     // Melihat seluruh pengumuman 
+
+    Route::middleware('role:admin')->group(function () {
+
     Route::get('/admin/pengumuman', [PengumumanController::class, 'adminIndex']) 
         ->name('admin.pengumuman'); 
  
@@ -344,6 +376,8 @@ Route::middleware('auth')->group(function () {
     // Menyimpan pengumuman baru 
     Route::post('/admin/pengumuman', [PengumumanController::class, 'store']) 
         ->name('admin.pengumuman.store'); 
+
+         });
  
     Route::get('/pembina/pengumuman', [PengumumanController::class, 'pembinaIndex']) 
         ->name('pembina.pengumuman'); 
@@ -360,13 +394,19 @@ Route::middleware('auth')->group(function () {
     | LAPORAN ADMIN 
     |-------------------------------------------------------------------------- 
     */ 
+
+    // LAPORAN ADMIN
+    Route::middleware('role:admin')->group(function () {
  
     // Melihat ringkasan data dan aktivitas ekstrakurikuler 
     Route::get('/admin/laporan', [AdminController::class, 'laporan']) 
         ->name('admin.laporan'); 
 
+    // Export data siswa
     Route::get('/admin/export-siswa', [ExportSiswaController::class, 'export'])
         ->name('admin.export-siswa');
+
+         });
  
  
     /* 
@@ -374,6 +414,8 @@ Route::middleware('auth')->group(function () {
     | KELOLA PENGGUNA ADMIN 
     |-------------------------------------------------------------------------- 
     */ 
+
+        Route::middleware('role:admin')->group(function () {
  
     // Daftar pengguna 
     Route::get('/admin/pengguna', [AdminController::class, 'pengguna']) 
@@ -398,6 +440,8 @@ Route::middleware('auth')->group(function () {
     // Hapus pengguna 
     Route::delete('/admin/pengguna/{id}', [AdminController::class, 'destroy']) 
         ->name('admin.pengguna.destroy'); 
+
+            });
  
  
     /* 
@@ -494,8 +538,11 @@ Route::middleware('auth')->group(function () {
         ->name('pembina.galeri.destroy'); 
  
     // Admin 
+     Route::middleware('role:admin')->group(function () {
     Route::get('/admin/galeri', [GaleriController::class, 'adminIndex']) 
         ->name('admin.galeri'); 
+
+        });
  
  
     /* 

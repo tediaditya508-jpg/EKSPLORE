@@ -26,28 +26,43 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string'],
-        ]);
+    
+public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'string', 'email', 'max:255'],
+        'password' => ['required', 'string'],
+    ]);
 
-        // Hanya akun siswa
-        $credentials['role'] = 'siswa';
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        if (!in_array($user->role, ['siswa', 'admin'], true)) {
+            Auth::logout();
 
-            return redirect()->route('dashboard');
+            return back()
+                ->withErrors([
+                    'email' => 'Akun ini tidak diizinkan melalui login siswa.',
+                ])
+                ->onlyInput('email');
         }
 
-        return back()
-            ->withErrors([
-                'email' => 'Email atau password salah.',
-            ])
-            ->onlyInput('email');
+        $request->session()->regenerate();
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('dashboard');
     }
+
+    return back()
+        ->withErrors([
+            'email' => 'Email atau password salah.',
+        ])
+        ->onlyInput('email');
+}
+
 
 
     /*
@@ -341,32 +356,43 @@ class AuthController extends Controller
         return view('auth.pembina-login');
     }
 
-    public function pembinaLogin(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string'],
-        ]);
+    
+public function pembinaLogin(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'string', 'email', 'max:255'],
+        'password' => ['required', 'string'],
+    ]);
 
-        $credentials['role'] = 'pembina';
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
 
-        if (Auth::attempt($credentials)) {
+        if (!in_array($user->role, ['pembina', 'admin'], true)) {
+            Auth::logout();
 
-            $request->session()->regenerate();
-
-            if (Route::has('pembina.dashboard')) {
-                return redirect()->route('pembina.dashboard');
-            }
-
-            return redirect()->route('dashboard');
+            return back()
+                ->withErrors([
+                    'email' => 'Akun ini tidak diizinkan melalui login pembina.',
+                ])
+                ->onlyInput('email');
         }
 
-        return back()
-            ->withErrors([
-                'email' => 'Email atau password pembina salah.',
-            ])
-            ->onlyInput('email');
+        $request->session()->regenerate();
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('pembina.dashboard');
     }
+
+    return back()
+        ->withErrors([
+            'email' => 'Email atau password pembina salah.',
+        ])
+        ->onlyInput('email');
+}
+
 
 
     /*
