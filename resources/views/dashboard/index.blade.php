@@ -1462,6 +1462,11 @@
                 <span>Daftar Ekskul</span>
             </a>
 
+            <a href="{{ route('pindah_ekskul.index') }}">
+                <span class="menu-icon">🔄</span>
+                <span>Pindah Ekskul</span>
+            </a>
+
 
             <a href="{{ route('jadwal.index') }}">
                 <span class="menu-icon">📅</span>

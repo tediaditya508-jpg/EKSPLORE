@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -89,6 +90,20 @@
             transform: translateY(-4px);
         }
 
+        /* KARTU EKSKUL SUDAH DIIKUTI */
+        .card-aktif {
+            border: 2px solid #16a34a;
+        }
+
+        /* KARTU EKSKUL TIDAK BISA DIPILIH */
+        .card-disabled {
+            opacity: .75;
+        }
+
+        .card-disabled:hover {
+            transform: none;
+        }
+
         .gambar {
             height: 180px;
             background: linear-gradient(135deg, #dbeafe, #eff6ff);
@@ -136,10 +151,10 @@
             margin-bottom: 18px;
         }
 
+        /* TOMBOL DASAR */
         .button {
             display: block;
             text-align: center;
-            background: #0d47a1;
             color: white;
             text-decoration: none;
             padding: 12px;
@@ -147,8 +162,36 @@
             font-weight: bold;
         }
 
-        .button:hover {
+        /* EKSKUL SUDAH DIIKUTI - HIJAU */
+        .button-aktif {
+            background: #16a34a;
+            cursor: pointer;
+        }
+
+        .button-aktif:hover {
+            background: #15803d;
+        }
+
+        /* EKSKUL MASIH BISA DIPILIH - BIRU */
+        .button-pilih {
+            background: #0d47a1;
+        }
+
+        .button-pilih:hover {
             background: #083578;
+        }
+
+        /* BATAS MAKSIMAL 2 EKSKUL - ABU-ABU */
+        .button-disabled {
+            display: block;
+            text-align: center;
+            background: #94a3b8;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: not-allowed;
+            opacity: .8;
         }
 
         .kosong {
@@ -206,16 +249,26 @@
 
                 @foreach ($ekskul as $item)
 
-                    <div class="card">
+                    @php
+                        $sudahIkut = $anggotaAktif->contains($item->id);
+                    @endphp
+
+                    <div class="card
+                        @if ($sudahIkut)
+                            card-aktif
+                        @elseif ($jumlahEkskulAktif >= 2)
+                            card-disabled
+                        @endif
+                    ">
 
                         <div class="gambar">
 
                             @if (!empty($item->gambar))
 
                                 <img
-                            src="{{ asset('storage/' . $item->gambar) }}"
-                            alt="{{ $item->nama_ekskul }}"
-                            >
+                                    src="{{ asset('storage/' . $item->gambar) }}"
+                                    alt="{{ $item->nama_ekskul }}"
+                                >
 
                             @else
 
@@ -259,12 +312,31 @@
 
                             </div>
 
-                            <a
-                                href="{{ route('ekskul.show', $item->id) }}"
-                                class="button"
-                            >
-                                Lihat Detail →
-                            </a>
+                            @if ($sudahIkut)
+
+                                <a
+                                    href="{{ route('ekskul.show', $item->id) }}"
+                                    class="button button-aktif"
+                                >
+                                    Sudah Diikuti ✓
+                                </a>
+
+                            @elseif ($jumlahEkskulAktif >= 2)
+
+                                <div class="button-disabled">
+                                    Batas Maksimal 2 Ekskul
+                                </div>
+
+                            @else
+
+                                <a
+                                    href="{{ route('ekskul.show', $item->id) }}"
+                                    class="button button-pilih"
+                                >
+                                    Lihat Detail →
+                                </a>
+
+                            @endif
 
                         </div>
 

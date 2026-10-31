@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Ekstrakurikuler;
@@ -80,6 +79,19 @@ class PendaftaranController extends Controller
             return back()
                 ->withErrors([
                     'alasan' => 'Kamu sudah memiliki pendaftaran pada ekskul ini.',
+                ])
+                ->withInput();
+        }
+
+        // BATAS MAKSIMAL 2 EKSTRAKURIKULER
+        $jumlahEkskulAktif = AnggotaEkskul::where('siswa_id', $siswa->id)
+            ->where('status', 'aktif')
+            ->count();
+
+        if ($jumlahEkskulAktif >= 2) {
+            return back()
+                ->withErrors([
+                    'alasan' => 'Kamu sudah mencapai batas maksimal 2 ekstrakurikuler.',
                 ])
                 ->withInput();
         }
@@ -215,6 +227,23 @@ class PendaftaranController extends Controller
             ]);
         }
 
+        // BATAS MAKSIMAL 2 EKSTRAKURIKULER SAAT DISETUJUI PEMBINA
+        if ($data['status'] === 'diterima') {
+            $jumlahEkskulAktif = AnggotaEkskul::where(
+                'siswa_id',
+                $pendaftaran->siswa_id
+            )
+                ->where('status', 'aktif')
+                ->where('ekskul_id', '!=', $pendaftaran->ekskul_id)
+                ->count();
+
+            if ($jumlahEkskulAktif >= 2) {
+                return back()->withErrors([
+                    'status' => 'Siswa sudah mencapai batas maksimal 2 ekstrakurikuler. Pendaftaran tidak dapat diterima.',
+                ]);
+            }
+        }
+
         $pendaftaran->update([
             'status' => $data['status'],
         ]);
@@ -332,6 +361,23 @@ class PendaftaranController extends Controller
             return back()->withErrors([
                 'status' => 'Pendaftaran ini sudah diproses sebelumnya.',
             ]);
+        }
+
+        // BATAS MAKSIMAL 2 EKSTRAKURIKULER SAAT DISETUJUI ADMIN
+        if ($data['status'] === 'diterima') {
+            $jumlahEkskulAktif = AnggotaEkskul::where(
+                'siswa_id',
+                $pendaftaran->siswa_id
+            )
+                ->where('status', 'aktif')
+                ->where('ekskul_id', '!=', $pendaftaran->ekskul_id)
+                ->count();
+
+            if ($jumlahEkskulAktif >= 2) {
+                return back()->withErrors([
+                    'status' => 'Siswa sudah mencapai batas maksimal 2 ekstrakurikuler. Pendaftaran tidak dapat diterima.',
+                ]);
+            }
         }
 
         $pendaftaran->update([

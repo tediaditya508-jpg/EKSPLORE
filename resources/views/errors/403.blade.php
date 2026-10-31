@@ -168,14 +168,24 @@
             dengan hak akses akunmu.
         </p>
 
-        <a href="{{ url('/dashboard') }}" class="button">
-            <svg viewBox="0 0 24 24">
-                <path d="m3 10 9-7 9 7"/>
-                <path d="M5 9v12h14V9"/>
-                <path d="M9 21v-7h6v7"/>
-            </svg>
-            Kembali ke Dashboard
-        </a>
+        @php
+    $role = strtolower(auth()->user()->role ?? '');
+
+    $dashboardUrl = match ($role) {
+        'admin' => route('admin.dashboard'),
+        'pembina' => route('pembina.dashboard'),
+        default => route('dashboard'),
+    };
+@endphp
+
+<a href="{{ $dashboardUrl }}" class="button">
+    <svg viewBox="0 0 24 24">
+        <path d="m3 10 9-7 9 7"/>
+        <path d="M5 9v12h14V9"/>
+        <path d="M9 21v-7h6v7"/>
+    </svg>
+    Kembali ke Dashboard
+</a>
 
         <div class="footer">
             <strong>EKSPLORE</strong>

@@ -8,6 +8,7 @@ use App\Http\Controllers\EkstrakurikulerController;
 use App\Http\Controllers\JadwalController; 
 use App\Http\Controllers\PendaftaranController; 
 use App\Http\Controllers\AnggotaEkskulController; 
+use App\Http\Controllers\PengajuanPindahEkskulController;
 use App\Http\Controllers\AbsensiController; 
 use App\Http\Controllers\PrestasiController; 
 use App\Http\Controllers\PengumumanController; 
@@ -278,6 +279,12 @@ Route::middleware('auth')->group(function () {
         ->name('admin.pendaftaran.update'); 
             });
  
+            // PINDAH EKSKUL ADMIN
+Route::get('/admin/pindah-ekskul', [PengajuanPindahEkskulController::class, 'adminIndex'])
+    ->name('admin.pindah_ekskul');
+
+Route::put('/admin/pindah-ekskul/{id}', [PengajuanPindahEkskulController::class, 'adminUpdateStatus'])
+    ->name('admin.pindah_ekskul.update');
  
     /* 
     |-------------------------------------------------------------------------- 
@@ -474,8 +481,38 @@ Route::middleware('auth')->group(function () {
     // Simpan pendaftaran 
     Route::post('/pendaftaran/{id}', [PendaftaranController::class, 'store']) 
         ->name('pendaftaran.store'); 
- 
- 
+
+        /*
+|--------------------------------------------------------------------------
+| PINDAH EKSKUL SISWA
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('role:siswa')->group(function () {
+    Route::get('/pindah-ekskul', [PengajuanPindahEkskulController::class, 'index'])
+        ->name('pindah_ekskul.index');
+
+    Route::get('/pindah-ekskul/ajukan', [PengajuanPindahEkskulController::class, 'create'])
+        ->name('pindah_ekskul.create');
+
+    Route::post('/pindah-ekskul', [PengajuanPindahEkskulController::class, 'store'])
+        ->name('pindah_ekskul.store');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PINDAH EKSKUL PEMBINA
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('role:pembina')->group(function () {
+    Route::get('/pembina/pindah-ekskul', [PengajuanPindahEkskulController::class, 'pembinaIndex'])
+        ->name('pembina.pindah_ekskul');
+
+    Route::put('/pembina/pindah-ekskul/{id}', [PengajuanPindahEkskulController::class, 'updateStatus'])
+        ->name('pembina.pindah_ekskul.update');
+});
+
     /* 
     |-------------------------------------------------------------------------- 
     | PENDAFTARAN PEMBINA 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ekstrakurikuler;
+use App\Models\AnggotaEkskul;
 use Illuminate\Support\Facades\Auth;
 
 class EkstrakurikulerController extends Controller
@@ -14,11 +15,29 @@ class EkstrakurikulerController extends Controller
     */
 
     public function index()
-    {
-        $ekskul = Ekstrakurikuler::latest()->get();
+{
+    $ekskul = Ekstrakurikuler::latest()->get();
 
-        return view('ekskul.index', compact('ekskul'));
+    $siswa = Auth::user();
+
+    $anggotaAktif = collect();
+
+    $jumlahEkskulAktif = 0;
+
+    if ($siswa && $siswa->role === 'siswa') {
+        $anggotaAktif = AnggotaEkskul::where('siswa_id', $siswa->id)
+            ->where('status', 'aktif')
+            ->pluck('ekskul_id');
+
+        $jumlahEkskulAktif = $anggotaAktif->count();
     }
+
+    return view('ekskul.index', compact(
+        'ekskul',
+        'anggotaAktif',
+        'jumlahEkskulAktif'
+    ));
+}
 
 
     public function show($id)
