@@ -1,1226 +1,1745 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Dashboard Siswa - EKSPLORE</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --primary-light: #eff6ff;
-            --background: #f5f7fb;
-            --white: #ffffff;
-            --text: #111827;
-            --text-secondary: #6b7280;
-            --border: #e5e7eb;
-            --success: #16a34a;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: var(--background);
-            color: var(--text);
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-
-        /* =========================================
-           SIDEBAR
-        ========================================= */
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 250px;
-            height: 100vh;
-
-            background: var(--white);
-            border-right: 1px solid var(--border);
-
-            padding: 25px 16px;
-
-            z-index: 100;
-        }
-
-        .brand {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .brand-logo {
-            width: 52px;
-            height: 52px;
-
-            margin: 0 auto 10px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: var(--primary);
-            color: white;
-
-            border-radius: 15px;
-
-            font-size: 21px;
-            font-weight: bold;
-
-            box-shadow: 0 8px 18px rgba(37, 99, 235, .20);
-        }
-
-        .brand h1 {
-            color: var(--primary);
-            font-size: 27px;
-            letter-spacing: 1px;
-        }
-
-        .brand p {
-            color: #9ca3af;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        .menu-title {
-            color: #9ca3af;
-            font-size: 11px;
-            font-weight: bold;
-
-            margin: 0 10px 10px;
-
-            text-transform: uppercase;
-            letter-spacing: .5px;
-        }
-
-        .menu {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            padding: 12px 14px;
-
-            border-radius: 11px;
-
-            color: #4b5563;
-
-            font-size: 14px;
-
-            transition: .2s;
-        }
-
-        .menu a:hover {
-            background: var(--primary-light);
-            color: var(--primary);
-            transform: translateX(2px);
-        }
-
-        .menu a.active {
-            background: var(--primary);
-            color: white;
-
-            box-shadow: 0 7px 16px rgba(37, 99, 235, .18);
-        }
-
-        .menu-icon {
-            width: 22px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-
-        /* =========================================
-           MAIN
-        ========================================= */
-
-        .main {
-            margin-left: 250px;
-            padding: 30px;
-            min-height: 100vh;
-        }
-
-
-        /* =========================================
-           TOPBAR
-        ========================================= */
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            margin-bottom: 28px;
-        }
-
-        .welcome h2 {
-            font-size: 27px;
-            margin-bottom: 7px;
-        }
-
-        .welcome p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-
-            background: white;
-
-            padding: 8px 13px 8px 8px;
-
-            border: 1px solid var(--border);
-            border-radius: 13px;
-        }
-
-        .profile-avatar {
-            width: 43px;
-            height: 43px;
-
-            border-radius: 12px;
-
-            background: var(--primary);
-            color: white;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-weight: bold;
-            font-size: 17px;
-        }
-
-        .profile-info strong {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 3px;
-        }
-
-        .profile-info span {
-            color: #9ca3af;
-            font-size: 12px;
-        }
-
-
-        /* =========================================
-           QUICK INFO
-        ========================================= */
-
-        .quick-info {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
-
-            border: 1px solid var(--border);
-            border-radius: 16px;
-
-            padding: 20px;
-
-            display: flex;
-            align-items: center;
-
-            gap: 15px;
-
-            transition: .2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, .05);
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-
-            flex-shrink: 0;
-
-            border-radius: 13px;
-
-            background: var(--primary-light);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 22px;
-        }
-
-        .stat-info span {
-            display: block;
-
-            color: var(--text-secondary);
-
-            font-size: 13px;
-
-            margin-bottom: 5px;
-        }
-
-        .stat-info strong {
-            font-size: 24px;
-            color: var(--text);
-        }
-
-
-        /* =========================================
-           CONTENT GRID
-        ========================================= */
-
-        .content-grid {
-            display: grid;
-
-            grid-template-columns: 2fr 1fr;
-
-            gap: 20px;
-        }
-
-        .card {
-            background: white;
-
-            border: 1px solid var(--border);
-
-            border-radius: 16px;
-
-            padding: 22px;
-
-            margin-bottom: 20px;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            margin-bottom: 18px;
-        }
-
-        .card-header h3 {
-            font-size: 18px;
-        }
-
-        .card-header a {
-            color: var(--primary);
-
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .card-header a:hover {
-            text-decoration: underline;
-        }
-
-
-        /* =========================================
-           JADWAL
-        ========================================= */
-
-        .schedule-item {
-            display: flex;
-            align-items: center;
-
-            gap: 15px;
-
-            padding: 14px;
-
-            background: #f8fafc;
-
-            border: 1px solid #f1f5f9;
-
-            border-radius: 12px;
-
-            margin-bottom: 10px;
-
-            transition: .2s;
-        }
-
-        .schedule-item:hover {
-            border-color: #bfdbfe;
-            background: #eff6ff;
-        }
-
-        .schedule-day {
-            width: 65px;
-
-            color: var(--primary);
-
-            font-weight: bold;
-
-            font-size: 13px;
-        }
-
-        .schedule-info {
-            flex: 1;
-        }
-
-        .schedule-info strong {
-            display: block;
-
-            margin-bottom: 5px;
-
-            font-size: 14px;
-        }
-
-        .schedule-info span {
-            color: var(--text-secondary);
-
-            font-size: 12px;
-        }
-
-
-        /* =========================================
-           NILAI KEHADIRAN
-        ========================================= */
-
-        .nilai-item {
-            display: flex;
-            align-items: center;
-
-            gap: 15px;
-
-            padding: 14px;
-
-            background: #f8fafc;
-
-            border: 1px solid #f1f5f9;
-
-            border-radius: 12px;
-
-            margin-bottom: 10px;
-
-            transition: .2s;
-        }
-
-        .nilai-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .nilai-item:hover {
-            border-color: #bfdbfe;
-            background: #eff6ff;
-        }
-
-        .nilai-icon {
-            width: 45px;
-            height: 45px;
-
-            flex-shrink: 0;
-
-            border-radius: 12px;
-
-            background: #dcfce7;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 20px;
-        }
-
-        .nilai-info {
-            flex: 1;
-        }
-
-        .nilai-info strong {
-            display: block;
-
-            margin-bottom: 5px;
-
-            font-size: 14px;
-        }
-
-        .nilai-info span {
-            color: var(--text-secondary);
-
-            font-size: 12px;
-        }
-
-        .nilai-badge {
-            min-width: 52px;
-
-            padding: 9px 12px;
-
-            background: #eff6ff;
-
-            border: 1px solid #bfdbfe;
-
-            border-radius: 10px;
-
-            color: var(--primary);
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-            text-align: center;
-        }
-
-
-        /* =========================================
-           PENGUMUMAN
-        ========================================= */
-
-        .announcement-item {
-            padding: 14px 0;
-
-            border-bottom: 1px solid var(--border);
-        }
-
-        .announcement-item:first-child {
-            padding-top: 0;
-        }
-
-        .announcement-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .announcement-item strong {
-            display: block;
-
-            font-size: 14px;
-
-            margin-bottom: 6px;
-        }
-
-        .announcement-item p {
-            color: var(--text-secondary);
-
-            font-size: 12px;
-
-            line-height: 1.6;
-        }
-
-        .announcement-date {
-            display: block;
-
-            color: #9ca3af;
-
-            font-size: 11px;
-
-            margin-top: 7px;
-        }
-
-
-        /* =========================================
-           EKSKUL
-        ========================================= */
-
-        .ekskul-grid {
-            display: grid;
-
-            grid-template-columns: repeat(3, 1fr);
-
-            gap: 15px;
-        }
-
-        .ekskul-card {
-            overflow: hidden;
-
-            border: 1px solid var(--border);
-
-            border-radius: 13px;
-
-            background: white;
-
-            transition: .2s;
-        }
-
-        .ekskul-card:hover {
-            transform: translateY(-4px);
-
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .07);
-
-            border-color: #bfdbfe;
-        }
-
-        .ekskul-image {
-            height: 120px;
-
-            background: linear-gradient(
-                135deg,
-                #dbeafe,
-                #eff6ff
-            );
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            color: var(--primary);
-
-            font-size: 16px;
-
-            font-weight: bold;
-        }
-
-        .ekskul-body {
-            padding: 15px;
-        }
-
-        .ekskul-body h4 {
-            font-size: 15px;
-
-            margin-bottom: 7px;
-        }
-
-        .ekskul-body p {
-            color: var(--text-secondary);
-
-            font-size: 12px;
-
-            line-height: 1.5;
-
-            height: 36px;
-
-            overflow: hidden;
-
-            margin-bottom: 13px;
-        }
-
-        .detail-button {
-            display: inline-block;
-
-            background: var(--primary);
-
-            color: white;
-
-            padding: 8px 12px;
-
-            border-radius: 8px;
-
-            font-size: 12px;
-
-            font-weight: bold;
-
-            transition: .2s;
-        }
-
-        .detail-button:hover {
-            background: var(--primary-dark);
-        }
-
-
-        /* =========================================
-           ABOUT
-        ========================================= */
-
-        .about-box {
-            color: var(--text-secondary);
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-        .about-highlight {
-            margin-top: 14px;
-
-            padding: 12px;
-
-            background: var(--primary-light);
-
-            border-radius: 10px;
-
-            color: var(--primary);
-
-            font-size: 12px;
-
-            line-height: 1.6;
-        }
-
-
-        /* =========================================
-           EMPTY DATA
-        ========================================= */
-
-        .empty {
-            text-align: center;
-
-            padding: 25px;
-
-            color: #9ca3af;
-
-            font-size: 13px;
-        }
-
-
-        /* =========================================
-           RESPONSIVE
-        ========================================= */
-
-        @media (max-width: 1100px) {
-
-            .quick-info {
-                grid-template-columns: 1fr;
+    <!DOCTYPE html>
+    <html lang="id">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Dashboard Siswa - EKSPLORE</title>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
 
-            .content-grid {
-                grid-template-columns: 1fr;
+            :root {
+                --primary: #2563eb;
+                --primary-dark: #1d4ed8;
+                --primary-light: #eff6ff;
+                --background: #f5f7fb;
+                --white: #ffffff;
+                --text: #111827;
+                --text-secondary: #6b7280;
+                --border: #e5e7eb;
+                --success: #16a34a;
             }
 
-            .ekskul-grid {
-                grid-template-columns: repeat(2, 1fr);
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background: var(--background);
+                color: var(--text);
             }
-        }
+
+            a {
+                text-decoration: none;
+            }
 
 
-        @media (max-width: 700px) {
+            /* =========================================
+            SIDEBAR
+            ========================================= */
 
             .sidebar {
-                position: relative;
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 250px;
+                height: 100vh;
 
-                width: 100%;
+                background: var(--white);
+                border-right: 1px solid var(--border);
 
-                height: auto;
+                padding: 25px 16px;
 
-                border-right: none;
+                z-index: 100;
+            }
+
+            .brand {
+                text-align: center;
+                margin-bottom: 35px;
+            }
+
+            .brand-logo {
+                width: 52px;
+                height: 52px;
+
+                margin: 0 auto 10px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                background: var(--primary);
+                color: white;
+
+                border-radius: 15px;
+
+                font-size: 21px;
+                font-weight: bold;
+
+                box-shadow: 0 8px 18px rgba(37, 99, 235, .20);
+            }
+
+            .brand h1 {
+                color: var(--primary);
+                font-size: 27px;
+                letter-spacing: 1px;
+            }
+
+            .brand p {
+                color: #9ca3af;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+
+            .menu-title {
+                color: #9ca3af;
+                font-size: 11px;
+                font-weight: bold;
+
+                margin: 0 10px 10px;
+
+                text-transform: uppercase;
+                letter-spacing: .5px;
+            }
+
+            .menu {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .menu a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+
+                padding: 12px 14px;
+
+                border-radius: 11px;
+
+                color: #4b5563;
+
+                font-size: 14px;
+
+                transition: .2s;
+            }
+
+            .menu a:hover {
+                background: var(--primary-light);
+                color: var(--primary);
+                transform: translateX(2px);
+            }
+
+            .menu a.active {
+                background: var(--primary);
+                color: white;
+
+                box-shadow: 0 7px 16px rgba(37, 99, 235, .18);
+            }
+
+            .menu-icon {
+                width: 22px;
+                text-align: center;
+                font-size: 16px;
+            }
+
+
+            /* =========================================
+            MAIN
+            ========================================= */
+
+            .main {
+                margin-left: 250px;
+                padding: 30px;
+                min-height: 100vh;
+            }
+
+
+            /* =========================================
+            TOPBAR
+            ========================================= */
+
+            .topbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                margin-bottom: 28px;
+            }
+
+            .welcome h2 {
+                font-size: 27px;
+                margin-bottom: 7px;
+            }
+
+            .welcome p {
+                color: var(--text-secondary);
+                font-size: 14px;
+            }
+
+            .profile {
+                display: flex;
+                align-items: center;
+                gap: 11px;
+
+                background: white;
+
+                padding: 8px 13px 8px 8px;
+
+                border: 1px solid var(--border);
+                border-radius: 13px;
+            }
+
+            .profile-avatar {
+                width: 43px;
+                height: 43px;
+
+                border-radius: 12px;
+
+                background: var(--primary);
+                color: white;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                font-weight: bold;
+                font-size: 17px;
+            }
+
+            .profile-info strong {
+                display: block;
+                font-size: 14px;
+                margin-bottom: 3px;
+            }
+
+            .profile-info span {
+                color: #9ca3af;
+                font-size: 12px;
+            }
+            
+
+
+            /* =========================================
+            QUICK INFO
+            ========================================= */
+
+            .quick-info {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+
+                margin-bottom: 25px;
+            }
+
+            .stat-card {
+                background: white;
+
+                border: 1px solid var(--border);
+                border-radius: 16px;
+
+                padding: 20px;
+
+                display: flex;
+                align-items: center;
+
+                gap: 15px;
+
+                transition: .2s;
+            }
+
+            .stat-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, .05);
+            }
+
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+
+                flex-shrink: 0;
+
+                border-radius: 13px;
+
+                background: var(--primary-light);
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                font-size: 22px;
+            }
+
+            .stat-info span {
+                display: block;
+
+                color: var(--text-secondary);
+
+                font-size: 13px;
+
+                margin-bottom: 5px;
+            }
+
+            .stat-info strong {
+                font-size: 24px;
+                color: var(--text);
+            }
+
+
+            /* =========================================
+            CONTENT GRID
+            ========================================= */
+
+            .content-grid {
+                display: grid;
+
+                grid-template-columns: 2fr 1fr;
+
+                gap: 20px;
+            }
+
+            .card {
+                background: white;
+
+                border: 1px solid var(--border);
+
+                border-radius: 16px;
+
+                padding: 22px;
+
+                margin-bottom: 20px;
+            }
+
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                margin-bottom: 18px;
+            }
+
+            .card-header h3 {
+                font-size: 18px;
+            }
+
+            .card-header a {
+                color: var(--primary);
+
+                font-size: 13px;
+                font-weight: bold;
+            }
+
+            .card-header a:hover {
+                text-decoration: underline;
+            }
+
+
+            /* =========================================
+            JADWAL
+            ========================================= */
+
+            .schedule-item {
+                display: flex;
+                align-items: center;
+
+                gap: 15px;
+
+                padding: 14px;
+
+                background: #f8fafc;
+
+                border: 1px solid #f1f5f9;
+
+                border-radius: 12px;
+
+                margin-bottom: 10px;
+
+                transition: .2s;
+            }
+
+            .schedule-item:hover {
+                border-color: #bfdbfe;
+                background: #eff6ff;
+            }
+
+            .schedule-day {
+                width: 65px;
+
+                color: var(--primary);
+
+                font-weight: bold;
+
+                font-size: 13px;
+            }
+
+            .schedule-info {
+                flex: 1;
+            }
+
+            .schedule-info strong {
+                display: block;
+
+                margin-bottom: 5px;
+
+                font-size: 14px;
+            }
+
+            .schedule-info span {
+                color: var(--text-secondary);
+
+                font-size: 12px;
+            }
+
+
+            /* =========================================
+            NILAI KEHADIRAN
+            ========================================= */
+
+            .nilai-item {
+                display: flex;
+                align-items: center;
+
+                gap: 15px;
+
+                padding: 14px;
+
+                background: #f8fafc;
+
+                border: 1px solid #f1f5f9;
+
+                border-radius: 12px;
+
+                margin-bottom: 10px;
+
+                transition: .2s;
+            }
+
+            .nilai-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .nilai-item:hover {
+                border-color: #bfdbfe;
+                background: #eff6ff;
+            }
+
+            .nilai-icon {
+                width: 45px;
+                height: 45px;
+
+                flex-shrink: 0;
+
+                border-radius: 12px;
+
+                background: #dcfce7;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                font-size: 20px;
+            }
+
+            .nilai-info {
+                flex: 1;
+            }
+
+            .nilai-info strong {
+                display: block;
+
+                margin-bottom: 5px;
+
+                font-size: 14px;
+            }
+
+            .nilai-info span {
+                color: var(--text-secondary);
+
+                font-size: 12px;
+            }
+
+            .nilai-badge {
+                min-width: 52px;
+
+                padding: 9px 12px;
+
+                background: #eff6ff;
+
+                border: 1px solid #bfdbfe;
+
+                border-radius: 10px;
+
+                color: var(--primary);
+
+                font-size: 18px;
+
+                font-weight: bold;
+
+                text-align: center;
+            }
+
+
+            /* =========================================
+            PENGUMUMAN
+            ========================================= */
+
+            .announcement-item {
+                padding: 14px 0;
 
                 border-bottom: 1px solid var(--border);
             }
 
-            .main {
-                margin-left: 0;
-
-                padding: 20px;
+            .announcement-item:first-child {
+                padding-top: 0;
             }
 
-            .topbar {
-                align-items: flex-start;
+            .announcement-item:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
             }
 
-            .profile {
-                display: none;
+            .announcement-item strong {
+                display: block;
+
+                font-size: 14px;
+
+                margin-bottom: 6px;
             }
+
+            .announcement-item p {
+                color: var(--text-secondary);
+
+                font-size: 12px;
+
+                line-height: 1.6;
+            }
+
+            .announcement-date {
+                display: block;
+
+                color: #9ca3af;
+
+                font-size: 11px;
+
+                margin-top: 7px;
+            }
+
+
+            /* =========================================
+            EKSKUL
+            ========================================= */
 
             .ekskul-grid {
-                grid-template-columns: 1fr;
+                display: grid;
+
+                grid-template-columns: repeat(3, 1fr);
+
+                gap: 15px;
             }
 
-            .nilai-item {
-                gap: 10px;
+            .ekskul-card {
+                overflow: hidden;
+
+                border: 1px solid var(--border);
+
+                border-radius: 13px;
+
+                background: white;
+
+                transition: .2s;
             }
 
-            .nilai-badge {
-                min-width: 48px;
-                padding: 8px 10px;
+            .ekskul-card:hover {
+                transform: translateY(-4px);
+
+                box-shadow: 0 10px 25px rgba(0, 0, 0, .07);
+
+                border-color: #bfdbfe;
             }
+
+            .ekskul-image {
+                height: 120px;
+
+                background: linear-gradient(
+                    135deg,
+                    #dbeafe,
+                    #eff6ff
+                );
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                color: var(--primary);
+
+                font-size: 16px;
+
+                font-weight: bold;
+            }
+
+            .ekskul-body {
+                padding: 15px;
+            }
+
+            .ekskul-body h4 {
+                font-size: 15px;
+
+                margin-bottom: 7px;
+            }
+
+            .ekskul-body p {
+                color: var(--text-secondary);
+
+                font-size: 12px;
+
+                line-height: 1.5;
+
+                height: 36px;
+
+                overflow: hidden;
+
+                margin-bottom: 13px;
+            }
+
+            .detail-button {
+                display: inline-block;
+
+                background: var(--primary);
+
+                color: white;
+
+                padding: 8px 12px;
+
+                border-radius: 8px;
+
+                font-size: 12px;
+
+                font-weight: bold;
+
+                transition: .2s;
+            }
+
+            .detail-button:hover {
+                background: var(--primary-dark);
+            }
+
+
+            /* =========================================
+            ABOUT
+            ========================================= */
+
+            .about-box {
+                color: var(--text-secondary);
+
+                font-size: 13px;
+
+                line-height: 1.7;
+            }
+
+            .about-highlight {
+                margin-top: 14px;
+
+                padding: 12px;
+
+                background: var(--primary-light);
+
+                border-radius: 10px;
+
+                color: var(--primary);
+
+                font-size: 12px;
+
+                line-height: 1.6;
+            }
+
+
+            /* =========================================
+            EMPTY DATA
+            ========================================= */
+
+            .empty {
+                text-align: center;
+
+                padding: 25px;
+
+                color: #9ca3af;
+
+                font-size: 13px;
+            }
+
+
+            /* =========================================
+            RESPONSIVE
+            ========================================= */
+
+            @media (max-width: 1100px) {
+
+                .quick-info {
+                    grid-template-columns: 1fr;
+                }
+
+                .content-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .ekskul-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+
+            @media (max-width: 700px) {
+
+                .sidebar {
+                    position: relative;
+
+                    width: 100%;
+
+                    height: auto;
+
+                    border-right: none;
+
+                    border-bottom: 1px solid var(--border);
+                }
+
+                .main {
+                    margin-left: 0;
+
+                    padding: 20px;
+                }
+
+                .topbar {
+                    align-items: flex-start;
+                }
+
+                .profile {
+                    display: none;
+                }
+
+                .ekskul-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .nilai-item {
+                    gap: 10px;
+                }
+
+                .nilai-badge {
+                    min-width: 48px;
+                    padding: 8px 10px;
+                }
+            }
+
+            
+
+
+    /* =========================================
+    TAMBAHAN RESPONSIVE EKSPLORE
+    Sidebar tetap di kiri pada tampilan HP
+    Kode lama tidak perlu dihapus
+    ========================================= */
+
+    @media (max-width: 700px) {
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 165px;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 18px 8px;
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            border-bottom: none;
+            z-index: 1000;
         }
-    </style>
 
-</head>
+        .brand h1 {
+            font-size: 18px;
+            letter-spacing: 0;
+        }
+
+        .brand p {
+            font-size: 10px;
+        }
+
+        .menu-title {
+            font-size: 9px;
+            margin-left: 6px;
+        }
+
+        .menu a {
+            gap: 7px;
+            padding: 11px 7px;
+            font-size: 11px;
+        }
+
+        .menu-icon {
+            width: 20px;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        .main {
+            margin-left: 165px;
+            padding: 14px;
+            min-width: 0;
+        }
+
+        .topbar {
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .welcome h2 {
+            font-size: 19px;
+            overflow-wrap: anywhere;
+        }
+
+        .welcome p {
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .quick-info {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .content-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0;
+        }
+
+        .card {
+            padding: 14px;
+            min-width: 0;
+        }
+
+        .card-header {
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .card-header h3 {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .card-header a {
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .ekskul-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .schedule-item,
+        .nilai-item {
+            gap: 8px;
+            padding: 10px;
+        }
+
+        .schedule-info,
+        .nilai-info {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .schedule-info span,
+        .nilai-info span {
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .nilai-badge {
+            min-width: 36px;
+            padding: 7px 5px;
+            font-size: 14px;
+        }
+
+        .profile {
+            display: none;
+        }
+    }
+
+    /* HP dengan layar sangat kecil */
+    @media (max-width: 360px) {
+        .sidebar {
+            width: 140px;
+            padding: 15px 6px;
+        }
+
+        .main {
+            margin-left: 140px;
+            padding: 10px;
+        }
+
+        .brand h1 {
+            font-size: 16px;
+        }
+
+        .menu a {
+            gap: 5px;
+            padding: 10px 5px;
+            font-size: 10px;
+        }
+
+        .welcome h2 {
+            font-size: 17px;
+        }
+
+        .card {
+            padding: 11px;
+        }
+    }
 
 
-<body>
+    /* PERBAIKAN LEBAR DASHBOARD HP */
+    @media (max-width: 700px) {
+        .sidebar {
+            width: 135px;
+            padding: 18px 7px;
+        }
 
+        .main {
+            margin-left: 135px;
+            padding: 12px 10px;
+            width: calc(100% - 135px);
+        }
 
-<!-- =========================================
-     SIDEBAR
-========================================== -->
+        .brand h1 {
+            font-size: 16px;
+        }
 
-<aside class="sidebar">
+        .menu a {
+            gap: 6px;
+            padding: 11px 6px;
+            font-size: 10px;
+        }
 
-    <div class="brand">
+        .menu-icon {
+            width: 18px;
+            font-size: 13px;
+        }
 
-        <div class="brand-logo">
-            E
-        </div>
+        .card {
+            padding: 12px;
+        }
 
-        <h1>
-            EKSPLORE
-        </h1>
+        .card-header {
+            flex-wrap: wrap;
+        }
 
-        <p>
-            Sistem Ekstrakurikuler
-        </p>
+        .schedule-item,
+        .nilai-item {
+            padding: 9px 7px;
+        }
+    }
 
-    </div>
+    /* HP yang sangat kecil */
+    @media (max-width: 360px) {
+        .sidebar {
+            width: 120px;
+        }
 
+        .main {
+            margin-left: 120px;
+            width: calc(100% - 120px);
+            padding: 9px 7px;
+        }
+    }
 
-    <div class="menu-title">
-        Menu Utama
-    </div>
+    
+/* TAMBAHAN: LEBARKAN KONTEN DASHBOARD HP */
+@media (max-width: 700px) {
+    .sidebar {
+        width: 110px;
+        padding: 16px 6px;
+    }
 
+    .main {
+        margin-left: 110px;
+        width: calc(100% - 110px);
+        padding: 12px;
+    }
 
-    <nav class="menu">
+    .brand h1 {
+        font-size: 13px;
+        letter-spacing: 0;
+    }
 
-        <a
-            href="{{ route('dashboard') }}"
-            class="active"
-        >
-            <span class="menu-icon">🏠</span>
-            <span>Beranda</span>
-        </a>
+    .brand p {
+        font-size: 9px;
+        line-height: 1.4;
+    }
 
+    .brand-logo {
+        width: 44px;
+        height: 44px;
+    }
 
-        <a href="{{ route('ekskul.index') }}">
-            <span class="menu-icon">🎯</span>
-            <span>Daftar Ekskul</span>
-        </a>
+    .menu-title {
+        font-size: 8px;
+        margin-left: 4px;
+    }
 
+    .menu a {
+        gap: 5px;
+        padding: 11px 5px;
+        font-size: 9px;
+    }
 
-        <a href="{{ route('jadwal.index') }}">
-            <span class="menu-icon">📅</span>
-            <span>Jadwal</span>
-        </a>
+    .menu-icon {
+        width: 16px;
+        font-size: 12px;
+    }
 
+    .main .welcome h2 {
+        font-size: 17px;
+    }
 
-        <a href="{{ route('pendaftaran.index') }}">
-            <span class="menu-icon">📝</span>
-            <span>Pendaftaran</span>
-        </a>
+    .main .welcome p {
+        font-size: 10px;
+    }
 
+    .stat-card {
+        padding: 14px;
+        gap: 10px;
+    }
 
-        <a href="{{ route('kehadiran.index') }}">
-            <span class="menu-icon">✅</span>
-            <span>Kehadiran</span>
-        </a>
+    .card {
+        padding: 13px;
+    }
+}
 
+/* Layar HP sangat kecil */
+@media (max-width: 360px) {
+    .sidebar {
+        width: 100px;
+    }
 
-        <a href="{{ route('prestasi.index') }}">
-            <span class="menu-icon">🏆</span>
-            <span>Prestasi</span>
-        </a>
+    .main {
+        margin-left: 100px;
+        width: calc(100% - 100px);
+        padding: 9px;
+    }
+}
 
+        
 
-        {{-- =========================
-             GALERI
-        ========================= --}}
+/* =========================================
+   NAVBAR DESKTOP DAN MOBILE EKSPLORE
+========================================= */
 
-        <a href="{{ route('galeri.index') }}">
-            <span class="menu-icon">🖼️</span>
-            <span>Galeri</span>
-        </a>
+.mobile-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 24px;
+    background: #ffffff;
+    color: #2563eb;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+}
 
+.mobile-navbar-brand {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-right: auto;
+}
 
-        <a href="{{ route('notifikasi.index') }}">
-            <span class="menu-icon">🔔</span>
-            <span>Notifikasi</span>
-        </a>
+.mobile-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 25px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
 
+.mobile-sidebar-overlay {
+    display: none;
+}
 
-        <a href="{{ route('profile.index') }}">
-            <span class="menu-icon">👤</span>
-            <span>Profil</span>
-        </a>
-
-        <form action="{{ route('logout') }}" method="POST" style="margin: 0;"
-      onsubmit="return confirm('Apakah Anda yakin ingin keluar?');">
-    @csrf
-
-    <button type="submit" style="
-        width: 100%;
-        border: none;
-        background: transparent;
-        cursor: pointer;
+/* TAMPILAN HP */
+@media (max-width: 700px) {
+    .mobile-navbar {
         display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 14px;
-        border-radius: 11px;
-        color: #dc2626;
-        font-size: 14px;
-        text-align: left;
-        transition: .2s;
-    ">
-        <span class="menu-icon">🚪</span>
-        <span>Logout</span>
-    </button>
-</form>
+        min-height: 58px;
+        padding: 10px 14px;
+        background: #111111;
+        color: #ffffff;
+    }
 
-    </nav>
+    .mobile-navbar-brand {
+        font-size: 17px;
+        color: #ffffff;
+    }
 
-</aside>
+    .mobile-menu-button {
+        display: flex;
+        background: transparent;
+        color: #ffffff;
+    }
+
+    .sidebar {
+    position: fixed !important;
+    top: 58px;
+    left: 0;
+    bottom: 0;
+    width: 220px !important;
+    max-width: 85vw;
+    height: calc(100vh - 58px);
+    height: calc(100dvh - 58px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1100;
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--white);
+    transition: transform 0.25s ease, visibility 0.25s ease;
+    transform: translateX(-100%);
+    visibility: hidden;
+}
+
+.sidebar.mobile-open {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+    .mobile-sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 950;
+    }
+
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 14px;
+        min-width: 0;
+    }
+
+    .quick-info {
+        grid-template-columns: 1fr;
+    }
+
+    .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ekskul-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 360px) {
+    .ekskul-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .main {
+        padding: 10px;
+    }
+}
+
+        
+
+/* =========================================
+   NAVBAR EKSPLORE - LAPTOP, TABLET, DAN HP
+========================================= */
+
+.mobile-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    min-height: 64px;
+    padding: 10px 20px;
+    background: #ffffff;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 1200;
+}
+
+.mobile-navbar-brand {
+    margin-right: auto;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #111827;
+}
+
+.mobile-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 40px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.mobile-menu-button:hover {
+    background: #1d4ed8;
+}
+
+.mobile-sidebar-overlay {
+    display: none;
+}
+
+.mobile-sidebar-overlay.show {
+    display: block;
+    position: fixed;
+    inset: 64px 0 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1090;
+}
+
+/* SIDEBAR DESKTOP */
+.sidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    height: calc(100vh - 64px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    z-index: 1100;
+    transition: transform 0.25s ease;
+}
+
+.sidebar.desktop-hidden {
+    transform: translateX(-100%);
+}
+
+.main {
+    min-width: 0;
+    transition: margin-left 0.25s ease, width 0.25s ease;
+}
+
+.main.desktop-full-width {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+/* TABLET DAN HP */
+@media (max-width: 700px) {
+    .mobile-navbar {
+        min-height: 58px;
+        padding: 10px 14px;
+    }
+
+    .mobile-navbar-brand {
+        font-size: 17px;
+    }
+
+    .mobile-sidebar-overlay.show {
+        inset: 58px 0 0;
+    }
+
+    .sidebar {
+        top: 58px;
+        bottom: 0;
+        left: 0;
+        width: 220px !important;
+        max-width: 85vw;
+        height: calc(100vh - 58px);
+        height: calc(100dvh - 58px);
+        padding: 18px 10px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: #ffffff;
+        border-right: 1px solid #e5e7eb;
+        border-bottom: none;
+        transform: translateX(-100%);
+        visibility: hidden;
+        transition: transform 0.25s ease, visibility 0.25s ease;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .sidebar.desktop-hidden {
+        transform: translateX(-100%);
+    }
+
+    .main,
+    .main.desktop-full-width {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 14px;
+    }
+
+    .brand h1 {
+        font-size: 18px;
+    }
+
+    .menu a {
+        gap: 9px;
+        padding: 11px 8px;
+        font-size: 12px;
+    }
+
+    .quick-info {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .ekskul-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .topbar {
+        gap: 10px;
+    }
+
+    .welcome {
+        min-width: 0;
+    }
+
+    .welcome h2 {
+        font-size: 19px;
+        overflow-wrap: anywhere;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .card {
+        min-width: 0;
+        padding: 14px;
+    }
+
+    .schedule-item,
+    .nilai-item {
+        min-width: 0;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .schedule-info,
+    .nilai-info {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+}
+
+/* HP DENGAN LAYAR KECIL */
+@media (max-width: 360px) {
+    .mobile-navbar {
+        padding: 9px 10px;
+    }
+
+    .mobile-navbar-brand {
+        font-size: 16px;
+    }
+
+    .main,
+    .main.desktop-full-width {
+        padding: 10px;
+    }
+
+    .ekskul-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .card {
+        padding: 11px;
+    }
+}
 
 
+        </style>
 
-<!-- =========================================
-     MAIN
-========================================== -->
-
-<main class="main">
+    </head>
 
 
-    <!-- =====================================
-         TOPBAR
-    ====================================== -->
+    <body>
 
-    <div class="topbar">
+        
+<!-- NAVBAR HAMBURGER MOBILE EKSPLORE -->
 
-        <div class="welcome">
+<header class="mobile-navbar">
+    <div class="mobile-navbar-left">
+        <button
+            type="button"
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            aria-label="Buka menu"
+            aria-expanded="false"
+        >☰</button>
 
-            <h2>
-                Halo,
-                {{ $siswa->name ?? $siswa->nama ?? 'Siswa' }}
-                👋
-            </h2>
+    </div>
+</header>
+
+<div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+></div>
+
+
+    <!-- =========================================
+        SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                E
+            </div>
+
+            <h1>
+                EKSPLORE
+            </h1>
 
             <p>
-                Selamat datang kembali di EKSPLORE.
+                Sistem Ekstrakurikuler
             </p>
 
         </div>
 
 
-        <div class="profile">
-
-            <div class="profile-avatar">
-
-                {{
-                    strtoupper(
-                        substr(
-                            $siswa->name ?? $siswa->nama ?? 'S',
-                            0,
-                            1
-                        )
-                    )
-                }}
-
-            </div>
-
-
-            <div class="profile-info">
-
-                <strong>
-                    {{ $siswa->name ?? $siswa->nama ?? 'Siswa' }}
-                </strong>
-
-                <span>
-                    Peserta Didik
-                </span>
-
-            </div>
-
+        <div class="menu-title">
+            Menu Utama
         </div>
 
+
+        <nav class="menu">
+
+            <a
+                href="{{ route('dashboard') }}"
+                class="active"
+            >
+                <span class="menu-icon">🏠</span>
+                <span>Beranda</span>
+            </a>
+
+
+            <a href="{{ route('ekskul.index') }}">
+                <span class="menu-icon">🎯</span>
+                <span>Daftar Ekskul</span>
+            </a>
+
+            <a href="{{ route('pindah_ekskul.index') }}">
+                <span class="menu-icon">🔄</span>
+                <span>Pindah Ekskul</span>
+            </a>
+
+
+            <a href="{{ route('jadwal.index') }}">
+                <span class="menu-icon">📅</span>
+                <span>Jadwal</span>
+            </a>
+
+
+            <a href="{{ route('pendaftaran.index') }}">
+                <span class="menu-icon">📝</span>
+                <span>Pendaftaran</span>
+            </a>
+
+
+            <a href="{{ route('kehadiran.index') }}">
+                <span class="menu-icon">✅</span>
+                <span>Kehadiran</span>
+            </a>
+
+
+            <a href="{{ route('prestasi.index') }}">
+                <span class="menu-icon">🏆</span>
+                <span>Prestasi</span>
+            </a>
+
+
+            {{-- =========================
+                GALERI
+            ========================= --}}
+
+            <a href="{{ route('galeri.index') }}">
+                <span class="menu-icon">🖼️</span>
+                <span>Galeri</span>
+            </a>
+
+
+            <a href="{{ route('notifikasi.index') }}">
+                <span class="menu-icon">🔔</span>
+                <span>Notifikasi</span>
+            </a>
+
+            <form action="{{ route('logout') }}" method="POST" style="margin: 0;"
+        onsubmit="return confirm('Apakah Anda yakin ingin keluar?');">
+        @csrf
+
+        <button type="submit" style="
+            width: 100%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 11px;
+            color: #dc2626;
+            font-size: 14px;
+            text-align: left;
+            transition: .2s;
+        ">
+            <span class="menu-icon">🚪</span>
+            <span>Logout</span>
+        </button>
+    </form>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================================
+        MAIN
+    ========================================== -->
+
+    <main class="main">
+
+
+        <!-- =====================================
+            TOPBAR
+        ====================================== -->
+
+        <div class="topbar">
+
+            <div class="welcome">
+
+                <h2>
+                    Halo,
+                    {{ $siswa->name ?? $siswa->nama ?? 'Siswa' }}
+                    👋
+                </h2>
+
+                <p>
+                    Selamat datang kembali di EKSPLORE.
+                </p>
+
+            </div>
+
+
+        
+    <a href="{{ route('profile.index') }}" class="profile" style="text-decoration: none; color: inherit; cursor: pointer;">
+
+        <div class="profile-avatar">
+            {{
+                strtoupper(
+                    substr(
+                        $siswa->name ?? $siswa->nama ?? 'S',
+                        0,
+                        1
+                    )
+                )
+            }}
+        </div>
+
+        <div class="profile-info">
+            <strong>
+                {{ $siswa->name ?? $siswa->nama ?? 'Siswa' }}
+            </strong>
+
+            <span>
+                Peserta Didik
+            </span>
+        </div>
+
+    </a>
     </div>
 
+        <!-- =====================================
+            STATISTICS
+        ====================================== -->
+
+        <section class="quick-info">
 
 
-    <!-- =====================================
-         STATISTICS
-    ====================================== -->
+            <div class="stat-card">
 
-    <section class="quick-info">
+                <div class="stat-icon">
+                    🎯
+                </div>
 
+                <div class="stat-info">
 
-        <div class="stat-card">
+                    <span>
+                        Total Ekskul
+                    </span>
 
-            <div class="stat-icon">
-                🎯
-            </div>
-
-            <div class="stat-info">
-
-                <span>
-                    Total Ekskul
-                </span>
-
-                <strong>
-                    {{ $dataDashboard['jumlahEkskul'] }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon">
-                📅
-            </div>
-
-            <div class="stat-info">
-
-                <span>
-                    Total Jadwal
-                </span>
-
-                <strong>
-                    {{ $dataDashboard['jumlahJadwal'] }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon">
-                📢
-            </div>
-
-            <div class="stat-info">
-
-                <span>
-                    Pengumuman
-                </span>
-
-                <strong>
-                    {{ $dataDashboard['jumlahPengumuman'] }}
-                </strong>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================
-         CONTENT
-    ====================================== -->
-
-    <div class="content-grid">
-
-
-        <!-- =================================
-             LEFT CONTENT
-        ================================== -->
-
-        <div>
-
-
-            <!-- JADWAL -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <h3>
-                        📅 Jadwal Ekstrakurikuler
-                    </h3>
-
-                    <a href="{{ route('jadwal.index') }}">
-                        Lihat semua
-                    </a>
+                    <strong>
+                        {{ $dataDashboard['jumlahEkskul'] }}
+                    </strong>
 
                 </div>
 
-
-                @forelse ($jadwalHariIni as $jadwal)
-
-                    <div class="schedule-item">
-
-                        <div class="schedule-day">
-
-                            {{ $jadwal->hari }}
-
-                        </div>
+            </div>
 
 
-                        <div class="schedule-info">
+            <div class="stat-card">
 
-                            <strong>
+                <div class="stat-icon">
+                    📅
+                </div>
 
-                                {{
-                                    $jadwal->ekstrakurikuler->nama_ekskul
-                                    ?? 'Ekskul'
-                                }}
+                <div class="stat-info">
 
-                            </strong>
+                    <span>
+                        Total Jadwal
+                    </span>
 
+                    <strong>
+                        {{ $dataDashboard['jumlahJadwal'] }}
+                    </strong>
 
-                            <span>
-
-                                {{
-                                    \Carbon\Carbon::parse(
-                                        $jadwal->jam_mulai
-                                    )->format('H:i')
-                                }}
-
-                                -
-
-                                {{
-                                    \Carbon\Carbon::parse(
-                                        $jadwal->jam_selesai
-                                    )->format('H:i')
-                                }}
-
-                                •
-                                {{ $jadwal->lokasi }}
-
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                @empty
-
-                    <div class="empty">
-
-                        📅
-
-                        <br><br>
-
-                        Belum ada jadwal ekstrakurikuler.
-
-                    </div>
-
-                @endforelse
+                </div>
 
             </div>
 
 
+            <div class="stat-card">
 
-            <!-- NILAI KEHADIRAN -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <h3>
-                        🎯 Nilai Kehadiran Terbaru
-                    </h3>
-
-                    <a href="{{ route('kehadiran.index') }}">
-                        Lihat semua
-                    </a>
-
+                <div class="stat-icon">
+                    📢
                 </div>
 
+                <div class="stat-info">
 
-                @forelse ($nilaiAbsensi as $item)
+                    <span>
+                        Pengumuman
+                    </span>
 
-                    <div class="nilai-item">
+                    <strong>
+                        {{ $dataDashboard['jumlahPengumuman'] }}
+                    </strong>
 
-                        <div class="nilai-icon">
-                            🎯
-                        </div>
-
-
-                        <div class="nilai-info">
-
-                            <strong>
-                                {{ $item->anggota->ekstrakurikuler->nama_ekskul ?? 'Ekskul' }}
-                            </strong>
-
-                            <span>
-
-                                📅
-                                {{ $item->tanggal?->format('d-m-Y') ?? '-' }}
-
-                                •
-
-                                ✅ Hadir
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="nilai-badge">
-                            {{ $item->nilai }}
-                        </div>
-
-                    </div>
-
-                @empty
-
-                    <div class="empty">
-
-                        🎯
-
-                        <br><br>
-
-                        Belum ada nilai kehadiran.
-
-                    </div>
-
-                @endforelse
+                </div>
 
             </div>
 
+        </section>
 
 
-            <!-- EKSKUL -->
 
-            <div class="card">
+        <!-- =====================================
+            CONTENT
+        ====================================== -->
 
-                <div class="card-header">
-
-                    <h3>
-                        🎯 Ekstrakurikuler
-                    </h3>
-
-                    <a href="{{ route('ekskul.index') }}">
-                        Lihat semua
-                    </a>
-
-                </div>
+        <div class="content-grid">
 
 
-                <div class="ekskul-grid">
+            <!-- =================================
+                LEFT CONTENT
+            ================================== -->
+
+            <div>
 
 
-                    @forelse ($ekskul as $item)
+                <!-- JADWAL -->
 
-                        <div class="ekskul-card">
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            📅 Jadwal Ekstrakurikuler
+                        </h3>
+
+                        <a href="{{ route('jadwal.index') }}">
+                            Lihat semua
+                        </a>
+
+                    </div>
 
 
-                            <div class="ekskul-image">
+                    @forelse ($jadwalHariIni as $jadwal)
 
-                                🎯
+                        <div class="schedule-item">
 
-                                &nbsp;
+                            <div class="schedule-day">
 
-                                EKSPLORE
+                                {{ $jadwal->hari }}
 
                             </div>
 
 
-                            <div class="ekskul-body">
+                            <div class="schedule-info">
 
-                                <h4>
-                                    {{ $item->nama_ekskul }}
-                                </h4>
-
-
-                                <p>
+                                <strong>
 
                                     {{
-                                        $item->deskripsi
-                                        ?? 'Kegiatan ekstrakurikuler sekolah.'
+                                        $jadwal->ekstrakurikuler->nama_ekskul
+                                        ?? 'Ekskul'
                                     }}
 
-                                </p>
+                                </strong>
 
 
-                                <a
-                                    href="{{ route('ekskul.show', $item->id) }}"
-                                    class="detail-button"
-                                >
-                                    Lihat Detail
-                                </a>
+                                <span>
+
+                                    {{
+                                        \Carbon\Carbon::parse(
+                                            $jadwal->jam_mulai
+                                        )->format('H:i')
+                                    }}
+
+                                    -
+
+                                    {{
+                                        \Carbon\Carbon::parse(
+                                            $jadwal->jam_selesai
+                                        )->format('H:i')
+                                    }}
+
+                                    •
+                                    {{ $jadwal->lokasi }}
+
+                                </span>
 
                             </div>
 
@@ -1230,169 +1749,379 @@
 
                         <div class="empty">
 
-                            Belum ada data ekstrakurikuler.
+                            📅
+
+                            <br><br>
+
+                            Belum ada jadwal ekstrakurikuler.
 
                         </div>
 
                     @endforelse
 
+                </div>
+
+
+
+                <!-- NILAI KEHADIRAN -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            🎯 Nilai Kehadiran Terbaru
+                        </h3>
+
+                        <a href="{{ route('kehadiran.index') }}">
+                            Lihat semua
+                        </a>
+
+                    </div>
+
+
+                    @forelse ($nilaiAbsensi as $item)
+
+                        <div class="nilai-item">
+
+                            <div class="nilai-icon">
+                                🎯
+                            </div>
+
+
+                            <div class="nilai-info">
+
+                                <strong>
+                                    {{ $item->anggota->ekstrakurikuler->nama_ekskul ?? 'Ekskul' }}
+                                </strong>
+
+                                <span>
+
+                                    📅
+                                    {{ $item->tanggal?->format('d-m-Y') ?? '-' }}
+
+                                    •
+
+                                    ✅ Hadir
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="nilai-badge">
+                                {{ $item->nilai }}
+                            </div>
+
+                        </div>
+
+                    @empty
+
+                        <div class="empty">
+
+                            🎯
+
+                            <br><br>
+
+                            Belum ada nilai kehadiran.
+
+                        </div>
+
+                    @endforelse
 
                 </div>
+
+
+
+                <!-- EKSKUL -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            🎯 Ekstrakurikuler
+                        </h3>
+
+                        <a href="{{ route('ekskul.index') }}">
+                            Lihat semua
+                        </a>
+
+                    </div>
+
+
+                    <div class="ekskul-grid">
+
+
+                        @forelse ($ekskul as $item)
+
+                            <div class="ekskul-card">
+
+
+                                <div class="ekskul-image">
+
+                                    🎯
+
+                                    &nbsp;
+
+                                    EKSPLORE
+
+                                </div>
+
+
+                                <div class="ekskul-body">
+
+                                    <h4>
+                                        {{ $item->nama_ekskul }}
+                                    </h4>
+
+
+                                    <p>
+
+                                        {{
+                                            $item->deskripsi
+                                            ?? 'Kegiatan ekstrakurikuler sekolah.'
+                                        }}
+
+                                    </p>
+
+
+                                    <a
+                                        href="{{ route('ekskul.show', $item->id) }}"
+                                        class="detail-button"
+                                    >
+                                        Lihat Detail
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        @empty
+
+                            <div class="empty">
+
+                                Belum ada data ekstrakurikuler.
+
+                            </div>
+
+                        @endforelse
+
+
+                    </div>
+
+                </div>
+
 
             </div>
 
 
-        </div>
+
+            <!-- =================================
+                RIGHT CONTENT
+            ================================== -->
+
+            <div>
 
 
+            <!-- =================================
+                PENGUMUMAN
+            ================================== -->
 
-        <!-- =================================
-             RIGHT CONTENT
-        ================================== -->
+        <div class="card">
 
-        <div>
+        <div class="card-header">
 
+            <h3>
+                📢 Pengumuman
+            </h3>
 
-        <!-- =================================
-            PENGUMUMAN
-        ================================== -->
-
-    <div class="card">
-
-    <div class="card-header">
-
-        <h3>
-            📢 Pengumuman
-        </h3>
-
-        <a href="{{ route('pengumuman.index') }}">
-            Semua
-        </a>
-
-    </div>
-
-
-    @forelse ($pengumuman as $item)
-
-        <div class="announcement-item">
-
-            <!-- JUDUL -->
-            <strong>
-                {{ $item->judul }}
-            </strong>
-
-
-            <!-- EKSKUL -->
-            <span style="
-                display: inline-block;
-                margin-top: 5px;
-                margin-bottom: 7px;
-                padding: 5px 9px;
-                background: #eff6ff;
-                color: #2563eb;
-                border-radius: 8px;
-                font-size: 11px;
-                font-weight: bold;
-            ">
-                🎯
-                {{ $item->ekstrakurikuler?->nama_ekskul ?? 'Semua Ekskul' }}
-            </span>
-
-
-            <!-- PEMBINA / GURU -->
-            <span style="
-                display: block;
-                color: #6b7280;
-                font-size: 11px;
-                margin-bottom: 8px;
-            ">
-                👨‍🏫
-                Pembina:
-                {{ $item->ekstrakurikuler?->pembina?->name ?? 'Belum ditentukan' }}
-            </span>
-
-
-            <!-- ISI -->
-            <p>
-                {{ $item->isi }}
-            </p>
-
-
-            <!-- TANGGAL -->
-            <span class="announcement-date">
-
-                📅
-
-                {{
-                    \Carbon\Carbon::parse(
-                        $item->tanggal
-                    )->format('d M Y')
-                }}
-
-            </span>
+            <a href="{{ route('pengumuman.index') }}">
+                Semua
+            </a>
 
         </div>
 
-    @empty
 
-        <div class="empty">
+        @forelse ($pengumuman as $item)
 
-            📢
+            <div class="announcement-item">
 
-            <br><br>
-
-            Belum ada pengumuman.
-
-        </div>
-
-    @endforelse
-
-</div>
+                <!-- JUDUL -->
+                <strong>
+                    {{ $item->judul }}
+                </strong>
 
 
-
-            <!-- TENTANG EKSPLORE -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <h3>
-                        💡 Tentang EKSPLORE
-                    </h3>
-
-                </div>
-
-
-                <div class="about-box">
-
-                    EKSPLORE merupakan sistem informasi
-                    ekstrakurikuler SMK Budi Bakti Ciwidey
-                    yang membantu siswa menemukan,
-                    mendaftar, dan mengikuti kegiatan
-                    ekstrakurikuler sekolah.
-
-                </div>
+                <!-- EKSKUL -->
+                <span style="
+                    display: inline-block;
+                    margin-top: 5px;
+                    margin-bottom: 7px;
+                    padding: 5px 9px;
+                    background: #eff6ff;
+                    color: #2563eb;
+                    border-radius: 8px;
+                    font-size: 11px;
+                    font-weight: bold;
+                ">
+                    🎯
+                    {{ $item->ekstrakurikuler?->nama_ekskul ?? 'Semua Ekskul' }}
+                </span>
 
 
-                <div class="about-highlight">
+                <!-- PEMBINA / GURU -->
+                <span style="
+                    display: block;
+                    color: #6b7280;
+                    font-size: 11px;
+                    margin-bottom: 8px;
+                ">
+                    👨‍🏫
+                    Pembina:
+                    {{ $item->ekstrakurikuler?->pembina?->name ?? 'Belum ditentukan' }}
+                </span>
 
-                    🎯 Temukan ekstrakurikuler yang sesuai,
-                    lihat jadwal kegiatan, lakukan
-                    pendaftaran, dan pantau aktivitas
-                    ekstrakurikuler melalui satu sistem.
 
-                </div>
+                <!-- ISI -->
+                <p>
+                    {{ $item->isi }}
+                </p>
+
+
+                <!-- TANGGAL -->
+                <span class="announcement-date">
+
+                    📅
+
+                    {{
+                        \Carbon\Carbon::parse(
+                            $item->tanggal
+                        )->format('d M Y')
+                    }}
+
+                </span>
 
             </div>
 
+        @empty
 
-        </div>
+            <div class="empty">
+
+                📢
+
+                <br><br>
+
+                Belum ada pengumuman.
+
+            </div>
+
+        @endforelse
 
     </div>
 
-</main>
 
-</body>
 
-</html>
+                <!-- TENTANG EKSPLORE -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            💡 Tentang EKSPLORE
+                        </h3>
+
+                    </div>
+
+
+                    <div class="about-box">
+
+                        EKSPLORE merupakan sistem informasi
+                        ekstrakurikuler SMK Budi Bakti Ciwidey
+                        yang membantu siswa menemukan,
+                        mendaftar, dan mengikuti kegiatan
+                        ekstrakurikuler sekolah.
+
+                    </div>
+
+
+                    <div class="about-highlight">
+
+                        🎯 Temukan ekstrakurikuler yang sesuai,
+                        lihat jadwal kegiatan, lakukan
+                        pendaftaran, dan pantau aktivitas
+                        ekstrakurikuler melalui satu sistem.
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </main>
+        
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuButton = document.getElementById('mobileMenuButton'); // Sesuaikan dengan id tombol hamburger kamu
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('mobileSidebarOverlay');
+    const main = document.querySelector('.main');
+
+    if (!menuButton || !sidebar) {
+        return;
+    }
+
+    // Fungsi cek apakah mode HP / layar kecil
+    function isMobile() {
+        return window.innerWidth <= 700;
+    }
+
+    // Logika Klik Tombol Hamburger (Toggle Buka / Tutup)
+    menuButton.addEventListener('click', function (e) {
+        e.stopPropagation();
+        
+        if (isMobile()) {
+            // Untuk Tampilan HP: Toggle class 'mobile-open'
+            sidebar.classList.toggle('mobile-open');
+            if (overlay) {
+                overlay.classList.toggle('show');
+            }
+        } else {
+            // Untuk Tampilan Desktop: Toggle class 'desktop-hidden'
+            sidebar.classList.toggle('desktop-hidden');
+            if (main) {
+                main.classList.toggle('desktop-full-width');
+            }
+        }
+    });
+
+    // Klik di luar sidebar / overlay untuk menutup
+    if (overlay) {
+        overlay.addEventListener('click', function () {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('show');
+        });
+    }
+
+    // Klik menu di dalam sidebar (khusus mobile) agar otomatis menutup saat diklik
+    sidebar.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            if (isMobile()) {
+                sidebar.classList.remove('mobile-open');
+                if (overlay) {
+                    overlay.classList.remove('show');
+                }
+            }
+        });
+    });
+});
+</script>
+
+    </body>
+
+    </html>
