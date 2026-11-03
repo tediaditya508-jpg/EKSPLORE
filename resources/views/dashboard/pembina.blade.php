@@ -770,6 +770,11 @@
                     <span>Pendaftaran</span>
                 </a>
 
+                <a href="{{ route('pembina.pindah_ekskul') }}">
+                    <span class="menu-icon">🔄</span>
+                    <span>Pengajuan Pindah Ekskul</span>
+                </a>
+
                 <a href="{{ route('pembina.prestasi') }}">
                     <span class="menu-icon">🏆</span>
                     <span>Prestasi</span>

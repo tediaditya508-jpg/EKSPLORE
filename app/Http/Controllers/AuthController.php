@@ -63,8 +63,6 @@ public function login(Request $request)
         ->onlyInput('email');
 }
 
-
-
     /*
     |--------------------------------------------------------------------------
     | REGISTER SISWA

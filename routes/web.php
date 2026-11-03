@@ -519,13 +519,15 @@ Route::middleware('role:pembina')->group(function () {
     |-------------------------------------------------------------------------- 
     */ 
  
-    // Melihat semua siswa yang mendaftar ekskul binaannya 
-    Route::get('/pembina/pendaftaran', [PendaftaranController::class, 'pembinaIndex']) 
-        ->name('pembina.pendaftaran'); 
- 
-    // Mengubah status menjadi diterima / ditolak 
-    Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateStatus']) 
-        ->name('pembina.pendaftaran.update'); 
+   // Melihat semua siswa yang mendaftar ekskul binaannya
+Route::get('/pembina/pendaftaran', [PendaftaranController::class, 'pembinaIndex'])
+    ->middleware('role:pembina')
+    ->name('pembina.pendaftaran');
+
+// Mengubah status menjadi diterima / ditolak
+Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateStatus'])
+    ->middleware('role:pembina')
+    ->name('pembina.pendaftaran.update'); 
  
  
     /* 

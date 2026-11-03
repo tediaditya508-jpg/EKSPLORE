@@ -45,7 +45,7 @@ class RoleAccessTest extends TestCase
     public function test_siswa_hanya_boleh_membuka_dashboard_siswa(): void
     {
         $siswa = $this->buatPengguna('siswa');
-
+        
         $this->actingAs($siswa);
 
         $this->get('/pembina/dashboard')->assertForbidden();
