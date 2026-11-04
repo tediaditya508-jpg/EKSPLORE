@@ -250,7 +250,7 @@
     height: 42px;
     border: 1px solid #374151;
     border-radius: 9px;
-    background: #1f2937;
+    background: #37211f;
     color: #ffffff;
     font-size: 24px;
     cursor: pointer;
@@ -298,7 +298,7 @@
 }
 
 .admin-sidebar a:hover {
-    background: #374151;
+    background: #513b37;
     color: #ffffff;
 }
 
@@ -448,16 +448,16 @@
 
     <h2>Menu Admin</h2>
 
-    <a href="{{ route('admin.ekstrakurikuler') }}">Ekstrakurikuler</a>
-    <a href="{{ route('admin.pengguna') }}">Pengguna</a>
-    <a href="{{ route('admin.jadwal') }}">Jadwal</a>
-    <a href="{{ route('admin.pendaftaran') }}">Pendaftaran</a>
-    <a href="{{ route('admin.anggota') }}">Anggota</a>
-    <a href="{{ route('admin.absensi') }}">Absensi</a>
-    <a href="{{ route('admin.prestasi') }}">Prestasi</a>
-    <a href="{{ route('admin.pengumuman') }}">Pengumuman</a>
-    <a href="{{ route('admin.galeri') }}">Galeri</a>
-    <a href="{{ route('admin.laporan') }}">Laporan</a>
+    <a href="{{ route('admin.ekstrakurikuler') }}">📚 Ekstrakurikuler</a>
+    <a href="{{ route('admin.pengguna') }}">👥 Pengguna</a>
+    <a href="{{ route('admin.jadwal') }}">📅 Jadwal</a>
+    <a href="{{ route('admin.pendaftaran') }}">📋 Pendaftaran</a>
+    <a href="{{ route('admin.anggota') }}">🎓 Anggota</a>
+    <a href="{{ route('admin.absensi') }}">📝 Absensi</a>
+    <a href="{{ route('admin.prestasi') }}">🏆 Prestasi</a>
+    <a href="{{ route('admin.pengumuman') }}">📢 Pengumuman</a>
+    <a href="{{ route('admin.galeri') }}">🖼️ Galeri</a>
+    <a href="{{ route('admin.laporan') }}">📊 Laporan</a>
 
 </aside>
 
