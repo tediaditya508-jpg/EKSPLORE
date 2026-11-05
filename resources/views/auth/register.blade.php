@@ -128,7 +128,7 @@
             <p>Daftar Akun Siswa</p>
         </div>
 
-        <form action="{{ route('register') }}" method="POST">
+        <form action="{{ route('register.process') }}" method="POST">
 
             @csrf
 
@@ -220,7 +220,7 @@
                 type="submit"
                 class="register-button"
             >
-                Daftar Akun
+                 Daftar Akun
             </button>
 
         </form>

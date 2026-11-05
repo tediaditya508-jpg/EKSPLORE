@@ -54,6 +54,9 @@ Route::get('/register', [AuthController::class, 'showRegister'])
  
 Route::post('/register', [AuthController::class, 'register']) 
     ->name('register.process'); 
+
+Route::get('/register/google', [AuthController::class, 'redirectRegisterGoogle'])
+    ->name('register.google.start');
  
  
 /* 
@@ -662,3 +665,7 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
 Route::get('/preview-hp', function () {
     return view('preview-hp');
 })->name('preview.hp');
+
+Route::get('/test-error-500', function () {
+    abort(500);
+});
