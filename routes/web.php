@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\DashboardController; 
 use App\Http\Controllers\AdminController; 
+use App\Http\Controllers\KenaikanKelasController;
 use App\Http\Controllers\EkstrakurikulerController; 
 use App\Http\Controllers\JadwalController; 
 use App\Http\Controllers\PendaftaranController; 
@@ -147,6 +148,23 @@ Route::get('/admin/auth/google/callback', [AuthController::class, 'handleAdminGo
 */ 
  
 Route::middleware('auth')->group(function () { 
+
+    /*
+|--------------------------------------------------------------------------
+| KENAIKAN KELAS ADMIN
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('role:admin')->group(function () {
+
+    Route::get('/admin/kenaikan-kelas', [KenaikanKelasController::class, 'index'])
+        ->name('admin.kenaikan-kelas');
+
+    Route::post('/admin/kenaikan-kelas', [KenaikanKelasController::class, 'proses'])
+        ->name('admin.kenaikan-kelas.proses');
+
+});
+
     // Profil Siswa 
     Route::get('/profil', [ProfileController::class, 'index']) 
     ->name('profile.index'); 

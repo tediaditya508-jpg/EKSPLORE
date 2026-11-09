@@ -458,6 +458,7 @@
     <a href="{{ route('admin.pengumuman') }}">📢 Pengumuman</a>
     <a href="{{ route('admin.galeri') }}">🖼️ Galeri</a>
     <a href="{{ route('admin.laporan') }}">📊 Laporan</a>
+     <a href="{{ route('admin.kenaikan-kelas') }}">🎓 kenaikan kelas</a>
 
 </aside>
 
@@ -853,6 +854,28 @@
                 </p>
 
             </a>
+
+            {{-- =========================
+     KENAIKAN KELAS
+========================= --}}
+
+<a
+    href="{{ route('admin.kenaikan-kelas') }}"
+    class="card"
+>
+    <div class="card-icon">
+        🎓
+    </div>
+
+    <h3>
+        Kenaikan Kelas
+    </h3>
+
+    <p>
+        Kelola proses kenaikan kelas siswa dari kelas 10 ke 11,
+        kelas 11 ke 12, serta mengubah status siswa kelas 12 menjadi alumni.
+    </p>
+</a>
 
 
         </section>

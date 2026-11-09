@@ -21,10 +21,12 @@
             align-items: center;
             font-family: Arial, sans-serif;
             background: #f5f7fb;
+            padding: 20px;
         }
 
         .register-card {
             width: 400px;
+            max-width: 100%;
             background: white;
             padding: 35px;
             border-radius: 18px;
@@ -80,16 +82,12 @@
         .register-button {
             width: 100%;
             padding: 13px;
-
             border: none;
             border-radius: 10px;
-
             background: #2563eb;
             color: white;
-
             font-size: 16px;
             font-weight: bold;
-
             cursor: pointer;
         }
 
@@ -132,11 +130,10 @@
 
             @csrf
 
+            {{-- NAMA LENGKAP --}}
             <div class="form-group">
 
-                <label for="name">
-                    Nama Lengkap
-                </label>
+                <label for="name">Nama Lengkap</label>
 
                 <input
                     type="text"
@@ -148,18 +145,112 @@
                 >
 
                 @error('name')
-                    <div class="error">
-                        {{ $message }}
-                    </div>
+                    <div class="error">{{ $message }}</div>
                 @enderror
 
             </div>
 
+            {{-- NIS --}}
             <div class="form-group">
 
-                <label for="email">
-                    Email
-                </label>
+                <label for="nis">NIS</label>
+
+                <input
+                    type="text"
+                    id="nis"
+                    name="nis"
+                    value="{{ old('nis') }}"
+                    placeholder="Masukkan NIS"
+                    required
+                >
+
+                @error('nis')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+
+            </div>
+
+
+{{-- KELAS --}}
+<div class="form-group">
+
+    <label for="kelas">Kelas</label>
+
+    <select
+        id="kelas"
+        name="kelas"
+        required
+        style="
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+        "
+    >
+        <option value="">-- Pilih Kelas 10 --</option>
+
+        <optgroup label="RPL">
+            @foreach (['10 RPL 1', '10 RPL 2', '10 RPL 3', '10 RPL 4'] as $kelas)
+                <option value="{{ $kelas }}" @selected(old('kelas') == $kelas)>
+                    {{ $kelas }}
+                </option>
+            @endforeach
+        </optgroup>
+
+        <optgroup label="BRP">
+            @foreach ([
+                '10 BRP 1', '10 BRP 2', '10 BRP 3',
+                '10 BRP 4', '10 BRP 5', '10 BRP 6', '10 BRP 7'
+            ] as $kelas)
+                <option value="{{ $kelas }}" @selected(old('kelas') == $kelas)>
+                    {{ $kelas }}
+                </option>
+            @endforeach
+        </optgroup>
+
+        <optgroup label="DKV">
+            @foreach (['10 DKV 1', '10 DKV 2'] as $kelas)
+                <option value="{{ $kelas }}" @selected(old('kelas') == $kelas)>
+                    {{ $kelas }}
+                </option>
+            @endforeach
+        </optgroup>
+
+    </select>
+
+    @error('kelas')
+        <div class="error">{{ $message }}</div>
+    @enderror
+
+</div>
+
+
+            {{-- NOMOR HP --}}
+            <div class="form-group">
+
+                <label for="no_hp">Nomor HP</label>
+
+                <input
+                    type="tel"
+                    id="no_hp"
+                    name="no_hp"
+                    value="{{ old('no_hp') }}"
+                    placeholder="Masukkan nomor HP aktif"
+                    required
+                >
+
+                @error('no_hp')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+
+            </div>
+
+            {{-- EMAIL --}}
+            <div class="form-group">
+
+                <label for="email">Email</label>
 
                 <input
                     type="email"
@@ -171,18 +262,15 @@
                 >
 
                 @error('email')
-                    <div class="error">
-                        {{ $message }}
-                    </div>
+                    <div class="error">{{ $message }}</div>
                 @enderror
 
             </div>
 
+            {{-- PASSWORD --}}
             <div class="form-group">
 
-                <label for="password">
-                    Password
-                </label>
+                <label for="password">Password</label>
 
                 <input
                     type="password"
@@ -193,13 +281,12 @@
                 >
 
                 @error('password')
-                    <div class="error">
-                        {{ $message }}
-                    </div>
+                    <div class="error">{{ $message }}</div>
                 @enderror
 
             </div>
 
+            {{-- KONFIRMASI PASSWORD --}}
             <div class="form-group">
 
                 <label for="password_confirmation">
@@ -220,7 +307,7 @@
                 type="submit"
                 class="register-button"
             >
-                 Daftar Akun
+                Daftar Akun
             </button>
 
         </form>
