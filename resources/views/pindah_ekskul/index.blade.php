@@ -18,7 +18,8 @@
         padding: 35px;
         margin-bottom: 25px;
         border-radius: 22px;
-        background: linear-gradient(120deg, #1d4ed8, #3b82f6, #60a5fa);
+        /* Warna disamakan persis dengan foto referensi */
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
         color: white;
         box-shadow: 0 12px 30px rgba(37, 99, 235, .18);
     }
@@ -78,6 +79,7 @@
         font-size: 14px;
         text-decoration: none;
         transition: .2s;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .hero-button:hover {
@@ -405,9 +407,9 @@
         <span>{{ $pengajuan->count() }} pengajuan</span>
     </div>
 
-    @forelse ($pengajuan as $item)
+    <div class="riwayat-list">
+        @forelse ($pengajuan as $item)
 
-        <div class="riwayat-list">
             <div class="riwayat-item">
 
                 <div class="item-top">
@@ -442,21 +444,21 @@
                 </div>
 
             </div>
-        </div>
 
-    @empty
+        @empty
 
-        <div class="empty-state">
-            <div class="empty-icon">📋</div>
-            <h3>Belum Ada Pengajuan</h3>
-            <p>Kamu belum memiliki riwayat perpindahan ekstrakurikuler.</p>
+            <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <h3>Belum Ada Pengajuan</h3>
+                <p>Kamu belum memiliki riwayat perpindahan ekstrakurikuler.</p>
 
-            <a href="{{ route('pindah_ekskul.create') }}" class="history-btn">
-                Buat Pengajuan Pertama
-            </a>
-        </div>
+                <a href="{{ route('pindah_ekskul.create') }}" class="hero-button" style="display: inline-flex; width: auto; background: #2563eb; color: white;">
+                    Buat Pengajuan Pertama
+                </a>
+            </div>
 
-    @endforelse
+        @endforelse
+    </div>
 
 </div>
 
