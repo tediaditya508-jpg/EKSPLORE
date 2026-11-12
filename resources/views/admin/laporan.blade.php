@@ -21,9 +21,9 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-sans);
             background: #f4f7fb;
-            color: #1f2937;
+            color: #1e293b;
         }
 
         .container {
@@ -46,7 +46,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.6;
         }
 
@@ -100,14 +100,14 @@
 
         .stat-card h3 {
             font-size: 14px;
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 8px;
         }
 
         .stat-number {
             font-size: 30px;
             font-weight: bold;
-            color: #111827;
+            color: #0f172a;
         }
 
         .summary {
@@ -127,7 +127,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px 0;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .summary-row:last-child {
@@ -140,7 +140,7 @@
 
         .summary-value {
             font-weight: bold;
-            color: #111827;
+            color: #0f172a;
         }
 
         @media (max-width: 900px) {
@@ -174,6 +174,7 @@
 
     </style>
 
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 
@@ -529,6 +530,7 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

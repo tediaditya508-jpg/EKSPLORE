@@ -14,9 +14,9 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-sans);
             background: #f4f7fb;
-            color: #1f2937;
+            color: #1e293b;
             padding: 30px;
         }
 
@@ -36,11 +36,11 @@
         .header h1 {
             font-size: 28px;
             margin-bottom: 8px;
-            color: #111827;
+            color: #0f172a;
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             font-size: 15px;
         }
 
@@ -48,7 +48,7 @@
             display: inline-block;
             margin-top: 18px;
             text-decoration: none;
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 10px 18px;
             border-radius: 9px;
@@ -56,7 +56,7 @@
         }
 
         .back:hover {
-            background: #374151;
+            background: #334155;
         }
 
         .card {
@@ -71,7 +71,7 @@
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #111827;
+            color: #0f172a;
         }
 
         table {
@@ -81,17 +81,17 @@
         }
 
         th {
-            background: #f3f4f6;
-            color: #374151;
+            background: #f1f5f9;
+            color: #334155;
             text-align: left;
             padding: 14px;
             font-size: 14px;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         td {
             padding: 14px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
             font-size: 14px;
             color: #4b5563;
         }
@@ -132,7 +132,7 @@
         .empty {
             text-align: center;
             padding: 45px 20px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .empty-icon {
@@ -142,12 +142,12 @@
 
         .nama {
             font-weight: bold;
-            color: #111827;
+            color: #0f172a;
         }
 
         .small {
             font-size: 12px;
-            color: #9ca3af;
+            color: #94a3b8;
             margin-top: 3px;
         }
 
@@ -169,6 +169,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -288,5 +289,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - EKSPLORE</title>
 
-    <!-- Chart.js CDN untuk Grafik -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js lokal agar grafik tetap tampil tanpa internet -->
+    <script src="{{ asset('vendor/chart.umd.min.js') }}"></script>
 
     <style>
         :root {
@@ -496,6 +496,7 @@
 
         .trend-up { background: var(--success-bg); color: var(--success); }
         .trend-down { background: var(--danger-bg); color: var(--danger); }
+        .trend-neutral { background: #f1f5f9; color: #475569; }
 
         .stat-details span {
             display: block;
@@ -730,7 +731,8 @@
             body.sidebar-collapsed .sidebar { width: var(--sidebar-width); }
             .sidebar { transform: translateX(-100%); width: var(--sidebar-width) !important; padding: 18px 14px !important; }
             .sidebar.mobile-open { transform: translateX(0); box-shadow: 15px 0 40px rgba(0,0,0,0.2); }
-            .sidebar.mobile-open .brand-text, .sidebar.mobile-open .sidebar-menu-label, .sidebar.mobile-open .sidebar-link span, .sidebar.mobile-open .sidebar-btn span, .sidebar.mobile-open .sidebar-footer-box { display: flex !important; }
+            .sidebar.mobile-open .sidebar-menu-label, .sidebar.mobile-open .sidebar-link span, .sidebar.mobile-open .sidebar-btn span, .sidebar.mobile-open .sidebar-footer-box { display: flex !important; }
+            .sidebar.mobile-open .brand-text { display: block !important; }
             .sidebar.mobile-open .sidebar-menu-label { display: block !important; }
             .sidebar.mobile-open .brand-info { display: flex !important; }
             .sidebar.mobile-open .brand-container { justify-content: space-between !important; }
@@ -754,6 +756,7 @@
             .chart-container-large { height: 180px; }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -789,6 +792,11 @@
         <nav class="sidebar-nav">
             <div class="sidebar-group">
                 <div class="sidebar-menu-label">MENU UTAMA ADMIN</div>
+
+                <a href="{{ route('admin.dashboard') }}" class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" title="Dashboard">
+                    <svg class="icon" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                    <span>Dashboard</span>
+                </a>
 
                 <a href="{{ route('admin.ekstrakurikuler') }}" class="sidebar-link {{ request()->routeIs('admin.ekstrakurikuler*') ? 'active' : '' }}" title="Ekstrakurikuler">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
@@ -873,9 +881,18 @@
             </div>
 
             <div class="user-profile-badge">
-                <div class="profile-avatar-sm">
-                    {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
-                </div>
+                @if (!empty($admin->foto))
+                    <img
+                        src="{{ asset('storage/' . $admin->foto) }}"
+                        alt="Foto {{ $admin->name ?? 'Admin' }}"
+                        class="profile-avatar-sm"
+                        style="object-fit: cover;"
+                    >
+                @else
+                    <div class="profile-avatar-sm">
+                        {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
+                    </div>
+                @endif
                 <div class="profile-meta">
                     <strong>{{ $admin->name ?? 'Admin' }}</strong>
                     <span>Super Administrator</span>
@@ -890,13 +907,13 @@
                     <div class="stat-icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     </div>
-                    <div class="stat-badge-trend trend-up">
-                        ↑ +12%
+                    <div class="stat-badge-trend trend-neutral">
+                        {{ $totalSiswa }} siswa
                     </div>
                 </div>
                 <div class="stat-details">
                     <span>Total Pengguna</span>
-                    <strong>{{ $totalPengguna ?? 342 }}</strong>
+                    <strong>{{ number_format($totalPengguna, 0, ',', '.') }}</strong>
                 </div>
             </div>
 
@@ -905,13 +922,13 @@
                     <div class="stat-icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
                     </div>
-                    <div class="stat-badge-trend trend-up">
-                        ↑ +3 Ekskul
+                    <div class="stat-badge-trend trend-neutral">
+                        {{ $totalPembina }} pembina
                     </div>
                 </div>
                 <div class="stat-details">
                     <span>Ekstrakurikuler</span>
-                    <strong>{{ $totalEkskul ?? 14 }}</strong>
+                    <strong>{{ number_format($totalEkskul, 0, ',', '.') }}</strong>
                 </div>
             </div>
 
@@ -920,13 +937,13 @@
                     <div class="stat-icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
                     </div>
-                    <div class="stat-badge-trend trend-down">
-                        ↓ -5%
+                    <div class="stat-badge-trend {{ $pendingPendaftaran > 0 ? 'trend-down' : 'trend-up' }}">
+                        {{ $pendingPendaftaran > 0 ? 'Perlu diproses' : 'Tidak ada' }}
                     </div>
                 </div>
                 <div class="stat-details">
                     <span>Pending Pendaftaran</span>
-                    <strong>{{ $pendingPendaftaran ?? 18 }}</strong>
+                    <strong>{{ number_format($pendingPendaftaran, 0, ',', '.') }}</strong>
                 </div>
             </div>
 
@@ -935,13 +952,13 @@
                     <div class="stat-icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     </div>
-                    <div class="stat-badge-trend trend-up">
-                        ↑ +94%
+                    <div class="stat-badge-trend trend-neutral">
+                        {{ number_format($totalAbsensi, 0, ',', '.') }} catatan
                     </div>
                 </div>
                 <div class="stat-details">
                     <span>Rata-Rata Kehadiran</span>
-                    <strong>94.2%</strong>
+                    <strong>{{ number_format($rataKehadiran, 1, ',', '.') }}%</strong>
                 </div>
             </div>
         </section>
@@ -1192,90 +1209,106 @@
                 });
             });
 
-            // 1. GRAFIK LINE CHART UKURAN COMPACT & RESPONSIF
-            const ctxStock = document.getElementById('adminStockChart').getContext('2d');
-            const gradientBg = ctxStock.createLinearGradient(0, 0, 0, 220);
-            gradientBg.addColorStop(0, 'rgba(37, 99, 235, 0.3)');
-            gradientBg.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+            const chartAktivitas = @json($chartAktivitas);
+            const statusAnggota = @json($statusAnggota);
 
-            new Chart(ctxStock, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-                    datasets: [
-                        {
-                            label: 'Kehadiran Siswa',
-                            data: [180, 210, 240, 230, 290, 310, 340, 320, 350, 380, 410, 430],
-                            borderColor: '#2563eb',
-                            borderWidth: 2.5,
-                            fill: true,
-                            backgroundColor: gradientBg,
-                            tension: 0.4,
-                            pointRadius: 3,
-                            pointHoverRadius: 5,
-                            pointBackgroundColor: '#2563eb'
-                        },
-                        {
-                            label: 'Pendaftaran Baru',
-                            data: [45, 60, 50, 75, 90, 120, 110, 95, 80, 105, 130, 140],
-                            borderColor: '#16a34a',
-                            borderWidth: 2,
-                            borderDash: [3, 3],
-                            fill: false,
-                            tension: 0.4,
-                            pointRadius: 2,
-                            pointBackgroundColor: '#16a34a'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { intersect: false, mode: 'index' },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            align: 'end',
-                            labels: { boxWidth: 10, usePointStyle: true, font: { size: 10, weight: '600' } }
-                        },
-                        tooltip: { backgroundColor: '#1e293b', padding: 8, cornerRadius: 6, bodyFont: { size: 11 } }
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js tidak termuat. Grafik tidak dapat ditampilkan.');
+                return;
+            }
+
+            // 1. GRAFIK LINE CHART AKTIVITAS SISTEM (DATA REAL)
+            const canvasStock = document.getElementById('adminStockChart');
+
+            if (canvasStock) {
+                const ctxStock = canvasStock.getContext('2d');
+                const gradientBg = ctxStock.createLinearGradient(0, 0, 0, 220);
+                gradientBg.addColorStop(0, 'rgba(37, 99, 235, 0.3)');
+                gradientBg.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+
+                new Chart(ctxStock, {
+                    type: 'line',
+                    data: {
+                        labels: chartAktivitas.labels,
+                        datasets: [
+                            {
+                                label: 'Absensi',
+                                data: chartAktivitas.absensi,
+                                borderColor: '#2563eb',
+                                borderWidth: 2.5,
+                                fill: true,
+                                backgroundColor: gradientBg,
+                                tension: 0.4,
+                                pointRadius: 3,
+                                pointHoverRadius: 5,
+                                pointBackgroundColor: '#2563eb'
+                            },
+                            {
+                                label: 'Pendaftaran Baru',
+                                data: chartAktivitas.pendaftaran,
+                                borderColor: '#16a34a',
+                                borderWidth: 2,
+                                borderDash: [3, 3],
+                                fill: false,
+                                tension: 0.4,
+                                pointRadius: 2,
+                                pointBackgroundColor: '#16a34a'
+                            }
+                        ]
                     },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#f1f5f9' } },
-                        x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { display: false } }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { intersect: false, mode: 'index' },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                align: 'end',
+                                labels: { boxWidth: 10, usePointStyle: true, font: { size: 10, weight: '600' } }
+                            },
+                            tooltip: { backgroundColor: '#1e293b', padding: 8, cornerRadius: 6, bodyFont: { size: 11 } }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, ticks: { precision: 0, color: '#64748b', font: { size: 10 } }, grid: { color: '#f1f5f9' } },
+                            x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { display: false } }
+                        }
                     }
-                }
-            });
+                });
+            }
 
-            // 2. GRAFIK DOUGHNUT STATUS SISWA UKURAN COMPACT & RESPONSIF
-            const ctxDoughnut = document.getElementById('statusDoughnutChart').getContext('2d');
-            new Chart(ctxDoughnut, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Aktif', 'Pending', 'Alumni'],
-                    datasets: [{
-                        data: [260, 18, 64],
-                        backgroundColor: ['#2563eb', '#d97706', '#64748b'],
-                        borderWidth: 2,
-                        borderColor: '#ffffff',
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { boxWidth: 8, usePointStyle: true, font: { size: 10, weight: '600' } }
-                        }
+            // 2. GRAFIK DOUGHNUT STATUS SISWA (DATA REAL)
+            const canvasDoughnut = document.getElementById('statusDoughnutChart');
+
+            if (canvasDoughnut) {
+                new Chart(canvasDoughnut.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: statusAnggota.labels,
+                        datasets: [{
+                            data: statusAnggota.data,
+                            backgroundColor: ['#2563eb', '#64748b'],
+                            borderWidth: 2,
+                            borderColor: '#ffffff',
+                            hoverOffset: 4
+                        }]
                     },
-                    cutout: '68%'
-                }
-            });
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { boxWidth: 8, usePointStyle: true, font: { size: 10, weight: '600' } }
+                            }
+                        },
+                        cutout: '68%'
+                    }
+                });
+            }
         });
     </script>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

@@ -1,0 +1,186 @@
+/* =========================================================
+   EKSPLORE - Design tokens & shared UI polish
+   ========================================================= */
+
+:root {
+    --eksplore-primary: #2563eb;
+    --eksplore-primary-dark: #1d4ed8;
+    --eksplore-text: #1e293b;
+    --eksplore-muted: #64748b;
+    --eksplore-border: #e2e8f0;
+    --eksplore-bg: #f8fafc;
+    --eksplore-radius: 12px;
+    --eksplore-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --font-sans: Inter, "Instrument Sans", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Samakan tipografi seluruh halaman, termasuk halaman lama yang masih
+   memakai Arial langsung di selector universal. */
+*,
+*::before,
+*::after {
+    font-family: var(--font-sans);
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    accent-color: var(--eksplore-primary);
+}
+
+::selection {
+    background: rgba(37, 99, 235, 0.18);
+    color: #0f172a;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+[tabindex] {
+    outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.35);
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* Wrapper tabel responsif */
+.table-wrapper,
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Item grid harus boleh menyusut di bawah lebar kontennya.
+   Tanpa ini, canvas Chart.js dapat memaksa kolom dashboard melebar
+   dan menimbulkan scroll horizontal di layar HP. */
+.stats-grid > *,
+.dashboard-grid > *,
+.cards > *,
+.management-grid > *,
+.content-grid > *,
+.main-grid > * {
+    min-width: 0;
+}
+
+.chart-container,
+.chart-container-large,
+.chart-container-small {
+    min-width: 0;
+}
+
+.chart-container canvas,
+.chart-container-large canvas,
+.chart-container-small canvas {
+    max-width: 100% !important;
+}
+
+/* Teks panjang tanpa spasi (mis. isi pengumuman) tidak boleh
+   memperlebar halaman. */
+.announcement-box p,
+.announcement-box strong,
+.ekskul-content p,
+.item-info,
+.alert {
+    overflow-wrap: anywhere;
+}
+
+/* Judul kartu boleh wrap, tetapi tautan aksinya tetap satu baris. */
+.card-header {
+    gap: 10px;
+}
+
+.card-header a {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* Scrollbar halus */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Tombol saat form sedang dikirim */
+button[disabled],
+input[type="submit"][disabled],
+.btn-loading {
+    cursor: wait !important;
+    opacity: 0.75;
+}
+
+.btn-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    vertical-align: -1px;
+    animation: eksplore-spin 0.7s linear infinite;
+}
+
+@keyframes eksplore-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Pesan flash yang memudar */
+.is-hiding {
+    opacity: 0 !important;
+    transform: translateY(-4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Sembunyikan scroll body saat sidebar mobile terbuka */
+body.eksplore-nav-open {
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
@@ -631,28 +631,18 @@
             .login-wrapper {
                 grid-template-columns: 1fr;
 
-                max-width: 520px;
+                max-width: 460px;
 
                 min-height: auto;
             }
 
+            /* Di tablet & HP, form langsung tampil tanpa panel marketing. */
             .left-side {
-                min-height: 570px;
-
-                padding: 35px;
-            }
-
-            .logo-area img {
-                width: 170px;
-                height: 170px;
-            }
-
-            .left-title {
-                font-size: 28px;
+                display: none;
             }
 
             .right-side {
-                padding: 45px 35px;
+                padding: 42px 34px;
             }
         }
 
@@ -693,6 +683,7 @@
         }
     </style>
 
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -842,7 +833,7 @@
 
                 <form
                     method="POST"
-                    action="{{ route('login') }}"
+                    action="{{ route('login.process') }}"
                 >
 
                     @csrf
@@ -1033,6 +1024,7 @@
 
     </script>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

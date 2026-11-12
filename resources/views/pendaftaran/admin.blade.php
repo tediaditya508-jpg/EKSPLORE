@@ -15,12 +15,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background: #f5f7fb;
-            color: #1f2937;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         /* =========================
@@ -28,7 +28,7 @@
         ========================= */
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 18px 40px;
 
@@ -82,7 +82,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.6;
         }
 
@@ -152,7 +152,7 @@
         }
 
         thead {
-            background: #111827;
+            background: #0f172a;
             color: white;
         }
 
@@ -162,7 +162,7 @@
 
             text-align: left;
 
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
 
             font-size: 14px;
 
@@ -324,7 +324,7 @@
         .empty {
             text-align: center;
 
-            color: #6b7280;
+            color: #64748b;
 
             padding: 50px 20px;
         }
@@ -371,6 +371,7 @@
 
     </style>
 
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 
@@ -766,6 +767,7 @@
     </main>
 
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

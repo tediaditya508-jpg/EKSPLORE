@@ -14,9 +14,9 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-sans);
             background: #f4f7fb;
-            color: #1f2937;
+            color: #1e293b;
         }
 
         .container {
@@ -39,7 +39,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .back {
@@ -73,8 +73,8 @@
         }
 
         th {
-            background: #f3f4f6;
-            color: #374151;
+            background: #f1f5f9;
+            color: #334155;
             text-align: left;
             padding: 14px;
             font-size: 14px;
@@ -82,7 +82,7 @@
 
         td {
             padding: 14px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
             font-size: 14px;
         }
 
@@ -103,13 +103,14 @@
         .empty {
             text-align: center;
             padding: 35px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .date {
             white-space: nowrap;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -220,5 +221,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

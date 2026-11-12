@@ -13,9 +13,9 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -34,12 +34,12 @@
 
         .header h1 {
             font-size: 28px;
-            color: #111827;
+            color: #0f172a;
             margin-bottom: 8px;
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             font-size: 15px;
         }
 
@@ -47,7 +47,7 @@
             display: inline-block;
             margin-top: 18px;
             padding: 10px 18px;
-            background: #111827;
+            background: #0f172a;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -55,7 +55,7 @@
         }
 
         .back-button:hover {
-            background: #374151;
+            background: #334155;
         }
 
         .card {
@@ -74,18 +74,18 @@
             margin-bottom: 8px;
             font-size: 14px;
             font-weight: bold;
-            color: #374151;
+            color: #334155;
         }
 
         input,
         select {
             width: 100%;
             padding: 12px 14px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
             font-size: 14px;
             background: white;
-            color: #111827;
+            color: #0f172a;
         }
 
         input:focus,
@@ -103,7 +103,7 @@
 
         .hint {
             margin-top: 6px;
-            color: #6b7280;
+            color: #64748b;
             font-size: 12px;
         }
 
@@ -131,7 +131,7 @@
         .btn-batal {
             display: inline-block;
             padding: 11px 18px;
-            background: #6b7280;
+            background: #64748b;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -174,6 +174,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -396,5 +397,6 @@
     jenisSelect.addEventListener('change', updateJenisFields);
     updateJenisFields();
 </script>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

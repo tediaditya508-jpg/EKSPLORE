@@ -18,16 +18,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background: #f5f7fb;
-            color: #1f2937;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 18px 40px;
             display: flex;
@@ -64,7 +64,7 @@
         }
 
         .description {
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 25px;
             line-height: 1.6;
         }
@@ -83,7 +83,7 @@
         .form-group textarea {
             width: 100%;
             padding: 12px 14px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
             font-size: 14px;
             outline: none;
@@ -131,12 +131,12 @@
         }
 
         .btn-secondary {
-            background: #e5e7eb;
-            color: #111827;
+            background: #e2e8f0;
+            color: #0f172a;
         }
 
         .btn-secondary:hover {
-            background: #d1d5db;
+            background: #cbd5e1;
         }
 
         @media (max-width: 768px) {
@@ -161,6 +161,7 @@
 
     </style>
 
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 
@@ -330,6 +331,7 @@
     </main>
 
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

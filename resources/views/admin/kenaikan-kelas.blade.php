@@ -13,8 +13,8 @@
         body {
             margin: 0;
             padding: 30px;
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
+            font-family: var(--font-sans);
+            background: #f8fafc;
             color: #1e293b;
         }
 
@@ -34,6 +34,21 @@
 
         .header p {
             color: #64748b;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 14px;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
 
         .cards {
@@ -140,12 +155,14 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
 <div class="container">
 
     <div class="header">
+        <a href="{{ route('admin.dashboard') }}" class="back-link">← Kembali ke Dashboard</a>
         <h1>Kenaikan Kelas Siswa</h1>
         <p>EKSPLORE - Sistem Pengelolaan Data Siswa</p>
     </div>
@@ -208,57 +225,62 @@
     <div class="panel">
         <h2>Jumlah Siswa Per Kelas</h2>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Kelas</th>
-                    <th>Jumlah Siswa</th>
-                </tr>
-            </thead>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Kelas</th>
+                        <th>Jumlah Siswa</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-                @forelse($jumlahPerKelas->sortKeys() as $kelas => $siswaKelas)
-                    <tr>
-                        <td>{{ $kelas ?: 'Belum mengisi kelas' }}</td>
-                        <td>{{ $siswaKelas->count() }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="2">Belum ada data siswa aktif.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                <tbody>
+                    @forelse($jumlahPerKelas->sortKeys() as $kelas => $siswaKelas)
+                        <tr>
+                            <td>{{ $kelas ?: 'Belum mengisi kelas' }}</td>
+                            <td>{{ $siswaKelas->count() }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="2">Belum ada data siswa aktif.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="panel">
         <h2>Riwayat Kenaikan Kelas</h2>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Tahun Ajaran</th>
-                    <th>Siswa Naik</th>
-                    <th>Menjadi Alumni</th>
-                </tr>
-            </thead>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tahun Ajaran</th>
+                        <th>Siswa Naik</th>
+                        <th>Menjadi Alumni</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-                @forelse($riwayat as $item)
-                    <tr>
-                        <td>{{ $item->tahun_ajaran }}</td>
-                        <td>{{ $item->jumlah_naik }}</td>
-                        <td>{{ $item->jumlah_alumni }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3">Belum ada riwayat kenaikan kelas.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                <tbody>
+                    @forelse($riwayat as $item)
+                        <tr>
+                            <td>{{ $item->tahun_ajaran }}</td>
+                            <td>{{ $item->jumlah_naik }}</td>
+                            <td>{{ $item->jumlah_alumni }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3">Belum ada riwayat kenaikan kelas.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

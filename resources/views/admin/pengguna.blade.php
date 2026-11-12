@@ -12,16 +12,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background: #f5f7fb;
-            color: #1f2937;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 18px 40px;
             display: flex;
@@ -63,7 +63,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.6;
         }
 
@@ -106,7 +106,7 @@
 
         .button-add {
             display: inline-block;
-            background: #111827;
+            background: #0f172a;
             color: white;
             text-decoration: none;
             padding: 11px 18px;
@@ -117,14 +117,14 @@
         }
 
         .button-add:hover {
-            background: #374151;
+            background: #334155;
             transform: translateY(-1px);
         }
 
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 10px;
         }
 
@@ -137,7 +137,7 @@
         }
 
         thead {
-            background: #111827;
+            background: #0f172a;
             color: white;
         }
 
@@ -147,14 +147,14 @@
             text-align: left;
             font-size: 14px;
             vertical-align: middle;
-            border-right: 1px solid #d1d5db;
-            border-bottom: 1px solid #e5e7eb;
+            border-right: 1px solid #cbd5e1;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         th {
             font-weight: bold;
             white-space: nowrap;
-            border-right: 1px solid #374151;
+            border-right: 1px solid #334155;
         }
 
         th:last-child,
@@ -274,7 +274,7 @@
 
         .empty {
             text-align: center;
-            color: #6b7280;
+            color: #64748b;
             padding: 40px;
             background: #f9fafb;
             border-radius: 10px;
@@ -313,6 +313,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -523,7 +524,7 @@
 
                                             @else
 
-                                                <span style="color: #9ca3af; font-size: 12px;">
+                                                <span style="color: #94a3b8; font-size: 12px;">
                                                     Akun sedang digunakan
                                                 </span>
 
@@ -674,7 +675,7 @@
 
                                             @else
 
-                                                <span style="color: #9ca3af; font-size: 12px;">
+                                                <span style="color: #94a3b8; font-size: 12px;">
                                                     Akun sedang digunakan
                                                 </span>
 
@@ -825,7 +826,7 @@
 
                                             @else
 
-                                                <span style="color: #9ca3af; font-size: 12px;">
+                                                <span style="color: #94a3b8; font-size: 12px;">
                                                     Akun sedang digunakan
                                                 </span>
 
@@ -857,6 +858,7 @@
 
     </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

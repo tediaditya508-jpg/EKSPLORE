@@ -11,16 +11,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background: #f5f7fb;
-            color: #1f2937;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 18px 40px;
             display: flex;
@@ -62,7 +62,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.6;
         }
 
@@ -97,7 +97,7 @@
 
         .card h2 {
             margin-bottom: 20px;
-            color: #111827;
+            color: #0f172a;
         }
 
         .form-group {
@@ -116,7 +116,7 @@
         .form-group textarea {
             width: 100%;
             padding: 11px 13px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
             font-size: 14px;
             outline: none;
@@ -125,7 +125,7 @@
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: #111827;
+            border-color: #0f172a;
         }
 
         .form-group textarea {
@@ -136,7 +136,7 @@
         .button {
             width: 100%;
             border: none;
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 12px;
             border-radius: 8px;
@@ -145,11 +145,11 @@
         }
 
         .button:hover {
-            background: #374151;
+            background: #334155;
         }
 
         .prestasi-item {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 18px;
             margin-bottom: 15px;
@@ -161,7 +161,7 @@
 
         .prestasi-item h3 {
             margin-bottom: 10px;
-            color: #111827;
+            color: #0f172a;
         }
 
         .badge {
@@ -176,14 +176,14 @@
         }
 
         .info {
-            color: #6b7280;
+            color: #64748b;
             font-size: 14px;
             line-height: 1.6;
             margin-bottom: 5px;
         }
 
         .empty {
-            color: #6b7280;
+            color: #64748b;
             text-align: center;
             padding: 30px 10px;
         }
@@ -192,7 +192,7 @@
             margin-top: 25px;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .ekskul-title:first-child {
@@ -236,7 +236,7 @@
         }
 
         .cancel-button {
-            background: #6b7280;
+            background: #64748b;
             color: white;
         }
 
@@ -259,7 +259,7 @@
             margin-top: 18px;
             padding: 18px;
             background: #f9fafb;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 10px;
         }
 
@@ -289,6 +289,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -847,5 +848,6 @@
 
     </script>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

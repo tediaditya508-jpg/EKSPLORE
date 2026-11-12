@@ -15,9 +15,9 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -39,7 +39,7 @@
         }
 
         .subtitle {
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 25px;
         }
 
@@ -63,11 +63,11 @@
         .empty {
             text-align: center;
             padding: 50px 20px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .pendaftaran-card {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 14px;
             padding: 22px;
             margin-bottom: 18px;
@@ -95,7 +95,7 @@
         .info-box strong {
             display: block;
             margin-bottom: 5px;
-            color: #374151;
+            color: #334155;
         }
 
         .alasan {
@@ -193,6 +193,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -393,6 +394,7 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

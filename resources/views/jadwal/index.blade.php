@@ -15,9 +15,9 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -40,7 +40,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.6;
         }
 
@@ -114,7 +114,7 @@
         .nama-event {
             font-weight: bold;
             margin-bottom: 12px;
-            color: #374151;
+            color: #334155;
         }
 
         .info {
@@ -129,7 +129,7 @@
             padding: 35px 20px;
             border-radius: 16px;
             text-align: center;
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.7;
         }
 
@@ -148,6 +148,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -245,5 +246,6 @@
 
     </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

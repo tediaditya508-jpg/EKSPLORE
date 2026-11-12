@@ -142,6 +142,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -193,5 +194,6 @@
         </div>
 
     </main>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

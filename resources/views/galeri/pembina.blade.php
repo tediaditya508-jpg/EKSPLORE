@@ -11,17 +11,17 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background: #f5f7fb;
-            color: #1f2937;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .header {
             background: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
             padding: 18px 30px;
             display: flex;
             align-items: center;
@@ -36,7 +36,7 @@
 
         .back {
             text-decoration: none;
-            color: #374151;
+            color: #334155;
             font-size: 14px;
         }
 
@@ -48,7 +48,7 @@
 
         .user-name {
             font-size: 14px;
-            color: #374151;
+            color: #334155;
         }
 
         .container {
@@ -67,7 +67,7 @@
         }
 
         .title-section p {
-            color: #6b7280;
+            color: #64748b;
             font-size: 15px;
         }
 
@@ -95,7 +95,7 @@
             border-radius: 14px;
             padding: 24px;
             margin-bottom: 30px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
@@ -120,7 +120,7 @@
         .form-group textarea {
             width: 100%;
             padding: 11px 13px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 9px;
             font-size: 14px;
             outline: none;
@@ -167,7 +167,7 @@
             background: #ffffff;
             border-radius: 14px;
             overflow: hidden;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
@@ -176,7 +176,7 @@
             height: 220px;
             object-fit: cover;
             display: block;
-            background: #e5e7eb;
+            background: #e2e8f0;
         }
 
         .galeri-content {
@@ -195,14 +195,14 @@
         }
 
         .keterangan {
-            color: #6b7280;
+            color: #64748b;
             font-size: 14px;
             line-height: 1.5;
             margin-bottom: 14px;
         }
 
         .tanggal {
-            color: #9ca3af;
+            color: #94a3b8;
             font-size: 12px;
             margin-bottom: 14px;
         }
@@ -225,11 +225,11 @@
 
         .empty {
             background: #ffffff;
-            border: 1px dashed #d1d5db;
+            border: 1px dashed #cbd5e1;
             border-radius: 14px;
             padding: 45px 20px;
             text-align: center;
-            color: #6b7280;
+            color: #64748b;
         }
 
         @media (max-width: 900px) {
@@ -256,6 +256,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -506,5 +507,6 @@
 
 </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

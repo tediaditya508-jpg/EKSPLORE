@@ -13,15 +13,15 @@
 
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .navbar {
             background: #ffffff;
             padding: 18px 40px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -61,7 +61,7 @@
 
         .header p {
             margin: 0;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .card {
@@ -91,7 +91,7 @@
         select {
             width: 100%;
             padding: 12px 14px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 9px;
             font-size: 15px;
             outline: none;
@@ -144,12 +144,12 @@
         }
 
         .button-back {
-            background: #e5e7eb;
-            color: #374151;
+            background: #e2e8f0;
+            color: #334155;
         }
 
         .button-back:hover {
-            background: #d1d5db;
+            background: #cbd5e1;
         }
 
         .info {
@@ -184,6 +184,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -330,5 +331,6 @@
 
     </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

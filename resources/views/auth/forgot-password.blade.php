@@ -14,7 +14,7 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-sans);
             background: #f4f7fb;
             min-height: 100vh;
             display: flex;
@@ -148,6 +148,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -209,5 +210,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

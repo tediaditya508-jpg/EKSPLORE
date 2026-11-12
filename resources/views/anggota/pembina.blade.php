@@ -14,9 +14,9 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -47,7 +47,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .summary {
@@ -66,7 +66,7 @@
 
         .summary-card span {
             display: block;
-            color: #6b7280;
+            color: #64748b;
             font-size: 14px;
             margin-bottom: 8px;
         }
@@ -89,7 +89,7 @@
         }
 
         .member {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 15px;
@@ -112,7 +112,7 @@
         }
 
         .label {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .value {
@@ -132,7 +132,7 @@
         .empty {
             text-align: center;
             padding: 30px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         @media (max-width: 600px) {
@@ -148,6 +148,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -315,5 +316,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

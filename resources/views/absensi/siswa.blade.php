@@ -15,13 +15,13 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 18px 40px;
             display: flex;
@@ -71,7 +71,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .rekap-grid {
@@ -143,7 +143,7 @@
         }
 
         .form-description {
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 22px;
             line-height: 1.6;
         }
@@ -156,7 +156,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #374151;
+            color: #334155;
         }
 
         .form-group input,
@@ -164,10 +164,10 @@
         .form-group textarea {
             width: 100%;
             padding: 12px 14px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 10px;
             font-size: 14px;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
             outline: none;
             background: white;
         }
@@ -187,7 +187,7 @@
         .form-help {
             display: block;
             margin-top: 6px;
-            color: #6b7280;
+            color: #64748b;
             font-size: 12px;
         }
 
@@ -231,7 +231,7 @@
         }
 
         .attendance-item {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 14px;
             padding: 20px;
             margin-bottom: 15px;
@@ -293,7 +293,7 @@
         }
 
         .nilai-label {
-            color: #374151;
+            color: #334155;
             font-weight: bold;
         }
 
@@ -304,7 +304,7 @@
         }
 
         .nilai-belum {
-            color: #6b7280;
+            color: #64748b;
             font-size: 14px;
             font-style: italic;
         }
@@ -312,7 +312,7 @@
         .empty {
             text-align: center;
             padding: 45px 20px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .empty-icon {
@@ -358,6 +358,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -732,6 +733,7 @@
 
     </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

@@ -14,9 +14,9 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
             background: #f4f7fb;
-            color: #1f2937;
+            color: #1e293b;
         }
 
         .header {
@@ -65,7 +65,7 @@
             align-items: center;
             gap: 20px;
             padding-bottom: 25px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
             margin-bottom: 25px;
         }
 
@@ -102,7 +102,7 @@
         }
 
         .profile-top p {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .photo-actions {
@@ -186,7 +186,7 @@
         .label {
             display: block;
             font-size: 13px;
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 7px;
         }
 
@@ -208,7 +208,7 @@
         .edit-section {
             margin-top: 25px;
             padding-top: 25px;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid #e2e8f0;
         }
 
         .edit-form {
@@ -228,14 +228,14 @@
 
         .form-group label {
             font-size: 13px;
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 7px;
         }
 
         .form-group input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
             font-size: 15px;
             outline: none;
@@ -285,6 +285,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -575,5 +576,6 @@
 
     </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

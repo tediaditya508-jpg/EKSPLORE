@@ -13,9 +13,9 @@
 
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -39,7 +39,7 @@
 
         .header p {
             margin: 0;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .btn {
@@ -62,8 +62,8 @@
         }
 
         .btn-back {
-            background: #e5e7eb;
-            color: #374151;
+            background: #e2e8f0;
+            color: #334155;
         }
 
         .alert {
@@ -96,7 +96,7 @@
         }
 
         .tanggal {
-            color: #6b7280;
+            color: #64748b;
             font-size: 14px;
             margin-bottom: 14px;
         }
@@ -117,7 +117,7 @@
         .empty {
             text-align: center;
             padding: 50px 20px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         @media (max-width: 700px) {
@@ -132,6 +132,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -219,5 +220,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

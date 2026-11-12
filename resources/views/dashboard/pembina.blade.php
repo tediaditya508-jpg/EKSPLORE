@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Pembina - EKSPLORE</title>
 
-    <!-- Chart.js CDN untuk Grafik -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js lokal agar grafik tetap tampil tanpa internet -->
+    <script src="{{ asset('vendor/chart.umd.min.js') }}"></script>
 
     <style>
         :root {
@@ -494,6 +494,7 @@
 
         .trend-up { background: var(--success-bg); color: var(--success); }
         .trend-down { background: var(--danger-bg); color: var(--danger); }
+        .trend-neutral { background: #f1f5f9; color: #475569; }
 
         .stat-details span {
             display: block;
@@ -758,7 +759,8 @@
             body.sidebar-collapsed .sidebar { width: var(--sidebar-width); }
             .sidebar { transform: translateX(-100%); width: var(--sidebar-width) !important; padding: 18px 14px !important; }
             .sidebar.mobile-open { transform: translateX(0); box-shadow: 15px 0 40px rgba(0,0,0,0.2); }
-            .sidebar.mobile-open .brand-text, .sidebar.mobile-open .sidebar-menu-label, .sidebar.mobile-open .sidebar-link span, .sidebar.mobile-open .sidebar-btn span, .sidebar.mobile-open .sidebar-footer-box { display: flex !important; }
+            .sidebar.mobile-open .sidebar-menu-label, .sidebar.mobile-open .sidebar-link span, .sidebar.mobile-open .sidebar-btn span, .sidebar.mobile-open .sidebar-footer-box { display: flex !important; }
+            .sidebar.mobile-open .brand-text { display: block !important; }
             .sidebar.mobile-open .sidebar-menu-label { display: block !important; }
             .sidebar.mobile-open .brand-info { display: flex !important; }
             .sidebar.mobile-open .brand-container { justify-content: space-between !important; }
@@ -781,6 +783,7 @@
             .chart-container { height: 170px; }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -816,7 +819,12 @@
         <nav class="sidebar-nav">
             <div class="sidebar-group">
                 <div class="sidebar-menu-label">MENU PEMBINA</div>
-                
+
+                <a href="{{ route('pembina.dashboard') }}" class="sidebar-link {{ request()->routeIs('pembina.dashboard') ? 'active' : '' }}" title="Dashboard">
+                    <svg class="icon" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                    <span>Dashboard</span>
+                </a>
+
                 <a href="{{ route('pembina.ekstrakurikuler') }}" class="sidebar-link {{ request()->routeIs('pembina.ekstrakurikuler*') ? 'active' : '' }}" title="Ekstrakurikuler">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
                     <span>Ekstrakurikuler</span>
@@ -890,9 +898,18 @@
             </div>
 
             <div class="user-profile-badge">
-                <div class="profile-avatar-sm">
-                    {{ strtoupper(substr($pembina->name ?? 'P', 0, 1)) }}
-                </div>
+                @if (!empty($pembina->foto))
+                    <img
+                        src="{{ asset('storage/' . $pembina->foto) }}"
+                        alt="Foto {{ $pembina->name ?? 'Pembina' }}"
+                        class="profile-avatar-sm"
+                        style="object-fit: cover;"
+                    >
+                @else
+                    <div class="profile-avatar-sm">
+                        {{ strtoupper(substr($pembina->name ?? 'P', 0, 1)) }}
+                    </div>
+                @endif
                 <div class="profile-meta">
                     <strong>{{ $pembina->name ?? 'Pembina' }}</strong>
                     <span>Pembina Ekstrakurikuler</span>
@@ -907,11 +924,11 @@
                     <div class="stat-icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
                     </div>
-                    <div class="stat-badge-trend trend-up">↑ Aktif</div>
+                    <div class="stat-badge-trend {{ $jumlahEkskul > 0 ? 'trend-up' : 'trend-down' }}">{{ $jumlahEkskul > 0 ? 'Aktif' : 'Belum ada' }}</div>
                 </div>
                 <div class="stat-details">
                     <span>Ekskul Dibina</span>
-                    <strong>1</strong>
+                    <strong>{{ number_format($jumlahEkskul, 0, ',', '.') }}</strong>
                 </div>
             </div>
 
@@ -920,11 +937,11 @@
                     <div class="stat-icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                     </div>
-                    <div class="stat-badge-trend trend-up">↑ +2 Siswa</div>
+                    <div class="stat-badge-trend trend-neutral">{{ $anggotaAktif }} siswa</div>
                 </div>
                 <div class="stat-details">
                     <span>Anggota Aktif</span>
-                    <strong>26</strong>
+                    <strong>{{ number_format($anggotaAktif, 0, ',', '.') }}</strong>
                 </div>
             </div>
 
@@ -933,11 +950,11 @@
                     <div class="stat-icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
                     </div>
-                    <div class="stat-badge-trend trend-up">↑ Pending</div>
+                    <div class="stat-badge-trend {{ $pendingPendaftaran > 0 ? 'trend-down' : 'trend-up' }}">{{ $pendingPendaftaran > 0 ? 'Perlu proses' : 'Tidak ada' }}</div>
                 </div>
                 <div class="stat-details">
                     <span>Pendaftaran Baru</span>
-                    <strong>5</strong>
+                    <strong>{{ number_format($pendingPendaftaran, 0, ',', '.') }}</strong>
                 </div>
             </div>
 
@@ -946,11 +963,11 @@
                     <div class="stat-icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     </div>
-                    <div class="stat-badge-trend trend-up">↑ 85%</div>
+                    <div class="stat-badge-trend trend-neutral">{{ number_format($totalAbsensi, 0, ',', '.') }} catatan</div>
                 </div>
                 <div class="stat-details">
                     <span>Kehadiran Avg</span>
-                    <strong>85%</strong>
+                    <strong>{{ number_format($rataKehadiran, 1, ',', '.') }}%</strong>
                 </div>
             </div>
         </section>
@@ -985,33 +1002,33 @@
                     <div class="list-item">
                         <div class="item-info">
                             <strong>Status Ekstrakurikuler</strong>
-                            <span>Ekstrakurikuler aktif dan berjalan</span>
+                            <span>{{ $jumlahEkskul > 0 ? $ekskulDibina->pluck('nama_ekskul')->join(', ') : 'Belum ada ekstrakurikuler yang dibina' }}</span>
                         </div>
-                        <span class="status-pill status-active">Aktif</span>
+                        <span class="status-pill {{ $jumlahEkskul > 0 ? 'status-active' : 'status-waiting' }}">{{ $jumlahEkskul > 0 ? 'Aktif' : 'Kosong' }}</span>
                     </div>
 
                     <div class="list-item">
                         <div class="item-info">
                             <strong>Status Anggota</strong>
-                            <span>26 Anggota terdaftar</span>
+                            <span>{{ $anggotaAktif }} anggota terdaftar</span>
                         </div>
-                        <span class="status-pill status-active">Aktif</span>
+                        <span class="status-pill {{ $anggotaAktif > 0 ? 'status-active' : 'status-waiting' }}">{{ $anggotaAktif > 0 ? 'Aktif' : 'Kosong' }}</span>
                     </div>
 
                     <div class="list-item">
                         <div class="item-info">
                             <strong>Pengajuan Pendaftaran</strong>
-                            <span>5 Calon anggota menunggu verifikasi</span>
+                            <span>{{ $pendingPendaftaran }} calon anggota menunggu verifikasi</span>
                         </div>
-                        <span class="status-pill status-waiting">Perlu Diproses</span>
+                        <span class="status-pill {{ $pendingPendaftaran > 0 ? 'status-waiting' : 'status-active' }}">{{ $pendingPendaftaran > 0 ? 'Perlu Diproses' : 'Tidak Ada' }}</span>
                     </div>
 
                     <div class="list-item">
                         <div class="item-info">
                             <strong>Rekapitulasi Absensi</strong>
-                            <span>Siap diisi dan dipantau</span>
+                            <span>{{ $totalAbsensi }} catatan absensi tersimpan</span>
                         </div>
-                        <span class="status-pill status-info">Tersedia</span>
+                        <span class="status-pill {{ $totalAbsensi > 0 ? 'status-info' : 'status-waiting' }}">{{ $totalAbsensi > 0 ? 'Tersedia' : 'Belum Ada' }}</span>
                     </div>
                 </div>
 
@@ -1199,112 +1216,112 @@
                 });
             });
 
-            // Render Grafik Tren Kehadiran Gaya Saham (Hadir, Izin, Sakit, Alfa)
-            const ctx = document.getElementById('kehadiranStockChart').getContext('2d');
+            // Render Grafik Kehadiran dari data absensi ekskul yang dibina
+            const canvas = document.getElementById('kehadiranStockChart');
 
-            const gradientHadir = ctx.createLinearGradient(0, 0, 0, 220);
-            gradientHadir.addColorStop(0, 'rgba(37, 99, 235, 0.35)');
-            gradientHadir.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+            if (canvas && typeof Chart !== 'undefined') {
+                const chartKehadiran = @json($chartKehadiran);
+                const ctx = canvas.getContext('2d');
 
-            // Mengambil nilai variabel dari controller (dengan fallback default)
-            const jumlahHadir = {{ $jumlahHadir ?? 22 }};
-            const jumlahIzin  = {{ $jumlahIzin ?? 2 }};
-            const jumlahSakit = {{ $jumlahSakit ?? 1 }};
-            const jumlahAlfa  = {{ $jumlahAlfa ?? 1 }};
+                const gradientHadir = ctx.createLinearGradient(0, 0, 0, 220);
+                gradientHadir.addColorStop(0, 'rgba(37, 99, 235, 0.35)');
+                gradientHadir.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
 
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7'],
-                    datasets: [
-                        {
-                            label: 'Hadir',
-                            data: [18, 20, 22, 24, 21, 23, jumlahHadir],
-                            borderColor: '#2563eb',
-                            borderWidth: 2.5,
-                            fill: true,
-                            backgroundColor: gradientHadir,
-                            tension: 0.4,
-                            pointRadius: 3,
-                            pointHoverRadius: 6,
-                            pointBackgroundColor: '#2563eb',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2
-                        },
-                        {
-                            label: 'Izin',
-                            data: [3, 2, 1, 1, 2, 1, jumlahIzin],
-                            borderColor: '#d97706',
-                            borderWidth: 2,
-                            borderDash: [3, 3],
-                            fill: false,
-                            tension: 0.4,
-                            pointRadius: 2,
-                            pointBackgroundColor: '#d97706'
-                        },
-                        {
-                            label: 'Sakit',
-                            data: [2, 1, 1, 0, 2, 1, jumlahSakit],
-                            borderColor: '#0284c7',
-                            borderWidth: 2,
-                            borderDash: [3, 3],
-                            fill: false,
-                            tension: 0.4,
-                            pointRadius: 2,
-                            pointBackgroundColor: '#0284c7'
-                        },
-                        {
-                            label: 'Alfa',
-                            data: [1, 0, 1, 0, 1, 0, jumlahAlfa],
-                            borderColor: '#dc2626',
-                            borderWidth: 2,
-                            borderDash: [2, 2],
-                            fill: false,
-                            tension: 0.4,
-                            pointRadius: 2,
-                            pointBackgroundColor: '#dc2626'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: chartKehadiran.labels,
+                        datasets: [
+                            {
+                                label: 'Hadir',
+                                data: chartKehadiran.hadir,
+                                borderColor: '#2563eb',
+                                borderWidth: 2.5,
+                                fill: true,
+                                backgroundColor: gradientHadir,
+                                tension: 0.4,
+                                pointRadius: 3,
+                                pointHoverRadius: 6,
+                                pointBackgroundColor: '#2563eb',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2
+                            },
+                            {
+                                label: 'Izin',
+                                data: chartKehadiran.izin,
+                                borderColor: '#d97706',
+                                borderWidth: 2,
+                                borderDash: [3, 3],
+                                fill: false,
+                                tension: 0.4,
+                                pointRadius: 2,
+                                pointBackgroundColor: '#d97706'
+                            },
+                            {
+                                label: 'Sakit',
+                                data: chartKehadiran.sakit,
+                                borderColor: '#0284c7',
+                                borderWidth: 2,
+                                borderDash: [3, 3],
+                                fill: false,
+                                tension: 0.4,
+                                pointRadius: 2,
+                                pointBackgroundColor: '#0284c7'
+                            },
+                            {
+                                label: 'Alfa',
+                                data: chartKehadiran.alfa,
+                                borderColor: '#dc2626',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                fill: false,
+                                tension: 0.4,
+                                pointRadius: 2,
+                                pointBackgroundColor: '#dc2626'
+                            }
+                        ]
                     },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            align: 'end',
-                            labels: {
-                                boxWidth: 10,
-                                usePointStyle: true,
-                                font: { size: 10, weight: '600' }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                align: 'end',
+                                labels: {
+                                    boxWidth: 10,
+                                    usePointStyle: true,
+                                    font: { size: 10, weight: '600' }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: '#1e293b',
+                                padding: 8,
+                                cornerRadius: 6,
+                                bodyFont: { size: 11 }
                             }
                         },
-                        tooltip: {
-                            backgroundColor: '#1e293b',
-                            padding: 8,
-                            cornerRadius: 6,
-                            bodyFont: { size: 11 }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { stepSize: 5, color: '#64748b', font: { size: 10 } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: {
-                            ticks: { color: '#64748b', font: { size: 10 } },
-                            grid: { display: false }
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { precision: 0, color: '#64748b', font: { size: 10 } },
+                                grid: { color: '#f1f5f9' }
+                            },
+                            x: {
+                                ticks: { color: '#64748b', font: { size: 10 } },
+                                grid: { display: false }
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         });
     </script>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

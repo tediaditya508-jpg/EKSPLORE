@@ -13,9 +13,9 @@
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -37,7 +37,7 @@
         }
 
         .subtitle {
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 25px;
         }
 
@@ -50,7 +50,7 @@
         }
 
         .item {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 15px;
@@ -75,10 +75,46 @@
             font-size: 14px;
         }
 
+        .status-menunggu {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-diterima {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-ditolak {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .page-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 14px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
         .empty {
             text-align: center;
             padding: 40px 20px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .btn {
@@ -95,6 +131,7 @@
             background: #1d4ed8;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -103,11 +140,23 @@
 
     <div class="card">
 
-        <h1>Pendaftaran Saya</h1>
+        <a href="{{ route('dashboard') }}" class="back-link">← Kembali ke Dashboard</a>
 
-        <p class="subtitle">
-            Berikut daftar ekstrakurikuler yang sudah kamu daftarkan.
-        </p>
+        <div class="page-head">
+
+            <div>
+                <h1>Pendaftaran Saya</h1>
+
+                <p class="subtitle">
+                    Berikut daftar ekstrakurikuler yang sudah kamu daftarkan.
+                </p>
+            </div>
+
+            <a href="{{ route('ekskul.index') }}" class="btn" style="margin-top: 0;">
+                + Daftar Ekskul Baru
+            </a>
+
+        </div>
 
         @if (session('success'))
             <div class="success">
@@ -120,6 +169,14 @@
             @foreach ($pendaftaran as $data)
 
                 <div class="item">
+
+                    @php
+                        $statusClass = match ($data->status) {
+                            'diterima' => 'status-diterima',
+                            'ditolak' => 'status-ditolak',
+                            default => 'status-menunggu',
+                        };
+                    @endphp
 
                     <h2>
                         {{ $data->ekstrakurikuler->nama_ekskul ?? 'Ekstrakurikuler' }}
@@ -140,7 +197,7 @@
                         {{ $data->created_at?->format('d-m-Y H:i') }}
                     </p>
 
-                    <span class="status">
+                    <span class="status {{ $statusClass }}">
                         Status: {{ ucfirst($data->status) }}
                     </span>
 
@@ -168,5 +225,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

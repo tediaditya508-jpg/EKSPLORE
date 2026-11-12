@@ -19,8 +19,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
+            font-family: var(--font-sans);
+            background: #f8fafc;
             padding: 20px;
         }
 
@@ -38,6 +38,14 @@
             margin-bottom: 25px;
         }
 
+        .logo-img {
+            display: block;
+            width: 76px;
+            height: 76px;
+            object-fit: contain;
+            margin: 0 auto 10px;
+        }
+
         .logo h1 {
             color: #2563eb;
             font-size: 30px;
@@ -45,7 +53,7 @@
         }
 
         .logo p {
-            color: #6b7280;
+            color: #64748b;
             font-size: 15px;
         }
 
@@ -57,13 +65,13 @@
             display: block;
             margin-bottom: 7px;
             font-weight: bold;
-            color: #374151;
+            color: #334155;
         }
 
         input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 10px;
             font-size: 15px;
         }
@@ -98,7 +106,7 @@
         .login-link {
             text-align: center;
             margin-top: 20px;
-            color: #6b7280;
+            color: #64748b;
             font-size: 14px;
         }
 
@@ -111,10 +119,11 @@
         .footer-text {
             text-align: center;
             margin-top: 20px;
-            color: #9ca3af;
+            color: #94a3b8;
             font-size: 13px;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -122,6 +131,11 @@
     <div class="register-card">
 
         <div class="logo">
+            <img
+                src="{{ asset('images/logo-ekspore.png') }}"
+                alt="Logo EKSPLORE"
+                class="logo-img"
+            >
             <h1>EKSPLORE</h1>
             <p>Daftar Akun Siswa</p>
         </div>
@@ -183,7 +197,7 @@
         style="
             width: 100%;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 10px;
             font-size: 15px;
             background: white;
@@ -325,6 +339,7 @@
 
     </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

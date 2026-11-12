@@ -19,13 +19,13 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
 
         body {
-            background: #f5f7fb;
-            color: #111827;
+            background: #f8fafc;
+            color: #0f172a;
         }
 
 
@@ -105,7 +105,7 @@
         .intro {
             background: white;
 
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
 
             border-radius: 16px;
 
@@ -126,7 +126,7 @@
 
 
         .intro p {
-            color: #6b7280;
+            color: #64748b;
 
             font-size: 14px;
 
@@ -155,7 +155,7 @@
         .prestasi-card {
             background: white;
 
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
 
             border-radius: 16px;
 
@@ -201,7 +201,7 @@
 
             margin-bottom: 10px;
 
-            color: #111827;
+            color: #0f172a;
         }
 
 
@@ -231,14 +231,14 @@
 
             gap: 8px;
 
-            color: #6b7280;
+            color: #64748b;
 
             font-size: 13px;
         }
 
 
         .detail strong {
-            color: #374151;
+            color: #334155;
         }
 
 
@@ -249,7 +249,7 @@
         .empty {
             background: white;
 
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
 
             border-radius: 16px;
 
@@ -257,7 +257,7 @@
 
             padding: 60px 20px;
 
-            color: #9ca3af;
+            color: #94a3b8;
 
             box-shadow:
                 0 4px 15px rgba(0,0,0,.04);
@@ -272,7 +272,7 @@
 
 
         .empty h3 {
-            color: #374151;
+            color: #334155;
 
             margin-bottom: 8px;
         }
@@ -324,6 +324,7 @@
 
     </style>
 
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 
@@ -546,6 +547,7 @@
     </main>
 
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

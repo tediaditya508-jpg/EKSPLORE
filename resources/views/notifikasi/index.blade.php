@@ -13,9 +13,9 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -45,12 +45,12 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .btn-back {
             text-decoration: none;
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 10px 16px;
             border-radius: 10px;
@@ -80,7 +80,7 @@
             padding: 20px;
             border-radius: 14px;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #d1d5db;
+            border-left: 5px solid #cbd5e1;
         }
 
         .notification-card.unread {
@@ -108,7 +108,7 @@
         }
 
         .notification-date {
-            color: #9ca3af;
+            color: #94a3b8;
             font-size: 13px;
             white-space: nowrap;
         }
@@ -128,15 +128,15 @@
         }
 
         .badge-read {
-            background: #e5e7eb;
+            background: #e2e8f0;
             color: #4b5563;
         }
 
         .btn-read {
             margin-top: 14px;
             border: none;
-            background: #e5e7eb;
-            color: #374151;
+            background: #e2e8f0;
+            color: #334155;
             padding: 8px 13px;
             border-radius: 8px;
             cursor: pointer;
@@ -148,7 +148,7 @@
             padding: 50px 20px;
             text-align: center;
             border-radius: 16px;
-            color: #6b7280;
+            color: #64748b;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
@@ -169,6 +169,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -276,5 +277,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

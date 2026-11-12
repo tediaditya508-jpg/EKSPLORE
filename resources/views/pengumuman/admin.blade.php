@@ -21,9 +21,9 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-sans);
             background: #f4f7fb;
-            color: #1f2937;
+            color: #1e293b;
         }
 
         .container {
@@ -46,7 +46,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.6;
         }
 
@@ -107,7 +107,7 @@
         .card h2 {
             font-size: 21px;
             margin-bottom: 10px;
-            color: #111827;
+            color: #0f172a;
         }
 
         .date {
@@ -141,7 +141,7 @@
             padding: 40px;
             border-radius: 16px;
             text-align: center;
-            color: #6b7280;
+            color: #64748b;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
         }
 
@@ -169,6 +169,7 @@
 
     </style>
 
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 
@@ -296,6 +297,7 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

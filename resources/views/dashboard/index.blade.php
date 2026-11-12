@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Siswa - EKSPLORE</title>
 
-    <!-- Chart.js CDN untuk Grafik -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js lokal agar grafik tetap tampil tanpa internet -->
+    <script src="{{ asset('vendor/chart.umd.min.js') }}"></script>
 
     <style>
         :root {
@@ -725,12 +725,14 @@
                 box-shadow: 15px 0 40px rgba(0,0,0,0.2);
             }
 
-            .sidebar.mobile-open .brand-text,
             .sidebar.mobile-open .sidebar-menu-label,
             .sidebar.mobile-open .sidebar-link span,
             .sidebar.mobile-open .sidebar-btn span,
             .sidebar.mobile-open .sidebar-footer-box {
                 display: flex !important;
+            }
+            .sidebar.mobile-open .brand-text {
+                display: block !important;
             }
             .sidebar.mobile-open .sidebar-menu-label {
                 display: block !important;
@@ -775,6 +777,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -886,9 +889,18 @@
             </div>
 
             <a href="{{ route('profile.index') }}" class="user-profile-badge">
-                <div class="profile-avatar-sm">
-                    {{ strtoupper(substr($siswa->name ?? $siswa->nama ?? 'S', 0, 1)) }}
-                </div>
+                @if (!empty($siswa->foto))
+                    <img
+                        src="{{ asset('storage/' . $siswa->foto) }}"
+                        alt="Foto {{ $siswa->name ?? $siswa->nama ?? 'Siswa' }}"
+                        class="profile-avatar-sm"
+                        style="object-fit: cover;"
+                    >
+                @else
+                    <div class="profile-avatar-sm">
+                        {{ strtoupper(substr($siswa->name ?? $siswa->nama ?? 'S', 0, 1)) }}
+                    </div>
+                @endif
                 <div class="profile-meta">
                     <strong>{{ $siswa->name ?? $siswa->nama ?? 'Siswa' }}</strong>
                     <span>Peserta Didik</span>
@@ -969,7 +981,7 @@
                     @empty
                         <div class="empty-state">
                             <svg class="icon" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                            <br>Belum ada jadwal ekstrakurikuler hari ini.
+                            <br>Belum ada jadwal ekstrakurikuler.
                         </div>
                     @endforelse
                 </div>
@@ -1127,100 +1139,113 @@
                 });
             });
 
-            // Render Grafik Tren Kehadiran Gaya Saham
-            const ctx = document.getElementById('kehadiranStockChart').getContext('2d');
+            // Render Grafik Tren Kehadiran dari data absensi siswa
+            const canvas = document.getElementById('kehadiranStockChart');
 
-            const gradientHadir = ctx.createLinearGradient(0, 0, 0, 260);
-            gradientHadir.addColorStop(0, 'rgba(37, 99, 235, 0.35)');
-            gradientHadir.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+            if (canvas && typeof Chart !== 'undefined') {
+                const chartKehadiran = @json($chartKehadiran);
+                const ctx = canvas.getContext('2d');
 
-            const jumlahHadir = {{ $jumlahHadir ?? 12 }};
-            const jumlahIzin = {{ $jumlahIzin ?? 2 }};
-            const jumlahAlfa = {{ $jumlahAlfa ?? 1 }};
+                const gradientHadir = ctx.createLinearGradient(0, 0, 0, 260);
+                gradientHadir.addColorStop(0, 'rgba(37, 99, 235, 0.35)');
+                gradientHadir.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
 
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Pertemuan 1', 'Pertemuan 2', 'Pertemuan 3', 'Pertemuan 4', 'Pertemuan 5', 'Pertemuan 6', 'Pertemuan 7'],
-                    datasets: [
-                        {
-                            label: 'Kehadiran (Hadir)',
-                            data: [5, 8, 7, 10, 9, 11, jumlahHadir],
-                            borderColor: '#2563eb',
-                            borderWidth: 3,
-                            fill: true,
-                            backgroundColor: gradientHadir,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointHoverRadius: 7,
-                            pointBackgroundColor: '#2563eb',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2
-                        },
-                        {
-                            label: 'Izin',
-                            data: [1, 0, 2, 1, 0, 1, jumlahIzin],
-                            borderColor: '#d97706',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            fill: false,
-                            tension: 0.4,
-                            pointRadius: 3,
-                            pointBackgroundColor: '#d97706'
-                        },
-                        {
-                            label: 'Alfa',
-                            data: [0, 1, 0, 0, 1, 0, jumlahAlfa],
-                            borderColor: '#dc2626',
-                            borderWidth: 2,
-                            borderDash: [3, 3],
-                            fill: false,
-                            tension: 0.4,
-                            pointRadius: 3,
-                            pointBackgroundColor: '#dc2626'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: chartKehadiran.labels,
+                        datasets: [
+                            {
+                                label: 'Hadir',
+                                data: chartKehadiran.hadir,
+                                borderColor: '#2563eb',
+                                borderWidth: 3,
+                                fill: true,
+                                backgroundColor: gradientHadir,
+                                tension: 0.4,
+                                pointRadius: 4,
+                                pointHoverRadius: 7,
+                                pointBackgroundColor: '#2563eb',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2
+                            },
+                            {
+                                label: 'Izin',
+                                data: chartKehadiran.izin,
+                                borderColor: '#d97706',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                fill: false,
+                                tension: 0.4,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#d97706'
+                            },
+                            {
+                                label: 'Sakit',
+                                data: chartKehadiran.sakit,
+                                borderColor: '#7c3aed',
+                                borderWidth: 2,
+                                borderDash: [4, 4],
+                                fill: false,
+                                tension: 0.4,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#7c3aed'
+                            },
+                            {
+                                label: 'Alfa',
+                                data: chartKehadiran.alfa,
+                                borderColor: '#dc2626',
+                                borderWidth: 2,
+                                borderDash: [3, 3],
+                                fill: false,
+                                tension: 0.4,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#dc2626'
+                            }
+                        ]
                     },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            align: 'end',
-                            labels: {
-                                boxWidth: 12,
-                                usePointStyle: true,
-                                font: { size: 11, weight: '600' }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                align: 'end',
+                                labels: {
+                                    boxWidth: 12,
+                                    usePointStyle: true,
+                                    font: { size: 11, weight: '600' }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: '#1e293b',
+                                padding: 10,
+                                cornerRadius: 8,
+                                titleFont: { size: 12, weight: 'bold' },
+                                bodyFont: { size: 11 }
                             }
                         },
-                        tooltip: {
-                            backgroundColor: '#1e293b',
-                            padding: 10,
-                            cornerRadius: 8,
-                            titleFont: { size: 12, weight: 'bold' },
-                            bodyFont: { size: 11 }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { stepSize: 2, color: '#64748b', font: { size: 11 } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: {
-                            ticks: { color: '#64748b', font: { size: 11 } },
-                            grid: { display: false }
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { precision: 0, color: '#64748b', font: { size: 11 } },
+                                grid: { color: '#f1f5f9' }
+                            },
+                            x: {
+                                ticks: { color: '#64748b', font: { size: 11 } },
+                                grid: { display: false }
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         });
     </script>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

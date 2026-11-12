@@ -16,16 +16,16 @@
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --primary-light: #eff6ff;
-            --background: #f5f7fb;
+            --background: #f8fafc;
             --white: #ffffff;
-            --text: #111827;
-            --text-secondary: #6b7280;
-            --border: #e5e7eb;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
             --success: #16a34a;
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-sans);
             background: var(--background);
             color: var(--text);
         }
@@ -337,7 +337,7 @@
         }
 
         .text-dark {
-            color: #111827;
+            color: #0f172a;
         }
 
         .fw-bold {
@@ -463,6 +463,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -489,5 +490,6 @@
 
         @yield('content')
     </main>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

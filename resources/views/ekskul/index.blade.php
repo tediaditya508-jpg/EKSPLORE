@@ -15,13 +15,13 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
             background: #f4f8ff;
             color: #172033;
         }
 
         .navbar {
-            background: #0d47a1;
+            background: #1d4ed8;
             color: white;
             padding: 18px 30px;
             display: flex;
@@ -41,7 +41,7 @@
         }
 
         .hero {
-            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
             color: white;
             padding: 50px 25px;
             text-align: center;
@@ -69,7 +69,7 @@
 
         .judul h2 {
             font-size: 28px;
-            color: #0d47a1;
+            color: #1d4ed8;
         }
 
         .grid {
@@ -126,7 +126,7 @@
         .badge {
             display: inline-block;
             background: #e3f2fd;
-            color: #0d47a1;
+            color: #1d4ed8;
             padding: 6px 10px;
             border-radius: 20px;
             font-size: 12px;
@@ -174,11 +174,11 @@
 
         /* EKSKUL MASIH BISA DIPILIH - BIRU */
         .button-pilih {
-            background: #0d47a1;
+            background: #1d4ed8;
         }
 
         .button-pilih:hover {
-            background: #083578;
+            background: #1e40af;
         }
 
         /* BATAS MAKSIMAL 2 EKSKUL - ABU-ABU */
@@ -219,6 +219,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -357,5 +358,6 @@
 
     </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

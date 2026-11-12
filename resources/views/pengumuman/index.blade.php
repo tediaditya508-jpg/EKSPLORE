@@ -14,9 +14,9 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -27,7 +27,7 @@
 
         .header {
             background: white;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
             padding: 20px 0;
         }
 
@@ -60,7 +60,7 @@
         }
 
         .page-description {
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 25px;
         }
 
@@ -73,14 +73,14 @@
             background: white;
             border-radius: 14px;
             padding: 22px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         }
 
         .announcement-title {
             font-size: 20px;
             margin-bottom: 10px;
-            color: #111827;
+            color: #0f172a;
         }
 
         /* ================================
@@ -105,7 +105,7 @@
         .announcement-pembina {
             display: block;
             margin-bottom: 12px;
-            color: #6b7280;
+            color: #64748b;
             font-size: 13px;
         }
 
@@ -127,11 +127,11 @@
 
         .empty {
             background: white;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 14px;
             padding: 50px 20px;
             text-align: center;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .empty-icon {
@@ -154,6 +154,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -253,5 +254,6 @@
 
     </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

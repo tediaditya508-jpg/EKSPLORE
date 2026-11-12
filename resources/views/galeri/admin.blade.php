@@ -11,16 +11,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background: #f5f7fb;
-            color: #1f2937;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 18px 40px;
             display: flex;
@@ -57,7 +57,7 @@
         }
 
         .top p {
-            color: #6b7280;
+            color: #64748b;
             font-size: 14px;
         }
 
@@ -97,7 +97,7 @@
             background: white;
             border-radius: 14px;
             overflow: hidden;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
@@ -106,7 +106,7 @@
             height: 220px;
             object-fit: cover;
             display: block;
-            background: #e5e7eb;
+            background: #e2e8f0;
         }
 
         .galeri-content {
@@ -125,24 +125,24 @@
         }
 
         .keterangan {
-            color: #6b7280;
+            color: #64748b;
             font-size: 14px;
             line-height: 1.5;
             margin-bottom: 10px;
         }
 
         .tanggal {
-            color: #9ca3af;
+            color: #94a3b8;
             font-size: 12px;
         }
 
         .empty {
             background: white;
-            border: 1px dashed #d1d5db;
+            border: 1px dashed #cbd5e1;
             border-radius: 14px;
             padding: 50px 20px;
             text-align: center;
-            color: #6b7280;
+            color: #64748b;
         }
 
         @media (max-width: 900px) {
@@ -175,6 +175,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -298,5 +299,6 @@
 
     </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

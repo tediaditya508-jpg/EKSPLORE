@@ -15,13 +15,13 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 18px 40px;
             display: flex;
@@ -59,7 +59,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .success {
@@ -93,7 +93,7 @@
         }
 
         .anggota-card {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 14px;
             padding: 20px;
             margin-bottom: 15px;
@@ -123,7 +123,7 @@
             display: block;
             margin-bottom: 7px;
             font-weight: bold;
-            color: #374151;
+            color: #334155;
         }
 
         input,
@@ -131,7 +131,7 @@
         textarea {
             width: 100%;
             padding: 11px 13px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 9px;
             font-size: 14px;
             background: white;
@@ -152,7 +152,7 @@
         .nilai-info {
             display: block;
             margin-top: 6px;
-            color: #6b7280;
+            color: #64748b;
             font-size: 12px;
         }
 
@@ -177,7 +177,7 @@
         .empty {
             text-align: center;
             padding: 40px 20px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .back {
@@ -241,7 +241,7 @@
         }
 
         .riwayat-item {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-radius: 14px;
             padding: 20px;
             margin-bottom: 15px;
@@ -300,13 +300,13 @@
             margin-top: 15px;
             padding: 14px 16px;
             background: #f9fafb;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e2e8f0;
             border-left: 5px solid #2563eb;
             border-radius: 10px;
         }
 
         .keterangan-box strong {
-            color: #374151;
+            color: #334155;
         }
 
         .keterangan-text {
@@ -380,6 +380,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -731,7 +732,7 @@
             </div>
 
 
-            <p style="color:#6b7280;">
+            <p style="color:#64748b;">
 
                 Total data absensi:
 
@@ -962,6 +963,7 @@
 
     </script>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html> 

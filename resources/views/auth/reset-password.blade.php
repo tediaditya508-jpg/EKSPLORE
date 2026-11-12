@@ -19,7 +19,7 @@
             justify-content: center;
             align-items: center;
             background: #f4f6f8;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-sans);
         }
 
         .container {
@@ -87,7 +87,7 @@
         input {
             width: 100%;
             padding: 13px 14px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
             outline: none;
             font-size: 14px;
@@ -136,6 +136,7 @@
             text-decoration: underline;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -234,5 +235,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

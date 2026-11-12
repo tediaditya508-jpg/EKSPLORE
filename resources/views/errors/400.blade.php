@@ -6,8 +6,8 @@
     <title>Permintaan Tidak Valid - EKSPLORE</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
+            font-family: var(--font-sans);
+            background: #f8fafc;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -37,6 +37,7 @@
             border-radius: 8px;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 <body>
     <div class="card">
@@ -45,5 +46,6 @@
         <p>{{ $message ?? 'Permintaan tidak dapat diproses.' }}</p>
         <a href="{{ route('register') }}">Kembali ke Pendaftaran</a>
     </div>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

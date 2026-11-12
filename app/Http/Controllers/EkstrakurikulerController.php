@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ekstrakurikuler;
 use App\Models\AnggotaEkskul;
+use App\Models\Pendaftaran;
 use Illuminate\Support\Facades\Auth;
 
 class EkstrakurikulerController extends Controller
@@ -48,7 +49,34 @@ class EkstrakurikulerController extends Controller
             'galeri'
         ])->findOrFail($id);
 
-        return view('ekskul.show', compact('ekskul'));
+        $siswa = Auth::user();
+
+        $sudahAnggota = false;
+        $pendaftaranTerakhir = null;
+        $jumlahEkskulAktif = 0;
+
+        if ($siswa && $siswa->role === 'siswa') {
+            $sudahAnggota = AnggotaEkskul::where('siswa_id', $siswa->id)
+                ->where('ekskul_id', $ekskul->id)
+                ->where('status', 'aktif')
+                ->exists();
+
+            $pendaftaranTerakhir = Pendaftaran::where('siswa_id', $siswa->id)
+                ->where('ekskul_id', $ekskul->id)
+                ->latest()
+                ->first();
+
+            $jumlahEkskulAktif = AnggotaEkskul::where('siswa_id', $siswa->id)
+                ->where('status', 'aktif')
+                ->count();
+        }
+
+        return view('ekskul.show', compact(
+            'ekskul',
+            'sudahAnggota',
+            'pendaftaranTerakhir',
+            'jumlahEkskulAktif'
+        ));
     }
 
 

@@ -13,9 +13,9 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -68,7 +68,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.6;
         }
 
@@ -105,6 +105,56 @@
             background: #1d4ed8;
         }
 
+        .btn-disabled {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: #e2e8f0;
+            color: #64748b;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: #16a34a;
+            color: #ffffff;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .btn-waiting {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: #fef3c7;
+            color: #92400e;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
         @media (max-width: 600px) {
             .info {
                 grid-template-columns: 1fr;
@@ -115,6 +165,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -124,6 +175,18 @@
     <a href="{{ route('ekskul.index') }}" class="back">
         ← Kembali ke Daftar Ekskul
     </a>
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-error">
+            {{ $errors->first() }}
+        </div>
+    @endif
 
     <div class="card">
 
@@ -186,16 +249,27 @@
 
         </div>
 
-        <a
-            href="{{ route('pendaftaran.create', $ekskul->id) }}"
-            class="btn"
-        >
-            Daftar Ekskul
-        </a>
+        @if ($sudahAnggota)
+            <span class="btn-success">✓ Sudah Diikuti</span>
+        @elseif ($pendaftaranTerakhir && $pendaftaranTerakhir->status === 'menunggu')
+            <span class="btn-waiting">⏳ Menunggu Verifikasi</span>
+        @elseif ($pendaftaranTerakhir && $pendaftaranTerakhir->status === 'diterima')
+            <span class="btn-success">✓ Pendaftaran Diterima</span>
+        @elseif ($jumlahEkskulAktif >= 2)
+            <span class="btn-disabled">Batas Maksimal 2 Ekskul</span>
+        @else
+            <a
+                href="{{ route('pendaftaran.create', $ekskul->id) }}"
+                class="btn"
+            >
+                Daftar Ekskul
+            </a>
+        @endif
 
     </div>
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

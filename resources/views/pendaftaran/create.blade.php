@@ -13,9 +13,9 @@
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -37,12 +37,12 @@
         }
 
         .subtitle {
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 25px;
         }
 
         .info {
-            background: #f3f4f6;
+            background: #f1f5f9;
             padding: 18px;
             border-radius: 12px;
             margin-bottom: 25px;
@@ -62,10 +62,10 @@
             width: 100%;
             min-height: 150px;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 10px;
             resize: vertical;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
             font-size: 14px;
         }
 
@@ -101,8 +101,8 @@
         }
 
         .btn-secondary {
-            background: #e5e7eb;
-            color: #374151;
+            background: #e2e8f0;
+            color: #334155;
         }
 
         .btn:hover {
@@ -124,6 +124,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -213,5 +214,6 @@
 
 </div>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

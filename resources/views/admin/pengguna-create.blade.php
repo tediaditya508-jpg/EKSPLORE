@@ -18,12 +18,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background: #f5f7fb;
-            color: #1f2937;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         /* =========================
@@ -31,7 +31,7 @@
         ========================= */
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
 
             padding: 18px 40px;
@@ -88,7 +88,7 @@
         }
 
         .description {
-            color: #6b7280;
+            color: #64748b;
 
             margin-bottom: 30px;
 
@@ -112,7 +112,7 @@
 
             font-weight: bold;
 
-            color: #374151;
+            color: #334155;
         }
 
         .form-group input,
@@ -121,7 +121,7 @@
 
             padding: 12px 14px;
 
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
 
             border-radius: 8px;
 
@@ -183,7 +183,7 @@
         }
 
         .button-save {
-            background: #111827;
+            background: #0f172a;
 
             color: white;
 
@@ -203,15 +203,15 @@
         }
 
         .button-save:hover {
-            background: #374151;
+            background: #334155;
 
             transform: translateY(-1px);
         }
 
         .button-cancel {
-            background: #e5e7eb;
+            background: #e2e8f0;
 
-            color: #374151;
+            color: #334155;
 
             text-decoration: none;
 
@@ -227,7 +227,7 @@
         }
 
         .button-cancel:hover {
-            background: #d1d5db;
+            background: #cbd5e1;
         }
 
         /* =========================
@@ -267,6 +267,7 @@
 
     </style>
 
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 
@@ -515,6 +516,7 @@
     </main>
 
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 
 </html>

@@ -11,16 +11,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background: #f5f7fb;
-            color: #1f2937;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .navbar {
-            background: #111827;
+            background: #0f172a;
             color: white;
             padding: 18px 40px;
             display: flex;
@@ -62,7 +62,7 @@
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .grid {
@@ -80,22 +80,22 @@
 
         .card h2 {
             margin-bottom: 18px;
-            color: #111827;
+            color: #0f172a;
         }
 
         .info {
             margin-bottom: 12px;
-            color: #6b7280;
+            color: #64748b;
             line-height: 1.5;
         }
 
         .info strong {
-            color: #1f2937;
+            color: #1e293b;
         }
 
         .description {
             line-height: 1.7;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .stats {
@@ -106,7 +106,7 @@
         }
 
         .stat {
-            background: #f5f7fb;
+            background: #f8fafc;
             padding: 18px;
             border-radius: 10px;
             text-align: center;
@@ -115,12 +115,12 @@
         .stat-number {
             font-size: 25px;
             font-weight: bold;
-            color: #111827;
+            color: #0f172a;
             margin-bottom: 5px;
         }
 
         .stat-label {
-            color: #6b7280;
+            color: #64748b;
             font-size: 13px;
         }
 
@@ -148,14 +148,14 @@
         }
 
         .empty p {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .button {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 18px;
-            background: #111827;
+            background: #0f172a;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -163,7 +163,7 @@
         }
 
         .button:hover {
-            background: #374151;
+            background: #334155;
         }
 
         @media (max-width: 768px) {
@@ -180,6 +180,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -347,5 +348,6 @@
 
     </main>
 
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>

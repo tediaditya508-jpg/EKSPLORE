@@ -13,9 +13,9 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: var(--font-sans);
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         .container {
@@ -38,11 +38,11 @@
         .header h1 {
             font-size: 28px;
             margin-bottom: 8px;
-            color: #111827;
+            color: #0f172a;
         }
 
         .header p {
-            color: #6b7280;
+            color: #64748b;
             font-size: 15px;
         }
 
@@ -50,7 +50,7 @@
             display: inline-block;
             margin-top: 18px;
             padding: 10px 18px;
-            background: #111827;
+            background: #0f172a;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -58,7 +58,7 @@
         }
 
         .back-button:hover {
-            background: #374151;
+            background: #334155;
         }
 
         .card {
@@ -76,7 +76,7 @@
 
         .card-header h2 {
             font-size: 20px;
-            color: #111827;
+            color: #0f172a;
         }
 
         .header-actions {
@@ -142,7 +142,7 @@
         }
 
         thead {
-            background: #f3f4f6;
+            background: #f1f5f9;
         }
 
         th {
@@ -150,15 +150,15 @@
             text-align: left;
             font-size: 13px;
             color: #4b5563;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e2e8f0;
             white-space: nowrap;
         }
 
         td {
             padding: 15px 12px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e2e8f0;
             font-size: 14px;
-            color: #374151;
+            color: #334155;
             vertical-align: middle;
         }
 
@@ -168,7 +168,7 @@
 
         .nama-ekskul {
             font-weight: bold;
-            color: #111827;
+            color: #0f172a;
         }
 
         .badge {
@@ -200,7 +200,7 @@
         }
 
         .lokasi {
-            color: #6b7280;
+            color: #64748b;
         }
 
         .aksi {
@@ -245,7 +245,7 @@
         .empty {
             text-align: center;
             padding: 50px 20px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .empty-icon {
@@ -254,7 +254,7 @@
         }
 
         .empty h3 {
-            color: #374151;
+            color: #334155;
             margin-bottom: 8px;
         }
 
@@ -292,6 +292,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -444,5 +445,6 @@
         @endif
     </div>
 </div>
+    <script src="{{ asset('js/eksplore.js') }}" defer></script>
 </body>
 </html>
