@@ -1,66 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EKSPLORE
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+EKSPLORE adalah aplikasi sistem informasi pengelolaan ekstrakurikuler untuk **SMK Budi Bakti Ciwidey**. Aplikasi ini membantu siswa, pembina, dan admin sekolah mengelola kegiatan ekstrakurikuler melalui satu aplikasi web.
 
-## About Laravel
+## Fitur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Siswa:** login ke aplikasi, melihat daftar ekstrakurikuler, melakukan pendaftaran, melihat jadwal kegiatan, mengajukan perpindahan ekstrakurikuler, melihat kehadiran, prestasi, galeri, pengumuman, dan notifikasi, serta mengelola profil pribadi.
+- **Pembina:** mengelola kegiatan ekstrakurikuler yang dibina, melihat data anggota, mengelola pendaftaran siswa, mencatat kehadiran, mengelola prestasi, galeri, jadwal, pengumuman, serta memproses pengajuan perpindahan ekstrakurikuler sesuai kewenangannya.
+- **Admin:** mengelola data ekstrakurikuler, pengguna, anggota, pendaftaran, jadwal, kehadiran, prestasi, galeri, pengumuman, pengajuan perpindahan ekstrakurikuler, serta laporan dan data siswa.
+- **Manajemen akun dan akses:** autentikasi pengguna, pembatasan akses berdasarkan peran, serta pengelolaan fitur sesuai hak akses Siswa, Pembina, dan Admin.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel 12 sebagai framework backend
+- PHP sebagai bahasa pemrograman backend
+- Blade, HTML, CSS, dan JavaScript untuk antarmuka aplikasi
+- Database PostgreSQL/MySQL sesuai konfigurasi proyek
+- Composer untuk mengelola dependensi PHP
+- Node.js dan npm untuk kebutuhan aset frontend
 
-## Learning Laravel
+## Struktur Aplikasi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Project EKSPLORE menggunakan Laravel dengan struktur utama sebagai berikut:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- `app/` — berisi controller, model, middleware, dan logika aplikasi.
+- `resources/views/` — berisi halaman antarmuka aplikasi menggunakan Blade.
+- `routes/` — berisi pengaturan rute aplikasi.
+- `database/` — berisi migration dan pengaturan database.
+- `public/` — berisi aset publik aplikasi.
+- `storage/` — digunakan untuk penyimpanan file dan log aplikasi.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Persiapan
 
-## Laravel Sponsors
+Sebelum menjalankan aplikasi, pastikan perangkat sudah memiliki:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- PHP dengan versi yang sesuai dengan kebutuhan Laravel.
+- Composer.
+- Node.js dan npm.
+- Database yang digunakan oleh konfigurasi proyek.
+- Git untuk mengelola source code proyek.
 
-### Premium Partners
+## Menjalankan Aplikasi Secara Lokal
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. Masuk ke direktori project EKSPLORE:
 
-## Contributing
+   ```bash
+   cd EKSPLORE
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. Pasang dependensi PHP:
 
-## Code of Conduct
+   ```bash
+   composer install
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. Pasang dependensi frontend:
 
-## Security Vulnerabilities
+   ```bash
+   npm install
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. Siapkan file `.env` berdasarkan konfigurasi proyek, kemudian sesuaikan pengaturan database, seperti nama database, username, password, dan koneksi database.
 
-## License
+5. Jalankan migration apabila database belum memiliki struktur tabel yang diperlukan dan migration proyek memang sudah siap digunakan:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   ```bash
+   php artisan migrate
+   ```
+
+6. Jalankan server pengembangan Laravel:
+
+   ```bash
+   php artisan serve
+   ```
+
+7. Jika aset frontend perlu dijalankan melalui Vite, buka terminal lain dan jalankan:
+
+   ```bash
+   npm run dev
+   ```
+
+8. Buka aplikasi melalui alamat:
+
+   ```text
+   http://127.0.0.1:8000
+   ```
+
+## Perintah Aplikasi
+
+Jalankan perintah berikut dari direktori utama project EKSPLORE:
+
+| Perintah | Keterangan |
+|---|---|
+| `composer install` | Memasang dependensi PHP |
+| `npm install` | Memasang dependensi frontend |
+| `php artisan serve` | Menjalankan server pengembangan Laravel |
+| `npm run dev` | Menjalankan Vite untuk kebutuhan frontend |
+| `npm run build` | Membuat hasil build aset frontend |
+| `php artisan route:list` | Melihat daftar rute aplikasi |
+| `php artisan test` | Menjalankan pengujian otomatis aplikasi |
+
+## Alur Penggunaan Aplikasi
+
+1. Pengguna membuka aplikasi EKSPLORE dan melakukan login sesuai akun serta perannya.
+2. Setelah berhasil login, pengguna diarahkan ke dashboard sesuai hak aksesnya.
+3. Siswa dapat melihat informasi ekstrakurikuler dan melakukan pendaftaran.
+4. Pembina mengelola kegiatan serta anggota ekstrakurikuler yang menjadi tanggung jawabnya.
+5. Pembina mencatat kehadiran dan mengelola informasi kegiatan sesuai kewenangannya.
+6. Admin mengelola data utama dan memantau aktivitas pengelolaan ekstrakurikuler.
+7. Setiap pengguna mengakses menu dan fitur sesuai peran masing-masing.
+
+## Catatan Konfigurasi
+
+- Akun pengguna dan informasi peran harus tersedia di database agar pengguna dapat masuk ke aplikasi.
+- Hak akses aplikasi dibedakan berdasarkan peran Siswa, Pembina, dan Admin.
+- Konfigurasi database mengikuti pengaturan pada file `.env`.
+- File `.env` berisi konfigurasi penting aplikasi dan tidak boleh dibagikan atau diunggah ke repository publik.
+- Sebelum menjalankan migration pada database yang sudah berisi data, lakukan pencadangan terlebih dahulu.
+- Aplikasi dijalankan secara lokal selama proses pengembangan menggunakan Laravel development server.
+
+---
+
+**EKSPLORE — Sistem Informasi Pengelolaan Ekstrakurikuler SMK Budi Bakti Ciwidey.**

@@ -3,33 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RoleAccessTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->assertSame('sqlite', config('database.default'));
-        $this->assertSame(
-            ':memory:',
-            config('database.connections.sqlite.database')
-        );
-
-        Schema::create('user', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->string('nama')->nullable();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('role');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-    }
+    use RefreshDatabase;
 
     private function buatPengguna(string $role): User
     {
@@ -45,7 +24,7 @@ class RoleAccessTest extends TestCase
     public function test_siswa_hanya_boleh_membuka_dashboard_siswa(): void
     {
         $siswa = $this->buatPengguna('siswa');
-        
+
         $this->actingAs($siswa);
 
         $this->get('/pembina/dashboard')->assertForbidden();
@@ -68,12 +47,7 @@ class RoleAccessTest extends TestCase
 
         $this->actingAs($admin);
 
-        // Memastikan admin tidak ditolak oleh pemeriksaan role.
-        // Halaman siswa bisa gagal jika tabel pendukung belum dibuat
-        // di database SQLite khusus pengujian.
-        $response = $this->get('/dashboard');
-        $this->assertNotSame(403, $response->getStatusCode());
-
+        $this->get('/dashboard')->assertOk();
         $this->get('/pembina/dashboard')->assertOk();
         $this->get('/admin/dashboard')->assertOk();
     }
