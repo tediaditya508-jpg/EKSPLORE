@@ -330,36 +330,10 @@
 
 <body>
 
-
-    {{-- =========================
-         HEADER
-    ========================= --}}
-
-    <header class="header">
-
-        <div class="header-left">
-
-            <a
-                href="{{ route('dashboard') }}"
-                class="back-button"
-            >
-                ← Kembali
-            </a>
-
-            <h1>
-                🏆 Prestasi
-            </h1>
-
-        </div>
+@include('partials.app-sidebar')
 
 
-        <div class="header-user">
 
-            {{ $siswa->name ?? $siswa->nama ?? 'Siswa' }}
-
-        </div>
-
-    </header>
 
 
 
@@ -548,6 +522,8 @@
 
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 
 </html>

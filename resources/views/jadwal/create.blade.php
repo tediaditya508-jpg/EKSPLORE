@@ -178,15 +178,13 @@
 </head>
 
 <body>
+
+@include('partials.app-sidebar')
 <div class="container">
 
     <div class="header">
         <h1>➕ Tambah Jadwal</h1>
         <p>Tambahkan jadwal rutin atau event ekstrakurikuler.</p>
-
-        <a href="{{ route('admin.jadwal') }}" class="back-button">
-            ← Kembali ke Jadwal
-        </a>
     </div>
 
     <div class="card">
@@ -386,5 +384,7 @@
     updateJenisFields();
 </script>
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

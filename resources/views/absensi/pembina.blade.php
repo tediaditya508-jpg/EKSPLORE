@@ -385,28 +385,11 @@
 
 <body>
 
-    <nav class="navbar">
+@include('partials.app-sidebar')
 
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-        <div class="role">
-            Absensi Pembina
-        </div>
-
-    </nav>
 
 
     <main class="container">
-
-        <a
-            href="{{ route('pembina.dashboard') }}"
-            class="back"
-        >
-            ← Kembali ke Dashboard Pembina
-        </a>
-
 
         <section class="header">
 
@@ -964,6 +947,8 @@
     </script>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 
 </html> 

@@ -244,6 +244,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
     <div class="page-wrapper">
 
         <div class="content">
@@ -439,5 +442,7 @@
     </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

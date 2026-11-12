@@ -261,25 +261,9 @@
 
 <body>
 
-<header class="header">
+@include('partials.app-sidebar')
 
-    <div class="header-left">
 
-        <a href="{{ route('pembina.dashboard') }}" class="back">
-            ← Kembali
-        </a>
-
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-    </div>
-
-    <div class="user-name">
-        {{ $pembina->name ?? $pembina->nama ?? 'Pembina' }}
-    </div>
-
-</header>
 
 <main class="container">
 
@@ -508,5 +492,7 @@
 </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

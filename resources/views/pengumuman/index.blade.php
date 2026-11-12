@@ -66,6 +66,7 @@
 
         .announcement-list {
             display: grid;
+            grid-template-columns: minmax(0, 1fr);
             gap: 18px;
         }
 
@@ -75,6 +76,7 @@
             padding: 22px;
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            min-width: 0;
         }
 
         .announcement-title {
@@ -123,6 +125,7 @@
             color: #4b5563;
             line-height: 1.7;
             white-space: pre-line;
+            overflow-wrap: anywhere;
         }
 
         .empty {
@@ -159,19 +162,7 @@
 
 <body>
 
-    <header class="header">
-        <div class="container header-content">
-
-            <div class="logo">
-                EKSPLORE
-            </div>
-
-            <a href="{{ route('dashboard') }}" class="back-button">
-                ← Kembali
-            </a>
-
-        </div>
-    </header>
+@include('partials.app-sidebar')
 
 
     <main class="page">
@@ -255,5 +246,7 @@
     </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

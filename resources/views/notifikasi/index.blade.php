@@ -174,6 +174,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
 <div class="container">
 
     <div class="header">
@@ -278,5 +281,7 @@
 </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

@@ -136,11 +136,12 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
 <div class="container">
 
     <div class="card">
-
-        <a href="{{ route('dashboard') }}" class="back-link">← Kembali ke Dashboard</a>
 
         <div class="page-head">
 
@@ -226,5 +227,7 @@
 </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

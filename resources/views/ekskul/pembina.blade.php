@@ -185,20 +185,8 @@
 
 <body>
 
-    <nav class="navbar">
+@include('partials.app-sidebar')
 
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-        <a
-            href="{{ route('pembina.dashboard') }}"
-            class="back"
-        >
-            ← Kembali ke Dashboard
-        </a>
-
-    </nav>
 
 
     <main class="container">
@@ -335,13 +323,6 @@
                     ditugaskan kepada Anda.
                 </p>
 
-                <a
-                    href="{{ route('pembina.dashboard') }}"
-                    class="button"
-                >
-                    Kembali ke Dashboard
-                </a>
-
             </section>
 
         @endif
@@ -349,5 +330,7 @@
     </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

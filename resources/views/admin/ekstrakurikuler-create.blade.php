@@ -188,13 +188,8 @@
 
 <body>
 
-    <div class="navbar">
-        <h2>EKSPLORE</h2>
+@include('partials.app-sidebar')
 
-        <span>
-            Admin: {{ $admin->name ?? 'Administrator' }}
-        </span>
-    </div>
 
     <div class="container">
 
@@ -433,5 +428,7 @@
     </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

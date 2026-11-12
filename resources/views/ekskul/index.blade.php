@@ -224,14 +224,8 @@
 
 <body>
 
-    <nav class="navbar">
-        <div class="logo">EKSPLORE</div>
+@include('partials.app-sidebar')
 
-        <div>
-            <a href="{{ route('dashboard') }}">Beranda</a>
-            <a href="{{ route('ekskul.index') }}">Ekskul</a>
-        </div>
-    </nav>
 
     <section class="hero">
         <h1>Temukan Ekskul Favoritmu 🎯</h1>
@@ -359,5 +353,7 @@
     </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

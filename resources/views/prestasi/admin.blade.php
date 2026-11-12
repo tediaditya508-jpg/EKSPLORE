@@ -115,6 +115,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
 <div class="container">
 
     <div class="header">
@@ -124,10 +127,6 @@
             Daftar prestasi yang diperoleh oleh seluruh
             ekstrakurikuler sekolah.
         </p>
-
-        <a href="{{ route('admin.dashboard') }}" class="back">
-            ← Kembali ke Dashboard
-        </a>
     </div>
 
 
@@ -222,5 +221,7 @@
 </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

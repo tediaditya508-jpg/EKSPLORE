@@ -189,17 +189,8 @@
 
 <body>
 
-    <nav class="navbar">
-        <div class="brand">
-            EKSPLORE
-        </div>
+@include('partials.app-sidebar')
 
-        <div class="navbar-right">
-            <span class="admin-name">
-                Admin: {{ $admin->name }}
-            </span>
-        </div>
-    </nav>
 
 
     <main class="container">
@@ -332,5 +323,7 @@
     </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

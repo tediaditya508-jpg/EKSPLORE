@@ -94,6 +94,7 @@
 
         .list {
             display: grid;
+            grid-template-columns: minmax(0, 1fr);
             gap: 20px;
         }
 
@@ -102,6 +103,7 @@
             padding: 25px;
             border-radius: 16px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            min-width: 0;
         }
 
         .card h2 {
@@ -122,6 +124,7 @@
             color: #4b5563;
             line-height: 1.7;
             white-space: pre-line;
+            overflow-wrap: anywhere;
         }
 
         .image {
@@ -175,6 +178,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
 <div class="container">
 
 
@@ -193,16 +199,6 @@
 
 
         <div class="buttons">
-
-            {{-- KEMBALI --}}
-
-            <a
-                href="{{ route('admin.dashboard') }}"
-                class="back"
-            >
-                ← Kembali ke Dashboard
-            </a>
-
 
             {{-- TAMBAH PENGUMUMAN --}}
 
@@ -298,6 +294,8 @@
 </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 
 </html>

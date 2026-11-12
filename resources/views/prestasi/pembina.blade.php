@@ -294,20 +294,8 @@
 
 <body>
 
-    <nav class="navbar">
+@include('partials.app-sidebar')
 
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-        <a
-            href="{{ route('pembina.dashboard') }}"
-            class="back"
-        >
-            ← Kembali ke Dashboard
-        </a>
-
-    </nav>
 
 
     <main class="container">
@@ -849,5 +837,7 @@
     </script>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

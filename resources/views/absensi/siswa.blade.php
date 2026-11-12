@@ -363,25 +363,11 @@
 
 <body>
 
-    <nav class="navbar">
+@include('partials.app-sidebar')
 
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-        <div class="role">
-            Kehadiran Siswa
-        </div>
-
-    </nav>
 
 
     <main class="container">
-
-        <a href="{{ route('dashboard') }}" class="back">
-            ← Kembali ke Dashboard
-        </a>
-
 
         <section class="header">
 
@@ -734,6 +720,8 @@
     </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 
 </html>

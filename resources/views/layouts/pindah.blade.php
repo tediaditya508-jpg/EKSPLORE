@@ -468,6 +468,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
     <main class="main">
         <div class="topbar">
             <div class="welcome">
@@ -491,5 +494,7 @@
         @yield('content')
     </main>
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

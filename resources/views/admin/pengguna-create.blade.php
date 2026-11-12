@@ -273,27 +273,7 @@
 
 <body>
 
-
-    {{-- =========================
-         NAVBAR
-    ========================= --}}
-
-    <nav class="navbar">
-
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-        <a
-            href="{{ route('admin.pengguna') }}"
-            class="back"
-        >
-            ← Kembali ke Pengguna
-        </a>
-
-    </nav>
-
-
+@include('partials.app-sidebar')
 
     <main class="container">
 
@@ -517,6 +497,8 @@
 
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 
 </html>

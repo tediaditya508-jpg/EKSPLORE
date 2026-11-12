@@ -296,15 +296,13 @@
 </head>
 
 <body>
+
+@include('partials.app-sidebar')
 <div class="container">
 
     <div class="header">
         <h1>📅 Jadwal Ekstrakurikuler</h1>
         <p>Kelola dan lihat seluruh jadwal rutin serta event ekstrakurikuler.</p>
-
-        <a href="{{ route('admin.dashboard') }}" class="back-button">
-            ← Kembali ke Dashboard
-        </a>
     </div>
 
     @if (session('success'))
@@ -446,5 +444,7 @@
     </div>
 </div>
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

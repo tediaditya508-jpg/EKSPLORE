@@ -153,6 +153,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
     <main class="container">
 
         <section class="header">
@@ -163,9 +166,6 @@
                 yang Anda ikuti di SMK Budi Bakti Ciwidey.
             </p>
 
-            <a href="{{ route('dashboard') }}" class="back">
-                ← Kembali ke Dashboard
-            </a>
         </section>
 
         <div class="jadwal-list">
@@ -247,5 +247,7 @@
     </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

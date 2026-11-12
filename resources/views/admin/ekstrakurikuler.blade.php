@@ -366,27 +366,7 @@
 
 <body>
 
-
-    {{-- =========================
-         NAVBAR
-    ========================= --}}
-
-    <nav class="navbar">
-
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-
-        <a
-            href="{{ route('admin.dashboard') }}"
-            class="back"
-        >
-            ← Kembali ke Dashboard
-        </a>
-
-    </nav>
-
+@include('partials.app-sidebar')
 
 
     <main class="container">
@@ -695,6 +675,8 @@
 
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 
 </html>

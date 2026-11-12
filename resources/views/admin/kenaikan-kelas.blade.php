@@ -159,10 +159,11 @@
 </head>
 
 <body>
+
+@include('partials.app-sidebar')
 <div class="container">
 
     <div class="header">
-        <a href="{{ route('admin.dashboard') }}" class="back-link">← Kembali ke Dashboard</a>
         <h1>Kenaikan Kelas Siswa</h1>
         <p>EKSPLORE - Sistem Pengelolaan Data Siswa</p>
     </div>
@@ -282,5 +283,7 @@
 
 </div>
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

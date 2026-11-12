@@ -170,6 +170,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
 <div class="container">
 
     <a href="{{ route('ekskul.index') }}" class="back">
@@ -271,5 +274,7 @@
 </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

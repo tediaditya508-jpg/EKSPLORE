@@ -180,6 +180,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
 <div class="container">
 
 
@@ -195,18 +198,6 @@
             Lihat ringkasan data dan aktivitas
             ekstrakurikuler dalam sistem EKSPLORE.
         </p>
-
-
-        <div class="buttons">
-
-            <a
-                href="{{ route('admin.dashboard') }}"
-                class="btn btn-back"
-            >
-                ← Kembali ke Dashboard
-            </a>
-
-        </div>
 
     </div>
 
@@ -531,6 +522,8 @@
 </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 
 </html>

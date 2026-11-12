@@ -198,11 +198,10 @@
 
 <body>
 
-<div class="container">
+@include('partials.app-sidebar')
 
-    <a href="{{ route('pembina.dashboard') }}" class="back">
-        ← Kembali ke Dashboard Pembina
-    </a>
+
+<div class="container">
 
     <div class="card">
 
@@ -395,6 +394,8 @@
 </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 
 </html>

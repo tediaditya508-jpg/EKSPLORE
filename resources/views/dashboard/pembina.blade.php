@@ -852,7 +852,7 @@
 
                 <a href="{{ route('pembina.pindah_ekskul') }}" class="sidebar-link {{ request()->routeIs('pembina.pindah_ekskul*') ? 'active' : '' }}" title="Pindah Ekskul">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                    <span>Pengajuan Pindah</span>
+                    <span>Pindah Ekskul</span>
                 </a>
 
                 <a href="{{ route('pembina.prestasi') }}" class="sidebar-link {{ request()->routeIs('pembina.prestasi*') ? 'active' : '' }}" title="Prestasi">

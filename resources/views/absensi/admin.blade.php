@@ -174,6 +174,9 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
 <div class="container">
 
     <div class="header">
@@ -183,13 +186,7 @@
             Kelola dan pantau data kehadiran siswa
             pada kegiatan ekstrakurikuler.
         </p>
-
-        <a href="{{ route('admin.dashboard') }}" class="back">
-            ← Kembali ke Dashboard
-        </a>
     </div>
-
-
     <div class="card">
 
         <div class="card-title">
@@ -290,5 +287,7 @@
 </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

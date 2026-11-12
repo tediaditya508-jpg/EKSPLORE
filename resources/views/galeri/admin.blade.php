@@ -180,17 +180,8 @@
 
 <body>
 
-    <nav class="navbar">
+@include('partials.app-sidebar')
 
-        <div class="logo">
-            EKSPLORE
-        </div>
-
-        <div class="role">
-            Galeri Admin
-        </div>
-
-    </nav>
 
 
     <main class="container">
@@ -204,13 +195,6 @@
                     Lihat seluruh dokumentasi kegiatan ekstrakurikuler.
                 </p>
             </div>
-
-            <a
-                href="{{ route('admin.dashboard') }}"
-                class="back"
-            >
-                ← Dashboard Admin
-            </a>
 
         </div>
 
@@ -300,5 +284,7 @@
     </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

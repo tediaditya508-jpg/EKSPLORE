@@ -96,13 +96,20 @@
             display: block;
         }
 
+        .profile-top > div:not(.avatar-wrapper) {
+            flex: 1;
+            min-width: 0;
+        }
+
         .profile-top h2 {
             font-size: 23px;
             margin-bottom: 6px;
+            overflow-wrap: anywhere;
         }
 
         .profile-top p {
             color: #64748b;
+            overflow-wrap: anywhere;
         }
 
         .photo-actions {
@@ -290,12 +297,11 @@
 
 <body>
 
+@include('partials.app-sidebar')
+
+
     <div class="header">
         <div class="header-content">
-
-            <a href="{{ route('dashboard') }}" class="back">
-                ← Kembali ke Beranda
-            </a>
 
             <h1>👤 Profil</h1>
             <p>Informasi akun siswa EKSPLORE</p>
@@ -577,5 +583,7 @@
     </div>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>

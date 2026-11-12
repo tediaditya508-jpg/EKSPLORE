@@ -158,21 +158,9 @@
 
 <body>
 
-    <header class="header">
-        <div class="header-left">
-            <a href="{{ route('dashboard') }}" class="back">
-                ← Kembali
-            </a>
+@include('partials.app-sidebar')
 
-            <div class="logo">
-                EKSPLORE
-            </div>
-        </div>
 
-        <div>
-            {{ $siswa->name ?? $siswa->nama ?? 'Siswa' }}
-        </div>
-    </header>
 
     <main class="container">
 
@@ -245,5 +233,7 @@
     </main>
 
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
+
+@include('partials.app-sidebar-end')
 </body>
 </html>
