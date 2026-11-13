@@ -87,46 +87,58 @@ public function login(Request $request)
         ], 400);
     }
 
-    $data = $request->validate(
-        [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email:dns',
-                'max:255',
-                'unique:user,email',
-            ],
-            'password' => [
-                'required',
-                'string',
-                Password::min(8)
-                    ->letters()
-                    ->numbers()
-                    ->mixedCase(),
-                'confirmed',
-            ],
-        ],
-        [
-            'name.required' => 'Nama wajib diisi.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah terdaftar.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal 8 karakter.',
-            'password.confirmed' => 'Konfirmasi password tidak cocok.',
-        ]
-    );
+    $data = $request->validate([
+    'name' => ['required', 'string', 'max:255'],
+    'nis' => ['required', 'string', 'max:50'],
+    'kelas' => ['required', 'string', 'max:100'],
+    'no_hp' => [
+        'required',
+        'string',
+        'min:10',
+        'max:15',
+        'regex:/^[0-9\s\-\+\(\)]+$/',
+    ],
+    'email' => [
+        'required',
+        'string',
+        'email:dns',
+        'max:255',
+        'unique:user,email',
+    ],
+    'password' => [
+        'required',
+        'string',
+        Password::min(8)
+            ->letters()
+            ->numbers()
+            ->mixedCase(),
+        'confirmed',
+    ],
+], [
+    'name.required' => 'Nama wajib diisi.',
+    'nis.required' => 'NIS wajib diisi.',
+    'kelas.required' => 'Kelas wajib diisi.',
+    'no_hp.required' => 'Nomor HP wajib diisi.',
+    'no_hp.min' => 'Nomor HP minimal 10 karakter.',
+    'no_hp.max' => 'Nomor HP maksimal 15 karakter.',
+    'email.required' => 'Email wajib diisi.',
+    'email.email' => 'Format email tidak valid.',
+    'email.unique' => 'Email sudah terdaftar.',
+    'password.required' => 'Password wajib diisi.',
+    'password.confirmed' => 'Konfirmasi password tidak cocok.',
+]);
 
     // Simpan data sementara, belum membuat akun.
     // Password disimpan dalam bentuk hash, bukan teks asli.
-    $request->session()->put('register_pending', [
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'password' => Hash::make($data['password']),
-        'created_at' => now()->timestamp,
-    ]);
-
+   $request->session()->put('register_pending', [
+    'name' => $data['name'],
+    'nis' => $data['nis'],
+    'kelas' => $data['kelas'],
+    'no_hp' => $data['no_hp'],
+    'email' => $data['email'],
+    'password' => Hash::make($data['password']),
+    'created_at' => now()->timestamp,
+]);
     return redirect()->route('register.google.start');
 }
 
@@ -264,13 +276,16 @@ public function handleGoogleCallback(Request $request)
             }
 
             $user = User::create([
-                'name' => $pending['name'],
-                'nama' => $pending['name'],
-                'email' => $googleEmail,
-                'google_id' => $googleId,
-                'password' => $pending['password'],
-                'role' => 'siswa',
-            ]);
+    'name' => $pending['name'],
+    'nama' => $pending['name'],
+    'nis' => $pending['nis'],
+    'kelas' => $pending['kelas'],
+    'no_hp' => $pending['no_hp'],
+    'email' => $googleEmail,
+    'google_id' => $googleId,
+    'password' => $pending['password'],
+    'role' => 'siswa',
+]);
 
             $user->email_verified_at = now();
             $user->save();

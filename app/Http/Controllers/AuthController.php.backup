@@ -75,50 +75,60 @@ public function login(Request $request)
     }
 
     public function register(Request $request)
-    {
-        $data = $request->validate(
-            [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => [
-                    'required',
-                    'string',
-                    'email:dns',
-                    'max:255',
-                    'unique:user,email',
-                ],
-                'password' => [
-                    'required',
-                    'string',
-                    Password::min(8)
-                        ->letters()
-                        ->numbers()
-                        ->mixedCase(),
-                    'confirmed',
-                ],
-            ],
-            [
-                'name.required' => 'Nama wajib diisi.',
-                'email.required' => 'Email wajib diisi.',
-                'email.email' => 'Format email tidak valid.',
-                'email.unique' => 'Email sudah terdaftar.',
-                'password.required' => 'Password wajib diisi.',
-                'password.min' => 'Password minimal 8 karakter.',
-                'password.confirmed' => 'Konfirmasi password tidak cocok.',
-            ]
-        );
-
-        User::create([
-            'name' => $data['name'],
-            'nama' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role' => 'siswa',
-        ]);
-
-        return redirect()
-            ->route('login')
-            ->with('success', 'Akun berhasil dibuat. Silakan login.');
+{
+    // Jika konfirmasi password berbeda, tampilkan HTTP 400.
+    if (
+        $request->filled('password') &&
+        $request->filled('password_confirmation') &&
+        $request->input('password') !== $request->input('password_confirmation')
+    ) {
+        return response()->view('errors.400', [
+            'message' => 'Konfirmasi password tidak cocok. Silakan periksa kembali.',
+        ], 400);
     }
+
+    $data = $request->validate(
+        [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'email:dns',
+                'max:255',
+                'unique:user,email',
+            ],
+            'password' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->letters()
+                    ->numbers()
+                    ->mixedCase(),
+                'confirmed',
+            ],
+        ],
+        [
+            'name.required' => 'Nama wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        ]
+    );
+
+    // Simpan data sementara, belum membuat akun.
+    // Password disimpan dalam bentuk hash, bukan teks asli.
+    $request->session()->put('register_pending', [
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+        'created_at' => now()->timestamp,
+    ]);
+
+    return redirect()->route('register.google.start');
+}
 
 
     /*
@@ -126,6 +136,23 @@ public function login(Request $request)
     | GOOGLE LOGIN SISWA
     |--------------------------------------------------------------------------
     */
+
+    public function redirectRegisterGoogle(Request $request)
+{
+    $pending = $request->session()->get('register_pending');
+
+    if (!$pending) {
+        return redirect()
+            ->route('register')
+            ->withErrors([
+                'email' => 'Silakan isi formulir pendaftaran terlebih dahulu.',
+            ]);
+    }
+
+    $request->session()->put('google_login_role', 'register');
+
+    return Socialite::driver('google')->redirect();
+}
 
     public function redirectToGoogle(Request $request)
     {
@@ -169,179 +196,276 @@ public function login(Request $request)
     |--------------------------------------------------------------------------
     */
 
-    public function handleGoogleCallback(Request $request)
-    {
-        try {
+    
+public function handleGoogleCallback(Request $request)
+{
+    $loginRole = $request->session()->pull('google_login_role', 'siswa');
 
-            $loginRole = $request->session()->pull(
-                'google_login_role',
-                'siswa'
+    try {
+        $googleUser = Socialite::driver('google')->user();
+
+        $googleEmail = $googleUser->getEmail();
+        $googleId = $googleUser->getId();
+        $googleData = $googleUser->user ?? [];
+
+        /*
+        |--------------------------------------------------------------------------
+        | PENDAFTARAN SISWA MELALUI GOOGLE
+        |--------------------------------------------------------------------------
+        */
+
+        if ($loginRole === 'register') {
+            $pending = $request->session()->get('register_pending');
+
+            if (
+                !$pending ||
+                empty($pending['created_at']) ||
+                now()->timestamp - $pending['created_at'] > 600
+            ) {
+                $request->session()->forget('register_pending');
+
+                return response()->view('errors.400', [
+                    'message' => 'Pendaftaran tidak dapat diproses. Silakan ulangi pendaftaran.',
+                ], 400);
+            }
+
+            $verifiedValue = $googleData['verified_email']
+                ?? $googleData['email_verified']
+                ?? false;
+
+            $googleVerified = filter_var(
+                $verifiedValue,
+                FILTER_VALIDATE_BOOLEAN
             );
 
-            $googleUser = Socialite::driver('google')->user();
+            if (
+                !$googleVerified ||
+                !$googleEmail ||
+                Str::lower($googleEmail) !== Str::lower($pending['email'])
+            ) {
+                $request->session()->forget('register_pending');
 
-            $user = User::where('google_id', $googleUser->getId())
-                ->orWhere('email', $googleUser->getEmail())
-                ->first();
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | GOOGLE LOGIN SISWA
-            |--------------------------------------------------------------------------
-            */
-
-            if ($loginRole === 'siswa') {
-
-                if (!$user) {
-
-                    $nama = $googleUser->getName() ?? 'Siswa';
-
-                    $user = User::create([
-                        'name' => $nama,
-                        'nama' => $nama,
-                        'email' => $googleUser->getEmail(),
-                        'google_id' => $googleUser->getId(),
-                        'password' => Str::random(32),
-                        'role' => 'siswa',
-                    ]);
-                }
-
-                if ($user->role !== 'siswa') {
-
-                    return redirect()
-                        ->route('login')
-                        ->withErrors([
-                            'email' => 'Akun Google ini bukan akun siswa.',
-                        ]);
-                }
-
-                if ($user->google_id !== $googleUser->getId()) {
-
-                    $user->update([
-                        'google_id' => $googleUser->getId(),
-                    ]);
-                }
-
-                Auth::login($user);
-
-                $request->session()->regenerate();
-
-                return redirect()->route('dashboard');
+                return response()->view('errors.400', [
+                    'message' => 'Email Google tidak dapat diverifikasi sebagai akun Google yang valid. Silakan gunakan akun Google asli yang aktif dan coba kembali.',
+                ], 400);
             }
 
+            $existingUser = User::whereRaw(
+                'LOWER(email) = ?',
+                [Str::lower($googleEmail)]
+            )->first();
 
-            /*
-            |--------------------------------------------------------------------------
-            | GOOGLE LOGIN PEMBINA
-            |--------------------------------------------------------------------------
-            */
+            if ($existingUser) {
+                $request->session()->forget('register_pending');
 
-            if ($loginRole === 'pembina') {
-
-                if (!$user || $user->role !== 'pembina') {
-
-                    return redirect()
-                        ->route('pembina.login')
-                        ->withErrors([
-                            'email' => 'Akun Google ini tidak terdaftar sebagai Pembina.',
-                        ]);
-                }
-
-                if ($user->google_id !== $googleUser->getId()) {
-
-                    $user->update([
-                        'google_id' => $googleUser->getId(),
-                    ]);
-                }
-
-                Auth::login($user);
-
-                $request->session()->regenerate();
-
-                if (Route::has('pembina.dashboard')) {
-                    return redirect()->route('pembina.dashboard');
-                }
-
-                return redirect()->route('dashboard');
+                return response()->view('errors.400', [
+                    'message' => 'Pendaftaran tidak dapat diproses. Silakan gunakan data pendaftaran lain.',
+                ], 400);
             }
 
+            $user = User::create([
+                'name' => $pending['name'],
+                'nama' => $pending['name'],
+                'email' => $googleEmail,
+                'google_id' => $googleId,
+                'password' => $pending['password'],
+                'role' => 'siswa',
+            ]);
 
-            /*
-            |--------------------------------------------------------------------------
-            | GOOGLE LOGIN ADMIN
-            |--------------------------------------------------------------------------
-            */
+            $user->email_verified_at = now();
+            $user->save();
 
-            if ($loginRole === 'admin') {
+            $request->session()->forget('register_pending');
 
-                if (!$user || $user->role !== 'admin') {
-
-                    return redirect()
-                        ->route('admin.login')
-                        ->withErrors([
-                            'email' => 'Akun Google ini tidak terdaftar sebagai Admin.',
-                        ]);
-                }
-
-                if ($user->google_id !== $googleUser->getId()) {
-
-                    $user->update([
-                        'google_id' => $googleUser->getId(),
-                    ]);
-                }
-
-                Auth::login($user);
-
-                $request->session()->regenerate();
-
-                if (Route::has('admin.dashboard')) {
-                    return redirect()->route('admin.dashboard');
-                }
-
-                return redirect()->route('dashboard');
+            try {
+                Mail::send(
+                    'emails.registration-success',
+                    ['user' => $user],
+                    function ($message) use ($user) {
+                        $message->to($user->email)
+                            ->subject('Pendaftaran Akun EKSPLORE Berhasil');
+                    }
+                );
+            } catch (\Exception $mailError) {
+                \Illuminate\Support\Facades\Log::error(
+                    'Email pendaftaran EKSPLORE gagal dikirim: ' . $mailError->getMessage()
+                );
             }
-
 
             return redirect()
                 ->route('login')
-                ->withErrors([
-                    'email' => 'Jenis login Google tidak dikenali.',
-                ]);
+                ->with('success', 'Pendaftaran berhasil. Silakan login menggunakan email dan password EKSPLORE.');
+        }
 
-        } catch (\Exception $e) {
+        /*
+        |--------------------------------------------------------------------------
+        | CARI AKUN YANG SUDAH TERDAFTAR
+        |--------------------------------------------------------------------------
+        */
 
-            $loginRole = $request->session()->pull(
-                'google_login_role',
-                'siswa'
-            );
+        $user = User::where('google_id', $googleId)
+            ->orWhere('email', $googleEmail)
+            ->first();
 
-            if ($loginRole === 'pembina') {
+        /*
+        |--------------------------------------------------------------------------
+        | LOGIN SISWA
+        |--------------------------------------------------------------------------
+        */
 
+        if ($loginRole === 'siswa') {
+            if (!$user || $user->role !== 'siswa') {
+                return redirect()
+                    ->route('login')
+                    ->withErrors([
+                        'email' => 'Akun Google ini belum terdaftar sebagai siswa.',
+                    ]);
+            }
+
+            $jumlahLogin = DB::table('google_login_attempts')
+                ->where('user_id', $user->id)
+                ->where('logged_in_at', '>=', now()->subDays(7))
+                ->count();
+
+            if ($jumlahLogin >= 3) {
+                return redirect()
+                    ->route('login')
+                    ->withErrors([
+                        'email' => 'Batas login Google siswa untuk 7 hari telah tercapai. Silakan login menggunakan email dan password.',
+                    ]);
+            }
+
+            if ($user->google_id !== $googleId) {
+                $user->update(['google_id' => $googleId]);
+            }
+
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            DB::table('google_login_attempts')->insert([
+                'user_id' => $user->id,
+                'logged_in_at' => now(),
+            ]);
+
+            return redirect()->route('dashboard');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOGIN PEMBINA
+        |--------------------------------------------------------------------------
+        */
+
+        if ($loginRole === 'pembina') {
+            if (!$user || $user->role !== 'pembina') {
                 return redirect()
                     ->route('pembina.login')
                     ->withErrors([
-                        'email' => 'Login Google Pembina gagal: ' . $e->getMessage(),
+                        'email' => 'Akun Google ini tidak terdaftar sebagai Pembina.',
                     ]);
             }
 
-            if ($loginRole === 'admin') {
+            $jumlahLogin = DB::table('google_login_attempts')
+                ->where('user_id', $user->id)
+                ->where('logged_in_at', '>=', now()->subDays(7))
+                ->count();
 
+            if ($jumlahLogin >= 5) {
+                return redirect()
+                    ->route('pembina.login')
+                    ->withErrors([
+                        'email' => 'Batas login Google Pembina untuk 7 hari telah tercapai. Silakan login menggunakan email dan password.',
+                    ]);
+            }
+
+            if ($user->google_id !== $googleId) {
+                $user->update(['google_id' => $googleId]);
+            }
+
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            DB::table('google_login_attempts')->insert([
+                'user_id' => $user->id,
+                'logged_in_at' => now(),
+            ]);
+
+            if (Route::has('pembina.dashboard')) {
+                return redirect()->route('pembina.dashboard');
+            }
+
+            return redirect()->route('dashboard');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOGIN ADMIN (TANPA BATAS)
+        |--------------------------------------------------------------------------
+        */
+
+        if ($loginRole === 'admin') {
+            if (!$user || $user->role !== 'admin') {
                 return redirect()
                     ->route('admin.login')
                     ->withErrors([
-                        'email' => 'Login Google Admin gagal: ' . $e->getMessage(),
+                        'email' => 'Akun Google ini tidak terdaftar sebagai Admin.',
                     ]);
             }
 
+            if ($user->google_id !== $googleId) {
+                $user->update(['google_id' => $googleId]);
+            }
+
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            if (Route::has('admin.dashboard')) {
+                return redirect()->route('admin.dashboard');
+            }
+
+            return redirect()->route('dashboard');
+        }
+
+        return redirect()
+            ->route('login')
+            ->withErrors([
+                'email' => 'Jenis login Google tidak dikenali.',
+            ]);
+
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error(
+            'Google authentication EKSPLORE gagal: ' . $e->getMessage()
+        );
+
+        if ($loginRole === 'register') {
+            return response()->view('errors.400', [
+                'message' => 'Pendaftaran tidak dapat diproses. Silakan coba kembali.',
+            ], 400);
+        }
+
+        if ($loginRole === 'pembina') {
             return redirect()
-                ->route('login')
+                ->route('pembina.login')
                 ->withErrors([
-                    'email' => 'Login Google gagal: ' . $e->getMessage(),
+                    'email' => 'Login Google Pembina gagal. Silakan coba kembali.',
                 ]);
         }
-    }
 
+        if ($loginRole === 'admin') {
+            return redirect()
+                ->route('admin.login')
+                ->withErrors([
+                    'email' => 'Login Google Admin gagal. Silakan coba kembali.',
+                ]);
+        }
+
+        return redirect()
+            ->route('login')
+            ->withErrors([
+                'email' => 'Login Google gagal. Silakan coba kembali.',
+            ]);
+    }
+}
 
     /*
     |--------------------------------------------------------------------------
