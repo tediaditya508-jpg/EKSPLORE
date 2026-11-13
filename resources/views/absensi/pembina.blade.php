@@ -14,8 +14,8 @@
     <style>
         :root {
             --font-sans: 'Plus Jakarta Sans', sans-serif;
-            --primary-emerald: #059669;
-            --primary-emerald-hover: #047857;
+            --primary-emerald: #047857;
+            --primary-emerald-hover: #065f46;
             --emerald-soft: #ecfdf5;
             --emerald-border: #a7f3d0;
             --text-dark: #0f172a;
@@ -51,7 +51,7 @@
         ========================= */
         .hero {
             position: relative;
-            background: linear-gradient(135deg, #065f46 0%, #059669 50%, #10b981 100%);
+            background: linear-gradient(135deg, #065f46 0%, #047857 50%, #10b981 100%);
             color: #ffffff;
             padding: 60px 24px 80px;
             text-align: center;
@@ -64,7 +64,7 @@
             inset: 0;
             background-image: 
                 radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at 85% 80%, rgba(5, 150, 105, 0.3) 0%, transparent 40%);
+                radial-gradient(circle at 85% 80%, rgba(4, 120, 87, 0.3) 0%, transparent 40%);
             pointer-events: none;
         }
 
@@ -247,7 +247,7 @@
         select:focus,
         textarea:focus {
             border-color: var(--primary-emerald);
-            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
+            box-shadow: 0 0 0 4px rgba(4, 120, 87, 0.12);
         }
 
         .nilai-info {
@@ -274,7 +274,7 @@
 
         .btn-simpan {
             background: var(--primary-emerald);
-            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
+            box-shadow: 0 4px 14px rgba(4, 120, 87, 0.25);
             margin-top: 6px;
         }
 

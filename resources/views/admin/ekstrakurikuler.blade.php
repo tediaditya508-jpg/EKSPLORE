@@ -13,11 +13,11 @@
     <style>
         :root {
             --font-sans: 'Plus Jakarta Sans', sans-serif;
-            --admin-primary: #4f46e5;
-            --admin-primary-dark: #3730a3;
+            --admin-primary: #7c3aed;
+            --admin-primary-dark: #6d28d9;
             --admin-accent: #7c3aed;
-            --admin-soft: #eef2ff;
-            --admin-border: #c7d2fe;
+            --admin-soft: #f5f3ff;
+            --admin-border: #ddd6fe;
             --bg-body: #f8fafc;
             --text-dark: #0f172a;
             --text-muted: #64748b;
@@ -39,11 +39,11 @@
         }
 
         /* =========================
-           HERO SECTION ADMIN (INDIGO - VIOLET)
+           HERO SECTION ADMIN (VIOLET)
         ========================= */
         .admin-hero {
             position: relative;
-            background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 48%, #6d28d9 100%);
+            background: linear-gradient(135deg, #2e1065 0%, #5b21b6 48%, #7c3aed 100%);
             color: #ffffff;
             padding: 56px 28px 92px;
             overflow: hidden;
@@ -81,7 +81,7 @@
             border-radius: 50px;
             font-size: 12px;
             font-weight: 700;
-            color: #e0e7ff;
+            color: #ede9fe;
             margin-bottom: 14px;
             backdrop-filter: blur(8px);
         }
@@ -94,7 +94,7 @@
         }
 
         .hero-text h1 span {
-            background: linear-gradient(135deg, #c7d2fe 0%, #f5d0fe 100%);
+            background: linear-gradient(135deg, #ddd6fe 0%, #f5d0fe 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -124,7 +124,7 @@
 
         .btn-hero-add:hover {
             transform: translateY(-3px);
-            background: #eef2ff;
+            background: #f5f3ff;
             box-shadow: 0 18px 34px rgba(15, 23, 42, 0.28);
         }
 
@@ -175,9 +175,9 @@
             flex-shrink: 0;
         }
 
-        .kpi-indigo { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+        .kpi-indigo { background: #ede9fe; color: #6d28d9; border: 1px solid #c4b5fd; }
         .kpi-violet { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
-        .kpi-sky { background: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd; }
+        .kpi-fuchsia { background: #fdf4ff; color: #a21caf; border: 1px solid #f5d0fe; }
 
         .kpi-info span {
             display: block;
@@ -283,7 +283,7 @@
         .search-input:focus {
             background: #ffffff;
             border-color: var(--admin-primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
         }
 
         /* =========================
@@ -311,13 +311,13 @@
         .ekskul-card:hover {
             transform: translateY(-5px);
             border-color: var(--admin-border);
-            box-shadow: 0 20px 38px -12px rgba(79, 70, 229, 0.18);
+            box-shadow: 0 20px 38px -12px rgba(124, 58, 237, 0.18);
         }
 
         .card-accent-bar {
             height: 5px;
             width: 100%;
-            background: linear-gradient(90deg, #4f46e5 0%, #8b5cf6 100%);
+            background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 100%);
         }
 
         .card-body {
@@ -345,7 +345,7 @@
             width: 46px;
             height: 46px;
             border-radius: 14px;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, #7c3aed 0%, #7c3aed 100%);
             color: #ffffff;
             font-size: 18px;
             font-weight: 800;
@@ -353,7 +353,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 6px 14px rgba(124, 58, 237, 0.25);
         }
 
         .ekskul-title-wrap h3 {
@@ -455,9 +455,9 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            background: #eef2ff;
-            color: #4338ca;
-            border: 1px solid #c7d2fe;
+            background: #f5f3ff;
+            color: #6d28d9;
+            border: 1px solid #ddd6fe;
             padding: 10px 14px;
             border-radius: 12px;
             font-size: 13px;
@@ -467,10 +467,10 @@
         }
 
         .btn-action-edit:hover {
-            background: #4f46e5;
+            background: #7c3aed;
             color: #ffffff;
-            border-color: #4f46e5;
-            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+            border-color: #7c3aed;
+            box-shadow: 0 6px 14px rgba(124, 58, 237, 0.25);
         }
 
         .btn-action-delete {
@@ -606,7 +606,7 @@
             </div>
 
             <div class="kpi-card">
-                <div class="kpi-icon kpi-sky">
+                <div class="kpi-icon kpi-fuchsia">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 </div>
                 <div class="kpi-info">

@@ -9,8 +9,8 @@
 <style>
     :root {
         --font-sans: 'Plus Jakarta Sans', sans-serif;
-        --primary-emerald: #059669;
-        --primary-emerald-hover: #047857;
+        --primary-emerald: #047857;
+        --primary-emerald-hover: #065f46;
         --emerald-soft: #ecfdf5;
         --emerald-border: #a7f3d0;
         --text-dark: #0f172a;
@@ -36,7 +36,7 @@
     ========================= */
     .pindah-hero {
         position: relative;
-        background: linear-gradient(135deg, #065f46 0%, #059669 50%, #10b981 100%);
+        background: linear-gradient(135deg, #065f46 0%, #047857 50%, #10b981 100%);
         color: #ffffff;
         padding: 56px 24px 80px;
         text-align: center;
@@ -51,7 +51,7 @@
         inset: 0;
         background-image: 
             radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.4) 0%, transparent 40%),
-            radial-gradient(circle at 85% 80%, rgba(5, 150, 105, 0.3) 0%, transparent 40%);
+            radial-gradient(circle at 85% 80%, rgba(4, 120, 87, 0.3) 0%, transparent 40%);
         pointer-events: none;
     }
 
@@ -200,7 +200,7 @@
     .pengajuan-item:hover {
         border-color: #a7f3d0 !important;
         background: #ffffff !important;
-        box-shadow: 0 10px 25px rgba(5, 150, 105, 0.06);
+        box-shadow: 0 10px 25px rgba(4, 120, 87, 0.06);
         transform: translateY(-2px);
     }
 
@@ -223,7 +223,7 @@
         width: 42px;
         height: 42px;
         border-radius: 12px;
-        background: linear-gradient(135deg, #059669, #10b981);
+        background: linear-gradient(135deg, #047857, #10b981);
         color: #ffffff;
         display: flex;
         align-items: center;
@@ -358,7 +358,7 @@
         border-radius: 12px !important;
         font-weight: 700 !important;
         font-size: 13.5px !important;
-        box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
+        box-shadow: 0 4px 14px rgba(4, 120, 87, 0.25);
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -369,7 +369,7 @@
     .btn-approve:hover {
         background: var(--primary-emerald-hover) !important;
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.35);
+        box-shadow: 0 8px 20px rgba(4, 120, 87, 0.35);
     }
 
     .btn-reject {

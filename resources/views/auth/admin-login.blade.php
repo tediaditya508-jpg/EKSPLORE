@@ -18,7 +18,7 @@
 
         body {
             min-height: 100vh;
-            background: #f3f6fb;
+            background: #faf5ff;
 
             display: flex;
             align-items: center;
@@ -55,9 +55,9 @@
             background:
                 linear-gradient(
                     145deg,
-                    #eef2ff 0%,
-                    #e0e7ff 48%,
-                    #f8faff 100%
+                    #f5f3ff 0%,
+                    #ede9fe 48%,
+                    #faf5ff 100%
                 );
 
             padding: 42px 50px;
@@ -76,7 +76,7 @@
 
             border-radius: 50%;
 
-            background: rgba(79, 70, 229, 0.07);
+            background: rgba(124, 58, 237, 0.07);
 
             top: -100px;
             left: -80px;
@@ -90,7 +90,7 @@
 
             border-radius: 50%;
 
-            background: rgba(99, 102, 241, 0.06);
+            background: rgba(139, 92, 246, 0.06);
 
             right: -160px;
             bottom: -160px;
@@ -125,7 +125,7 @@
 
             border-radius: 14px;
 
-            background: #4338ca;
+            background: #7c3aed;
 
             color: white;
 
@@ -137,7 +137,7 @@
             font-weight: 800;
 
             box-shadow:
-                0 8px 20px rgba(67, 56, 202, 0.22);
+                0 8px 20px rgba(124, 58, 237, 0.22);
         }
 
         .brand-name {
@@ -147,7 +147,7 @@
 
             letter-spacing: 0.5px;
 
-            color: #1e1b4b;
+            color: #2e1065;
         }
 
         /* =========================
@@ -188,7 +188,7 @@
 
             line-height: 1.18;
 
-            color: #1e1b4b;
+            color: #2e1065;
 
             margin-top: 3px;
 
@@ -198,7 +198,7 @@
         }
 
         .left-title span {
-            color: #4338ca;
+            color: #7c3aed;
         }
 
         .left-description {
@@ -230,13 +230,13 @@
         .feature {
             background: rgba(255, 255, 255, 0.72);
 
-            border: 1px solid rgba(99, 102, 241, 0.16);
+            border: 1px solid rgba(139, 92, 246, 0.16);
 
             border-radius: 20px;
 
             padding: 7px 12px;
 
-            color: #373579;
+            color: #5b21b6;
 
             font-size: 11px;
 
@@ -312,11 +312,11 @@
         .role-badge {
             display: inline-block;
 
-            background: #eef2ff;
+            background: #f5f3ff;
 
-            color: #4338ca;
+            color: #7c3aed;
 
-            border: 1px solid #c7d2fe;
+            border: 1px solid #ddd6fe;
 
             border-radius: 20px;
 
@@ -413,10 +413,10 @@
         }
 
         .form-input:focus {
-            border-color: #4338ca;
+            border-color: #7c3aed;
 
             box-shadow:
-                0 0 0 3px rgba(67, 56, 202, 0.10);
+                0 0 0 3px rgba(124, 58, 237, 0.10);
         }
 
         .form-input::placeholder {
@@ -449,7 +449,7 @@
         }
 
         .password-toggle:hover {
-            color: #4338ca;
+            color: #7c3aed;
         }
 
         /* =========================
@@ -479,7 +479,7 @@
         }
 
         .remember input {
-            accent-color: #4338ca;
+            accent-color: #7c3aed;
         }
 
         /* =========================
@@ -495,7 +495,7 @@
 
             border-radius: 10px;
 
-            background: #4338ca;
+            background: #7c3aed;
 
             color: white;
 
@@ -508,11 +508,11 @@
             transition: 0.2s ease;
 
             box-shadow:
-                0 8px 20px rgba(67, 56, 202, 0.20);
+                0 8px 20px rgba(124, 58, 237, 0.20);
         }
 
         .login-button:hover {
-            background: #3730a3;
+            background: #6d28d9;
 
             transform: translateY(-1px);
         }
@@ -613,7 +613,7 @@
         }
 
         .back-text a {
-            color: #4338ca;
+            color: #7c3aed;
 
             text-decoration: none;
 

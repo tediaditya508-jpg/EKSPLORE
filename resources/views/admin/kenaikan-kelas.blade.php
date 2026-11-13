@@ -13,11 +13,11 @@
     <style>
         :root {
             --font-sans: 'Plus Jakarta Sans', sans-serif;
-            --admin-primary: #4f46e5;
-            --admin-primary-dark: #3730a3;
+            --admin-primary: #7c3aed;
+            --admin-primary-dark: #6d28d9;
             --admin-accent: #7c3aed;
-            --admin-soft: #eef2ff;
-            --admin-border: #c7d2fe;
+            --admin-soft: #f5f3ff;
+            --admin-border: #ddd6fe;
             --bg-body: #f8fafc;
             --text-dark: #0f172a;
             --text-muted: #64748b;
@@ -43,7 +43,7 @@
         ========================= */
         .admin-hero {
             position: relative;
-            background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 48%, #6d28d9 100%);
+            background: linear-gradient(135deg, #2e1065 0%, #5b21b6 48%, #7c3aed 100%);
             color: #ffffff;
             padding: 56px 28px 92px;
             overflow: hidden;
@@ -81,7 +81,7 @@
             border-radius: 50px;
             font-size: 12px;
             font-weight: 700;
-            color: #e0e7ff;
+            color: #ede9fe;
             margin-bottom: 14px;
             backdrop-filter: blur(8px);
         }
@@ -94,7 +94,7 @@
         }
 
         .hero-text h1 span {
-            background: linear-gradient(135deg, #c7d2fe 0%, #f5d0fe 100%);
+            background: linear-gradient(135deg, #ddd6fe 0%, #f5d0fe 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -153,7 +153,7 @@
             flex-shrink: 0;
         }
 
-        .card-indigo { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+        .card-indigo { background: #ede9fe; color: #6d28d9; border: 1px solid #c4b5fd; }
         .card-violet { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
 
         .card-info h3 {
@@ -226,7 +226,7 @@
 
         input:focus {
             border-color: var(--admin-primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
         }
 
         button[type="submit"] {
@@ -241,14 +241,14 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
             transition: all 0.2s ease;
         }
 
         button[type="submit"]:hover {
             background: var(--admin-primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+            box-shadow: 0 6px 18px rgba(124, 58, 237, 0.35);
         }
 
         .success {
@@ -299,7 +299,7 @@
 
         th {
             color: #ffffff;
-            background: #3730a3;
+            background: #6d28d9;
             font-weight: 700;
             letter-spacing: 0.3px;
         }

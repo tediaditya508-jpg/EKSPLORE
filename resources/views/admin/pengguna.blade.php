@@ -14,11 +14,11 @@
     <style>
         :root {
             --font-sans: 'Plus Jakarta Sans', sans-serif;
-            --admin-primary: #4f46e5;
-            --admin-primary-dark: #3730a3;
+            --admin-primary: #7c3aed;
+            --admin-primary-dark: #6d28d9;
             --admin-accent: #7c3aed;
-            --admin-soft: #eef2ff;
-            --admin-border: #c7d2fe;
+            --admin-soft: #f5f3ff;
+            --admin-border: #ddd6fe;
             --bg-body: #f8fafc;
             --text-dark: #0f172a;
             --text-muted: #64748b;
@@ -44,7 +44,7 @@
         ========================= */
         .admin-hero {
             position: relative;
-            background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 48%, #6d28d9 100%);
+            background: linear-gradient(135deg, #2e1065 0%, #5b21b6 48%, #7c3aed 100%);
             color: #ffffff;
             padding: 56px 28px 92px;
             overflow: hidden;
@@ -82,7 +82,7 @@
             border-radius: 50px;
             font-size: 12px;
             font-weight: 700;
-            color: #e0e7ff;
+            color: #ede9fe;
             margin-bottom: 14px;
             backdrop-filter: blur(8px);
         }
@@ -95,7 +95,7 @@
         }
 
         .hero-text h1 span {
-            background: linear-gradient(135deg, #c7d2fe 0%, #f5d0fe 100%);
+            background: linear-gradient(135deg, #ddd6fe 0%, #f5d0fe 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -131,7 +131,7 @@
 
         .btn-hero-action:hover {
             transform: translateY(-2px);
-            background: #eef2ff;
+            background: #f5f3ff;
             box-shadow: 0 14px 30px rgba(15, 23, 42, 0.25);
         }
 
@@ -194,7 +194,7 @@
             flex-shrink: 0;
         }
 
-        .kpi-indigo { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+        .kpi-indigo { background: #ede9fe; color: #6d28d9; border: 1px solid #c4b5fd; }
         .kpi-violet { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
         .kpi-amber { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
 
@@ -287,7 +287,7 @@
         }
 
         thead {
-            background: #3730a3;
+            background: #6d28d9;
             color: #ffffff;
         }
 
@@ -336,23 +336,23 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            background: #eff6ff;
-            color: #2563eb;
+            background: #f5f3ff;
+            color: #7c3aed;
             text-decoration: none;
             padding: 8px 14px;
             border-radius: 10px;
             font-size: 13px;
             font-weight: 700;
-            border: 1px solid #bfdbfe;
+            border: 1px solid #ddd6fe;
             transition: all 0.2s ease;
         }
 
         .button-edit:hover {
-            background: #2563eb;
+            background: #7c3aed;
             color: white;
-            border-color: #2563eb;
+            border-color: #7c3aed;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
         }
 
         .button-delete {

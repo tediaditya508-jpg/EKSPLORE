@@ -123,6 +123,9 @@ img {
     --app-primary: #2563eb;
     --app-primary-dark: #1d4ed8;
     --app-primary-light: #eff6ff;
+    --app-primary-border: #bfdbfe;
+    --app-primary-shadow: rgba(37, 99, 235, 0.08);
+    --app-primary-shadow-strong: rgba(37, 99, 235, 0.25);
     --app-bg: #f8fafc;
     --app-card: #ffffff;
     --app-text: #1e293b;
@@ -137,6 +140,28 @@ img {
 .app-sidebar *,
 .app-topbar * {
     box-sizing: border-box;
+}
+
+/* Tema ungu khusus area admin. Role lain tetap memakai warna biru. */
+.app-topbar--admin,
+.app-sidebar--admin {
+    --app-primary: #7c3aed;
+    --app-primary-dark: #6d28d9;
+    --app-primary-light: #f5f3ff;
+    --app-primary-border: #ddd6fe;
+    --app-primary-shadow: rgba(124, 58, 237, 0.08);
+    --app-primary-shadow-strong: rgba(124, 58, 237, 0.25);
+}
+
+/* Tema hijau khusus area pembina. */
+.app-topbar--pembina,
+.app-sidebar--pembina {
+    --app-primary: #047857;
+    --app-primary-dark: #065f46;
+    --app-primary-light: #ecfdf5;
+    --app-primary-border: #a7f3d0;
+    --app-primary-shadow: rgba(4, 120, 87, 0.08);
+    --app-primary-shadow-strong: rgba(4, 120, 87, 0.25);
 }
 
 .app-icon {
@@ -189,13 +214,13 @@ img {
     color: #ffffff;
     border-color: var(--app-primary);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 4px 12px var(--app-primary-shadow-strong);
 }
 
 .app-topbar-brand {
     font-weight: 800;
     font-size: 17px;
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    background: linear-gradient(135deg, var(--app-primary), var(--app-primary-dark));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 0.5px;
@@ -292,7 +317,7 @@ body.app-sidebar-collapsed .app-sidebar-link.is-active::before {
 body.app-sidebar-collapsed .app-sidebar-link.is-active {
     background: var(--app-primary-light);
     color: var(--app-primary);
-    border-color: #bfdbfe;
+    border-color: var(--app-primary-border);
 }
 
 body.app-sidebar-collapsed .app-sidebar-footer {
@@ -327,6 +352,18 @@ body.app-sidebar-collapsed .app-sidebar-footer form {
     100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
 }
 
+@keyframes appPulseGlowAdmin {
+    0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
+}
+
+@keyframes appPulseGlowPembina {
+    0% { box-shadow: 0 0 0 0 rgba(4, 120, 87, 0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(4, 120, 87, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(4, 120, 87, 0); }
+}
+
 .app-brand-logo {
     display: flex;
     align-items: center;
@@ -334,12 +371,20 @@ body.app-sidebar-collapsed .app-sidebar-footer form {
     width: 44px;
     height: 44px;
     flex-shrink: 0;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, var(--app-primary) 0%, var(--app-primary-dark) 100%);
     color: #ffffff;
     border-radius: 12px;
     font-weight: 800;
     font-size: 18px;
     animation: appPulseGlow 2.5s infinite;
+}
+
+.app-sidebar--admin .app-brand-logo {
+    animation-name: appPulseGlowAdmin;
+}
+
+.app-sidebar--pembina .app-brand-logo {
+    animation-name: appPulseGlowPembina;
 }
 
 .app-brand-text {
@@ -417,8 +462,8 @@ body.app-sidebar-collapsed .app-sidebar-footer form {
 .app-sidebar-link.is-active {
     background: var(--app-primary-light);
     color: var(--app-primary);
-    border-color: #bfdbfe;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    border-color: var(--app-primary-border);
+    box-shadow: 0 2px 8px var(--app-primary-shadow);
 }
 
 .app-sidebar-link.is-active::before {

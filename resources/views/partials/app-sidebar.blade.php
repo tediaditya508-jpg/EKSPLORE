@@ -1,6 +1,10 @@
 @php
     $sidebarUser = auth()->user();
     $sidebarRole = $sidebarUser->role ?? 'siswa';
+    $sidebarTheme = match ($sidebarRole) {
+        'admin', 'pembina' => $sidebarRole,
+        default => '',
+    };
 
     $sidebarBrand = match ($sidebarRole) {
         'admin' => 'EKSPLORE ADMIN',
@@ -104,7 +108,7 @@
 @endphp
 
 @auth
-    <header class="app-topbar">
+    <header class="app-topbar {{ $sidebarTheme ? 'app-topbar--'.$sidebarTheme : '' }}">
         <button type="button" class="app-topbar-toggle" id="appSidebarOpen" aria-label="Buka menu" aria-controls="appSidebar" aria-expanded="false">
             <svg class="app-icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
@@ -116,7 +120,7 @@
 
     <div class="app-sidebar-overlay" id="appSidebarOverlay"></div>
 
-    <aside class="app-sidebar" id="appSidebar" aria-label="Navigasi utama">
+    <aside class="app-sidebar {{ $sidebarTheme ? 'app-sidebar--'.$sidebarTheme : '' }}" id="appSidebar" aria-label="Navigasi utama">
         <div class="app-brand-container">
             <a href="{{ $sidebarHome }}" class="app-brand-info">
                 <span class="app-brand-logo">E</span>
@@ -172,4 +176,4 @@
     </aside>
 @endauth
 
-<div class="app-content {{ auth()->check() ? '' : 'app-content--guest' }}" id="appContent">
+<div class="app-content {{ auth()->check() ? '' : 'app-content--guest' }} {{ $sidebarTheme ? 'app-content--'.$sidebarTheme : '' }}" id="appContent">

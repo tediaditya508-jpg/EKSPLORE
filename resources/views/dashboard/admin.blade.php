@@ -12,12 +12,12 @@
     <style>
         :root {
             --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --primary-light: #eff6ff;
-            --active-bg: #eff6ff;
-            --active-text: #2563eb;
-            --active-border: #2563eb;
+            --primary: #7c3aed;
+            --primary-hover: #6d28d9;
+            --primary-light: #f5f3ff;
+            --active-bg: #f5f3ff;
+            --active-text: #7c3aed;
+            --active-border: #7c3aed;
             --bg-body: #f8fafc;
             --bg-card: #ffffff;
             --text-main: #1e293b;
@@ -27,8 +27,8 @@
             --success-bg: #dcfce7;
             --warning: #d97706;
             --warning-bg: #fef3c7;
-            --info: #0284c7;
-            --info-bg: #e0f2fe;
+            --info: #a21caf;
+            --info-bg: #fdf4ff;
             --danger: #dc2626;
             --danger-bg: #fef2f2;
             --sidebar-width: 260px;
@@ -86,7 +86,7 @@
         .top-navbar-brand {
             font-weight: 800;
             font-size: 17px;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 0.5px;
@@ -186,15 +186,15 @@
         }
 
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5); }
-            70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
         }
 
         .brand-logo {
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
             color: white;
             border-radius: 12px;
             display: flex;
@@ -229,7 +229,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 10%, transparent 70.1%);
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 10%, transparent 70.1%);
             transform: scale(10);
             opacity: 0;
             transition: transform 0.5s, opacity 0.5s;
@@ -264,8 +264,8 @@
         .sidebar-toggle-btn:hover {
             background: var(--primary-light);
             color: var(--primary);
-            border-color: #93c5fd;
-            box-shadow: 0 0 15px rgba(37, 99, 235, 0.35);
+            border-color: #c4b5fd;
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.35);
             transform: translateY(-1px);
         }
 
@@ -314,16 +314,16 @@
         .sidebar-link:hover, .sidebar-btn:hover {
             background: var(--primary-light);
             color: var(--primary);
-            border-color: #bfdbfe;
-            box-shadow: 0 0 12px rgba(37, 99, 235, 0.2);
+            border-color: #ddd6fe;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.2);
             transform: translateX(2px);
         }
 
         .sidebar-link.active {
             background: var(--active-bg);
             color: var(--active-text);
-            border-color: #bfdbfe;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+            border-color: #ddd6fe;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.08);
         }
 
         .sidebar-link.active::before {
@@ -603,13 +603,13 @@
         }
 
         .total-modul-badge {
-            background: #2563eb;
+            background: #7c3aed;
             color: white;
             font-size: 11px;
             font-weight: 700;
             padding: 5px 10px;
             border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
             flex-shrink: 0;
         }
 
@@ -636,8 +636,8 @@
 
         .mgmt-card:hover {
             transform: translateY(-4px);
-            border-color: #3b82f6;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
+            border-color: #7c3aed;
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.1);
         }
 
         .mgmt-card-top {
@@ -663,7 +663,7 @@
             background: var(--primary);
             color: white;
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
         }
 
         .mgmt-tag {
@@ -675,7 +675,7 @@
             letter-spacing: 0.5px;
         }
 
-        .tag-master { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .tag-master { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
         .tag-user { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
         .tag-ops { background: #fefce8; color: #a16207; border: 1px solid #fef08a; }
         .tag-student { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
@@ -1223,8 +1223,8 @@
             if (canvasStock) {
                 const ctxStock = canvasStock.getContext('2d');
                 const gradientBg = ctxStock.createLinearGradient(0, 0, 0, 220);
-                gradientBg.addColorStop(0, 'rgba(37, 99, 235, 0.3)');
-                gradientBg.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+                gradientBg.addColorStop(0, 'rgba(124, 58, 237, 0.3)');
+                gradientBg.addColorStop(1, 'rgba(124, 58, 237, 0.0)');
 
                 new Chart(ctxStock, {
                     type: 'line',
@@ -1234,14 +1234,14 @@
                             {
                                 label: 'Absensi',
                                 data: chartAktivitas.absensi,
-                                borderColor: '#2563eb',
+                                borderColor: '#7c3aed',
                                 borderWidth: 2.5,
                                 fill: true,
                                 backgroundColor: gradientBg,
                                 tension: 0.4,
                                 pointRadius: 3,
                                 pointHoverRadius: 5,
-                                pointBackgroundColor: '#2563eb'
+                                pointBackgroundColor: '#7c3aed'
                             },
                             {
                                 label: 'Pendaftaran Baru',
@@ -1287,7 +1287,7 @@
                         labels: statusAnggota.labels,
                         datasets: [{
                             data: statusAnggota.data,
-                            backgroundColor: ['#2563eb', '#64748b'],
+                            backgroundColor: ['#7c3aed', '#64748b'],
                             borderWidth: 2,
                             borderColor: '#ffffff',
                             hoverOffset: 4

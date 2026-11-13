@@ -17,7 +17,7 @@
             font-family: var(--font-sans);
             min-height: 100vh;
             background: #ffffff;
-            color: #18324a;
+            color: #14352b;
         }
 
         /* ================================
@@ -47,13 +47,13 @@
         .page-title h1 {
             font-size: 30px;
             font-weight: 800;
-            color: #194766;
+            color: #064e3b;
         }
 
         .page-title p {
             margin-top: 7px;
             font-size: 14px;
-            color: #71899b;
+            color: #6b7f77;
         }
 
         /* ================================
@@ -62,21 +62,21 @@
 
         .card {
             background: #ffffff;
-            border: 1px solid #e5edf2;
+            border: 1px solid #e2efe9;
             border-radius: 25px;
             padding: 35px;
-            box-shadow: 0 10px 35px rgba(52, 111, 143, 0.08);
+            box-shadow: 0 10px 35px rgba(4, 120, 87, 0.08);
         }
 
         .card-title {
             font-size: 25px;
             font-weight: 800;
-            color: #194766;
+            color: #064e3b;
             margin-bottom: 8px;
         }
 
         .card-description {
-            color: #71899b;
+            color: #6b7f77;
             font-size: 14px;
             margin-bottom: 30px;
             line-height: 1.6;
@@ -94,7 +94,7 @@
             display: block;
             font-size: 14px;
             font-weight: 700;
-            color: #34566c;
+            color: #2f5a4c;
             margin-bottom: 9px;
         }
 
@@ -106,9 +106,9 @@
         textarea,
         select {
             width: 100%;
-            border: 1px solid #d8e8f0;
+            border: 1px solid #d6e9e1;
             background: #ffffff;
-            color: #25475c;
+            color: #1f4438;
             border-radius: 18px;
             padding: 14px 17px;
             font-size: 14px;
@@ -120,8 +120,8 @@
         input:focus,
         textarea:focus,
         select:focus {
-            border-color: #78b8d5;
-            box-shadow: 0 0 0 4px rgba(120, 184, 213, 0.12);
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
         }
 
         textarea {
@@ -138,7 +138,7 @@
         .form-help {
             margin-top: 7px;
             font-size: 12px;
-            color: #8299a8;
+            color: #7b8f87;
             line-height: 1.5;
         }
 
@@ -189,25 +189,25 @@
         }
 
         .btn-back {
-            background: #edf5f9;
-            color: #537286;
+            background: #ecfdf5;
+            color: #3f6257;
         }
 
         .btn-back:hover {
-            background: #e2eef4;
+            background: #d1fae5;
             transform: translateY(-2px);
         }
 
         .btn-submit {
-            background: #438eaf;
+            background: #047857;
             color: #ffffff;
-            box-shadow: 0 8px 20px rgba(67, 142, 175, 0.18);
+            box-shadow: 0 8px 20px rgba(4, 120, 87, 0.18);
         }
 
         .btn-submit:hover {
-            background: #367f9f;
+            background: #065f46;
             transform: translateY(-2px);
-            box-shadow: 0 11px 25px rgba(67, 142, 175, 0.24);
+            box-shadow: 0 11px 25px rgba(4, 120, 87, 0.24);
         }
 
         /* ================================

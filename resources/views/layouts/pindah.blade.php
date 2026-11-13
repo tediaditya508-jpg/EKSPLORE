@@ -30,6 +30,18 @@
             color: var(--text);
         }
 
+        body.role-admin {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --primary-light: #f5f3ff;
+        }
+
+        body.role-pembina {
+            --primary: #047857;
+            --primary-dark: #065f46;
+            --primary-light: #ecfdf5;
+        }
+
         a {
             text-decoration: none;
         }
@@ -466,7 +478,8 @@
     <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
-<body>
+@php($pindahRole = auth()->user()->role ?? 'guest')
+<body class="role-{{ $pindahRole }}">
 
 @include('partials.app-sidebar')
 
