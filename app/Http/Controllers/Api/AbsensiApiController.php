@@ -78,17 +78,25 @@ class AbsensiApiController extends Controller
             $nilai = $data['nilai'] ?? null;
         }
 
-        $absensi = Absensi::updateOrCreate(
-            [
-                'anggota_id' => $data['anggota_id'],
-                'tanggal' => $data['tanggal'],
-            ],
-            [
+        $absensi = Absensi::where('anggota_id', $data['anggota_id'])
+            ->whereDate('tanggal', $data['tanggal'])
+            ->first();
+
+        if ($absensi) {
+            $absensi->update([
                 'status' => $data['status'],
                 'nilai' => $nilai,
                 'keterangan' => $data['keterangan'] ?? null,
-            ]
-        );
+            ]);
+        } else {
+            $absensi = Absensi::create([
+                'anggota_id' => $data['anggota_id'],
+                'tanggal' => $data['tanggal'],
+                'status' => $data['status'],
+                'nilai' => $nilai,
+                'keterangan' => $data['keterangan'] ?? null,
+            ]);
+        }
 
         return response()->json([
             'success' => true,

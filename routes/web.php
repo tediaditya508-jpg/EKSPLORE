@@ -170,17 +170,19 @@ Route::middleware('role:admin')->group(function () {
 });
 
     // Profil Siswa 
-    Route::get('/profil', [ProfileController::class, 'index']) 
-    ->name('profile.index'); 
+    Route::middleware('role:siswa')->group(function () {
+        Route::get('/profil', [ProfileController::class, 'index']) 
+            ->name('profile.index'); 
  
-    Route::put('/profil', [ProfileController::class, 'update']) 
-    ->name('profile.update'); 
+        Route::put('/profil', [ProfileController::class, 'update']) 
+            ->name('profile.update'); 
  
-    Route::post('/profil/foto', [ProfileController::class, 'updateFoto']) 
-    ->name('profile.foto.update'); 
+        Route::post('/profil/foto', [ProfileController::class, 'updateFoto']) 
+            ->name('profile.foto.update'); 
  
-    Route::delete('/profil/foto', [ProfileController::class, 'hapusFoto']) 
-    ->name('profile.foto.delete'); 
+        Route::delete('/profil/foto', [ProfileController::class, 'hapusFoto']) 
+            ->name('profile.foto.delete'); 
+    });
  
     /* 
     |-------------------------------------------------------------------------- 
@@ -199,8 +201,10 @@ Route::middleware('role:admin')->group(function () {
     |-------------------------------------------------------------------------- 
     */ 
  
-    Route::get('/pengumuman', [PengumumanController::class, 'index']) 
-        ->name('pengumuman.index'); 
+    Route::middleware('role:siswa')->group(function () {
+        Route::get('/pengumuman', [PengumumanController::class, 'index']) 
+            ->name('pengumuman.index'); 
+    });
  
  
     /* 
@@ -209,14 +213,16 @@ Route::middleware('role:admin')->group(function () {
     |-------------------------------------------------------------------------- 
     */ 
  
-    Route::get('/notifikasi', [NotifikasiController::class, 'index']) 
-        ->name('notifikasi.index'); 
+    Route::middleware('role:siswa')->group(function () {
+        Route::get('/notifikasi', [NotifikasiController::class, 'index']) 
+            ->name('notifikasi.index'); 
  
-    Route::patch('/notifikasi/{id}/baca', [NotifikasiController::class, 'tandaiDibaca']) 
-        ->name('notifikasi.baca'); 
+        Route::patch('/notifikasi/{id}/baca', [NotifikasiController::class, 'tandaiDibaca']) 
+            ->name('notifikasi.baca'); 
  
-    Route::patch('/notifikasi/baca-semua', [NotifikasiController::class, 'tandaiSemuaDibaca']) 
-        ->name('notifikasi.bacaSemua'); 
+        Route::patch('/notifikasi/baca-semua', [NotifikasiController::class, 'tandaiSemuaDibaca']) 
+            ->name('notifikasi.bacaSemua'); 
+    });
  
  
     /* 
@@ -237,6 +243,7 @@ Route::middleware('role:admin')->group(function () {
     */ 
  
     Route::get('/pembina/ekstrakurikuler', [EkstrakurikulerController::class, 'pembina']) 
+        ->middleware('role:pembina')
         ->name('pembina.ekstrakurikuler'); 
  
  
@@ -305,11 +312,13 @@ Route::middleware('role:admin')->group(function () {
             });
  
             // PINDAH EKSKUL ADMIN
-Route::get('/admin/pindah-ekskul', [PengajuanPindahEkskulController::class, 'adminIndex'])
-    ->name('admin.pindah_ekskul');
+Route::middleware('role:admin')->group(function () {
+    Route::get('/admin/pindah-ekskul', [PengajuanPindahEkskulController::class, 'adminIndex'])
+        ->name('admin.pindah_ekskul');
 
-Route::put('/admin/pindah-ekskul/{id}', [PengajuanPindahEkskulController::class, 'adminUpdateStatus'])
-    ->name('admin.pindah_ekskul.update');
+    Route::put('/admin/pindah-ekskul/{id}', [PengajuanPindahEkskulController::class, 'adminUpdateStatus'])
+        ->name('admin.pindah_ekskul.update');
+});
  
     /* 
     |-------------------------------------------------------------------------- 
@@ -411,14 +420,16 @@ Route::put('/admin/pindah-ekskul/{id}', [PengajuanPindahEkskulController::class,
 
          });
  
-    Route::get('/pembina/pengumuman', [PengumumanController::class, 'pembinaIndex']) 
-        ->name('pembina.pengumuman'); 
+    Route::middleware('role:pembina')->group(function () {
+        Route::get('/pembina/pengumuman', [PengumumanController::class, 'pembinaIndex']) 
+            ->name('pembina.pengumuman'); 
  
-    Route::get('/pembina/pengumuman/tambah', [PengumumanController::class, 'pembinaCreate']) 
-        ->name('pembina.pengumuman.create'); 
+        Route::get('/pembina/pengumuman/tambah', [PengumumanController::class, 'pembinaCreate']) 
+            ->name('pembina.pengumuman.create'); 
  
-    Route::post('/pembina/pengumuman', [PengumumanController::class, 'pembinaStore']) 
-        ->name('pembina.pengumuman.store'); 
+        Route::post('/pembina/pengumuman', [PengumumanController::class, 'pembinaStore']) 
+            ->name('pembina.pengumuman.store'); 
+    });
  
  
     /* 
@@ -495,17 +506,19 @@ Route::put('/admin/pindah-ekskul/{id}', [PengajuanPindahEkskulController::class,
     |-------------------------------------------------------------------------- 
     */ 
  
-    // Pendaftaran saya 
-    Route::get('/pendaftaran', [PendaftaranController::class, 'index']) 
-        ->name('pendaftaran.index'); 
+    Route::middleware('role:siswa')->group(function () {
+        // Pendaftaran saya 
+        Route::get('/pendaftaran', [PendaftaranController::class, 'index']) 
+            ->name('pendaftaran.index'); 
  
-    // Form pendaftaran ekskul 
-    Route::get('/pendaftaran/{id}', [PendaftaranController::class, 'create']) 
-        ->name('pendaftaran.create'); 
+        // Form pendaftaran ekskul 
+        Route::get('/pendaftaran/{id}', [PendaftaranController::class, 'create']) 
+            ->name('pendaftaran.create'); 
  
-    // Simpan pendaftaran 
-    Route::post('/pendaftaran/{id}', [PendaftaranController::class, 'store']) 
-        ->name('pendaftaran.store'); 
+        // Simpan pendaftaran 
+        Route::post('/pendaftaran/{id}', [PendaftaranController::class, 'store']) 
+            ->name('pendaftaran.store'); 
+    });
 
         /*
 |--------------------------------------------------------------------------
@@ -563,6 +576,7 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
  
     // Melihat anggota aktif dari ekskul yang dibina 
     Route::get('/pembina/anggota', [AnggotaEkskulController::class, 'index']) 
+        ->middleware('role:pembina')
         ->name('pembina.anggota'); 
  
  
@@ -574,10 +588,12 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
  
     // Jadwal untuk siswa 
     Route::get('/jadwal', [JadwalController::class, 'index']) 
+        ->middleware('role:siswa')
         ->name('jadwal.index'); 
  
     // Jadwal ekskul yang dibina oleh pembina 
     Route::get('/pembina/jadwal', [JadwalController::class, 'pembina']) 
+        ->middleware('role:pembina')
         ->name('pembina.jadwal'); 
  
  
@@ -589,17 +605,20 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
  
     // Siswa 
     Route::get('/galeri', [GaleriController::class, 'index']) 
+        ->middleware('role:siswa')
         ->name('galeri.index'); 
  
     // Pembina 
-    Route::get('/pembina/galeri', [GaleriController::class, 'pembina']) 
-        ->name('pembina.galeri'); 
+    Route::middleware('role:pembina')->group(function () {
+        Route::get('/pembina/galeri', [GaleriController::class, 'pembina']) 
+            ->name('pembina.galeri'); 
  
-    Route::post('/pembina/galeri', [GaleriController::class, 'store']) 
-        ->name('pembina.galeri.store'); 
+        Route::post('/pembina/galeri', [GaleriController::class, 'store']) 
+            ->name('pembina.galeri.store'); 
  
-    Route::delete('/pembina/galeri/{id}', [GaleriController::class, 'destroy']) 
-        ->name('pembina.galeri.destroy'); 
+        Route::delete('/pembina/galeri/{id}', [GaleriController::class, 'destroy']) 
+            ->name('pembina.galeri.destroy'); 
+    });
  
     // Admin 
      Route::middleware('role:admin')->group(function () {
@@ -615,13 +634,15 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
     |-------------------------------------------------------------------------- 
     */ 
  
-    // Melihat dan mengisi absensi anggota ekskul yang dibina 
-    Route::get('/pembina/absensi', [AbsensiController::class, 'pembina']) 
-        ->name('pembina.absensi'); 
+    Route::middleware('role:pembina')->group(function () {
+        // Melihat dan mengisi absensi anggota ekskul yang dibina 
+        Route::get('/pembina/absensi', [AbsensiController::class, 'pembina']) 
+            ->name('pembina.absensi'); 
  
-    // Menyimpan absensi 
-    Route::post('/pembina/absensi', [AbsensiController::class, 'store']) 
-        ->name('pembina.absensi.store'); 
+        // Menyimpan absensi 
+        Route::post('/pembina/absensi', [AbsensiController::class, 'store']) 
+            ->name('pembina.absensi.store'); 
+    });
  
  
     /* 
@@ -630,12 +651,14 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
     |-------------------------------------------------------------------------- 
     */ 
  
-    // Melihat riwayat kehadiran siswa 
-    Route::get('/kehadiran', [AbsensiController::class, 'siswa']) 
-        ->name('kehadiran.index'); 
+    Route::middleware('role:siswa')->group(function () {
+        // Melihat riwayat kehadiran siswa 
+        Route::get('/kehadiran', [AbsensiController::class, 'siswa']) 
+            ->name('kehadiran.index'); 
  
-    Route::post('/kehadiran', [AbsensiController::class, 'storeSiswa']) 
-        ->name('kehadiran.storeSiswa'); 
+        Route::post('/kehadiran', [AbsensiController::class, 'storeSiswa']) 
+            ->name('kehadiran.storeSiswa'); 
+    });
  
  
     /* 
@@ -644,9 +667,11 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
     |-------------------------------------------------------------------------- 
     */ 
  
-    // Melihat seluruh prestasi ekstrakurikuler 
-    Route::get('/prestasi', [PrestasiController::class, 'index']) 
-        ->name('prestasi.index'); 
+    Route::middleware('role:siswa')->group(function () {
+        // Melihat seluruh prestasi ekstrakurikuler 
+        Route::get('/prestasi', [PrestasiController::class, 'index']) 
+            ->name('prestasi.index'); 
+    });
  
  
     /* 
@@ -655,21 +680,23 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
     |-------------------------------------------------------------------------- 
     */ 
  
-    // Melihat prestasi dari ekskul yang dibina 
-    Route::get('/pembina/prestasi', [PrestasiController::class, 'pembina']) 
-        ->name('pembina.prestasi'); 
+    Route::middleware('role:pembina')->group(function () {
+        // Melihat prestasi dari ekskul yang dibina 
+        Route::get('/pembina/prestasi', [PrestasiController::class, 'pembina']) 
+            ->name('pembina.prestasi'); 
  
-    // Menyimpan prestasi 
-    Route::post('/pembina/prestasi', [PrestasiController::class, 'store']) 
-        ->name('pembina.prestasi.store'); 
+        // Menyimpan prestasi 
+        Route::post('/pembina/prestasi', [PrestasiController::class, 'store']) 
+            ->name('pembina.prestasi.store'); 
  
-    // Mengubah prestasi 
-    Route::put('/pembina/prestasi/{id}', [PrestasiController::class, 'update']) 
-        ->name('pembina.prestasi.update'); 
+        // Mengubah prestasi 
+        Route::put('/pembina/prestasi/{id}', [PrestasiController::class, 'update']) 
+            ->name('pembina.prestasi.update'); 
  
-    // Menghapus prestasi 
-    Route::delete('/pembina/prestasi/{id}', [PrestasiController::class, 'destroy']) 
-        ->name('pembina.prestasi.destroy'); 
+        // Menghapus prestasi 
+        Route::delete('/pembina/prestasi/{id}', [PrestasiController::class, 'destroy']) 
+            ->name('pembina.prestasi.destroy'); 
+    });
  
  
     /* 
@@ -684,6 +711,5 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
 });
 
 
-Route::get('/preview-hp', function () {
-    return view('preview-hp');
-})->name('preview.hp');
+/* Route preview pengembangan lokal sudah dihapus agar tidak dapat
+| diakses publik tanpa login. */

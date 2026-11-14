@@ -164,6 +164,16 @@ class PengajuanPindahEkskulController extends Controller
      */
     public function adminIndex()
     {
+        $admin = Auth::user();
+
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()
+                ->route('dashboard')
+                ->withErrors([
+                    'akses' => 'Halaman ini hanya dapat diakses oleh admin.',
+                ]);
+        }
+
         $pengajuan = PengajuanPindahEkskul::with([
             'siswa',
             'ekskulAsal',
@@ -180,6 +190,16 @@ class PengajuanPindahEkskulController extends Controller
      */
     public function adminUpdateStatus(Request $request, $id)
     {
+        $admin = Auth::user();
+
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()
+                ->route('dashboard')
+                ->withErrors([
+                    'akses' => 'Hanya admin yang dapat memproses pengajuan pindah ekskul.',
+                ]);
+        }
+
         $request->validate([
             'status' => 'required|in:diterima,ditolak',
         ]);

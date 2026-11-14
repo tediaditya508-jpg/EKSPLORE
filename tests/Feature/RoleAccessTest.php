@@ -51,4 +51,19 @@ class RoleAccessTest extends TestCase
         $this->get('/pembina/dashboard')->assertOk();
         $this->get('/admin/dashboard')->assertOk();
     }
+
+    public function test_siswa_dan_pembina_tidak_boleh_mengakses_pindah_ekskul_admin(): void
+    {
+        foreach (['siswa', 'pembina'] as $role) {
+            $pengguna = $this->buatPengguna($role);
+
+            $this->actingAs($pengguna)
+                ->get('/admin/pindah-ekskul')
+                ->assertForbidden();
+
+            $this->actingAs($pengguna)
+                ->put('/admin/pindah-ekskul/1', ['status' => 'ditolak'])
+                ->assertForbidden();
+        }
+    }
 }
