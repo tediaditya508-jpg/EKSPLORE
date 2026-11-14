@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
+
     <style>
         :root {
             --font-sans: 'Plus Jakarta Sans', sans-serif;
@@ -201,6 +203,7 @@
 
         .toolbar-title svg {
             color: var(--admin-primary);
+            flex-shrink: 0;
         }
 
         .search-wrapper {
@@ -237,58 +240,65 @@
             box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
         }
 
+        /* =========================
+           TABEL DATA (DIKUNCI ANTI-OVERRIDE)
+        ========================= */
         .table-card {
             background: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 28px;
             box-shadow: 0 12px 30px -10px rgba(15, 23, 42, 0.06);
-            overflow-x: auto;
         }
 
-        table {
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        #tabelAnggota {
             width: 100%;
             border-collapse: collapse;
-            min-width: 850px;
         }
 
-        thead {
-            background: #6d28d9;
-            color: #ffffff;
+        #tabelAnggota thead {
+            background: linear-gradient(135deg, #5b21b6 0%, #6d28d9 100%) !important;
         }
 
-        th {
-            padding: 15px 16px;
-            text-align: left;
-            font-size: 13.5px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            border-bottom: 1px solid var(--border-color);
+        #tabelAnggota thead th {
+            background-color: transparent !important;
+            color: #ffffff !important;
+            padding: 16px 18px !important;
+            text-align: left !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.4px !important;
+            text-transform: uppercase;
+            border-bottom: none !important;
             white-space: nowrap;
         }
 
-        thead th:first-child {
-            border-top-left-radius: 15px;
+        #tabelAnggota tbody tr {
+            background-color: #ffffff !important;
+            transition: background-color 0.15s ease;
         }
 
-        thead th:last-child {
-            border-top-right-radius: 15px;
+        #tabelAnggota tbody tr:hover {
+            background-color: #f5f3ff !important;
         }
 
-        td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 14px;
-            color: var(--text-dark);
-            vertical-align: middle;
+        #tabelAnggota tbody td {
+            padding: 16px 18px !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            font-size: 14px !important;
+            color: var(--text-dark) !important;
+            vertical-align: middle !important;
         }
 
-        tr:hover {
-            background: #f8fafc;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
+        #tabelAnggota tbody tr:last-child td {
+            border-bottom: none !important;
         }
 
         /* STATUS BADGE */
@@ -305,6 +315,7 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         /* EMPTY STATE */
@@ -338,18 +349,113 @@
             font-size: 14px;
         }
 
+        /* =========================
+           RESPONSIF PENUH DI HP & TABLET
+        ========================= */
         @media (max-width: 768px) {
-            .admin-hero { padding: 44px 20px 76px; }
-            .hero-text h1 { font-size: 26px; }
-            .container { margin: -38px auto 40px; padding: 0 16px; }
-            .kpi-grid { grid-template-columns: 1fr; }
-            .table-card { padding: 20px; }
-            .toolbar-card { flex-direction: column; align-items: flex-start; }
-            .search-wrapper { width: 100%; }
+            .admin-hero {
+                padding: 40px 20px 72px;
+            }
+
+            .hero-text h1 {
+                font-size: 25px;
+            }
+
+            .hero-text p {
+                font-size: 13.5px;
+            }
+
+            .container {
+                margin: -36px auto 40px;
+                padding: 0 16px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .kpi-card {
+                padding: 16px 18px;
+            }
+
+            .toolbar-card {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 16px 18px;
+            }
+
+            .search-wrapper {
+                width: 100%;
+            }
+
+            .table-card {
+                padding: 16px;
+                border-radius: 20px;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+            }
+
+            .table-wrapper {
+                border: none;
+                overflow-x: visible;
+            }
+
+            /* Ubah tabel menjadi layout Kartu Rapi di layar HP */
+            #tabelAnggota,
+            #tabelAnggota tbody,
+            #tabelAnggota tr,
+            #tabelAnggota td {
+                display: block;
+                width: 100%;
+            }
+
+            #tabelAnggota thead {
+                display: none !important;
+            }
+
+            #tabelAnggota tbody tr {
+                background: #ffffff !important;
+                border: 1px solid var(--border-color);
+                border-radius: 18px;
+                padding: 16px;
+                margin-bottom: 14px;
+                box-shadow: 0 6px 18px -6px rgba(15, 23, 42, 0.06);
+            }
+
+            #tabelAnggota tbody td {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 4px !important;
+                border-bottom: 1px dashed #e2e8f0 !important;
+                text-align: right !important;
+                font-size: 13.5px !important;
+                gap: 12px;
+            }
+
+            #tabelAnggota tbody td:last-child {
+                border-bottom: none !important;
+                padding-bottom: 2px !important;
+            }
+
+            #tabelAnggota tbody td:first-child {
+                padding-top: 2px !important;
+            }
+
+            #tabelAnggota tbody td::before {
+                content: attr(data-label);
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+                text-align: left;
+                flex-shrink: 0;
+            }
         }
     </style>
-
-    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
@@ -369,7 +475,7 @@
                     Direktori Keanggotaan Sekolah
                 </div>
                 <h1>Anggota <span>Ekstrakurikuler</span></h1>
-                <p>Kelola dan pantau daftar seluruh siswa yang telah terdaftar resmi sebagai anggota aktif di berbagai unit ekstrakurikuler[cite: 13].</p>
+                <p>Kelola dan pantau daftar seluruh siswa yang telah terdaftar resmi sebagai anggota aktif di berbagai unit ekstrakurikuler.</p>
             </div>
         </div>
     </section>
@@ -421,7 +527,7 @@
                                 <th style="width: 60px;">No</th>
                                 <th>Nama Siswa</th>
                                 <th style="width: 110px;">Kelas</th>
-                                <th style="width: 100px;">NIS</th>
+                                <th style="width: 120px;">NIS</th>
                                 <th>Ekstrakurikuler</th>
                                 <th style="width: 150px;">Tanggal Daftar</th>
                                 <th style="width: 120px;">Status</th>
@@ -440,23 +546,23 @@
                                 @endphp
 
                                 <tr data-search="{{ $searchString }}">
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td data-label="No">{{ $loop->iteration }}</td>
 
-                                    <td>
+                                    <td data-label="Nama Siswa">
                                         <strong>{{ $namaSiswa }}</strong>
                                     </td>
 
-                                    <td>{{ $kelasSiswa }}</td>
+                                    <td data-label="Kelas">{{ $kelasSiswa }}</td>
 
-                                    <td>{{ $nisSiswa }}</td>
+                                    <td data-label="NIS">{{ $nisSiswa }}</td>
 
-                                    <td>
+                                    <td data-label="Ekstrakurikuler">
                                         <strong>{{ $namaEkskul }}</strong>
                                     </td>
 
-                                    <td>{{ $tglDaftar }}</td>
+                                    <td data-label="Tanggal Daftar">{{ $tglDaftar }}</td>
 
-                                    <td>
+                                    <td data-label="Status">
                                         <span class="status">
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                                             Aktif
