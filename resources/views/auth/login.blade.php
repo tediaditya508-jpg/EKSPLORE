@@ -34,7 +34,7 @@
         .login-wrapper {
             width: 100%;
             max-width: 1080px;
-            min-height: 650px;
+            min-height: 620px;
 
             background: #ffffff;
 
@@ -64,7 +64,7 @@
                     #f5faff 100%
                 );
 
-            padding: 42px 50px;
+            padding: 36px 42px;
 
             overflow: hidden;
 
@@ -122,12 +122,12 @@
 
             gap: 12px;
 
-            margin-bottom: 25px;
+            margin-bottom: 18px;
         }
 
         .brand-icon {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
 
             border-radius: 14px;
 
@@ -139,7 +139,7 @@
             align-items: center;
             justify-content: center;
 
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
 
             box-shadow:
@@ -147,7 +147,7 @@
         }
 
         .brand-name {
-            font-size: 26px;
+            font-size: 24px;
 
             font-weight: 800;
 
@@ -167,13 +167,13 @@
             justify-content: center;
             align-items: center;
 
-            margin-top: 5px;
-            margin-bottom: 10px;
+            margin-top: 4px;
+            margin-bottom: 12px;
         }
 
         .logo-area img {
-            width: 210px;
-            height: 210px;
+            width: 180px;
+            height: 180px;
 
             object-fit: contain;
 
@@ -190,15 +190,15 @@
         ========================= */
 
         .left-title {
-            font-size: 31px;
+            font-size: 28px;
 
-            line-height: 1.18;
+            line-height: 1.2;
 
             color: #172554;
 
             margin-top: 3px;
 
-            margin-bottom: 13px;
+            margin-bottom: 12px;
 
             max-width: 430px;
         }
@@ -210,13 +210,13 @@
         .left-description {
             color: #5f7189;
 
-            font-size: 14px;
+            font-size: 13.5px;
 
-            line-height: 1.7;
+            line-height: 1.65;
 
             max-width: 440px;
 
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         /* =========================
@@ -231,6 +231,7 @@
             gap: 8px;
 
             margin-top: 3px;
+            margin-bottom: 15px;
         }
 
         .feature {
@@ -240,7 +241,7 @@
 
             border-radius: 20px;
 
-            padding: 7px 12px;
+            padding: 6px 11px;
 
             color: #355174;
 
@@ -262,7 +263,7 @@
 
             margin-top: auto;
 
-            padding-top: 15px;
+            padding-top: 12px;
 
             color: #64748b;
 
@@ -276,7 +277,7 @@
         .right-side {
             background: #ffffff;
 
-            padding: 55px 70px;
+            padding: 45px 55px;
 
             display: flex;
 
@@ -294,11 +295,11 @@
         .login-title {
             color: #172033;
 
-            font-size: 30px;
+            font-size: 28px;
 
             font-weight: 700;
 
-            margin-bottom: 9px;
+            margin-bottom: 8px;
         }
 
         .login-subtitle {
@@ -308,7 +309,7 @@
 
             line-height: 1.6;
 
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
         /* =========================
@@ -338,7 +339,7 @@
         ========================= */
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .form-label {
@@ -375,7 +376,7 @@
         .form-input {
             width: 100%;
 
-            height: 49px;
+            height: 48px;
 
             border: 1px solid #dbe2ea;
 
@@ -445,7 +446,7 @@
 
             justify-content: space-between;
 
-            margin-bottom: 22px;
+            margin-bottom: 20px;
 
             font-size: 12px;
         }
@@ -483,7 +484,7 @@
         .login-button {
             width: 100%;
 
-            height: 49px;
+            height: 48px;
 
             border: none;
 
@@ -526,7 +527,7 @@
 
             gap: 12px;
 
-            margin: 21px 0;
+            margin: 19px 0;
 
             color: #94a3b8;
 
@@ -551,7 +552,7 @@
         .google-button {
             width: 100%;
 
-            height: 49px;
+            height: 48px;
 
             border: 1px solid #dbe2ea;
 
@@ -603,7 +604,7 @@
 
             font-size: 12px;
 
-            margin-top: 23px;
+            margin-top: 20px;
         }
 
         .register-text a {
@@ -619,30 +620,61 @@
         }
 
         /* =========================
-           MOBILE
+           TABLET & MOBILE (RESPONSIF)
         ========================= */
 
-        @media (max-width: 850px) {
+        @media (max-width: 900px) {
 
             body {
-                padding: 15px;
+                padding: 16px;
+                align-items: flex-start;
             }
 
             .login-wrapper {
                 grid-template-columns: 1fr;
 
-                max-width: 460px;
+                max-width: 500px;
 
                 min-height: auto;
             }
 
-            /* Di tablet & HP, form langsung tampil tanpa panel marketing. */
+            /* Panel kiri tetap tampil dengan gambar & tidak terpotong */
             .left-side {
-                display: none;
+                padding: 32px 28px;
+                text-align: center;
+            }
+
+            .brand {
+                justify-content: center;
+                margin-bottom: 12px;
+            }
+
+            .logo-area img {
+                width: 145px;
+                height: 145px;
+            }
+
+            .left-title {
+                font-size: 24px;
+                max-width: 100%;
+                margin: 0 auto 10px;
+            }
+
+            .left-description {
+                max-width: 100%;
+                margin: 0 auto 16px;
+            }
+
+            .features {
+                justify-content: center;
+            }
+
+            .left-footer {
+                padding-top: 8px;
             }
 
             .right-side {
-                padding: 42px 34px;
+                padding: 36px 28px;
             }
         }
 
@@ -654,31 +686,28 @@
 
             .login-wrapper {
                 border-radius: 0;
-
                 min-height: 100vh;
             }
 
             .left-side {
-                min-height: 520px;
-
-                padding: 30px 25px;
+                padding: 28px 20px;
             }
 
             .logo-area img {
-                width: 145px;
-                height: 145px;
+                width: 125px;
+                height: 125px;
             }
 
             .left-title {
-                font-size: 26px;
+                font-size: 22px;
             }
 
             .right-side {
-                padding: 40px 25px;
+                padding: 32px 20px 40px;
             }
 
             .login-title {
-                font-size: 27px;
+                font-size: 25px;
             }
         }
     </style>
@@ -933,7 +962,7 @@
 
                         <a href="{{ route('password.request') }}" class="forgot">
                             Lupa password?
-                                </a>
+                        </a>
 
                     </div>
 
