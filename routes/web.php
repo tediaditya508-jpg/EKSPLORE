@@ -687,7 +687,3 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
 Route::get('/preview-hp', function () {
     return view('preview-hp');
 })->name('preview.hp');
-
-Route::get('/test-error-500', function () {
-    abort(500);
-});
