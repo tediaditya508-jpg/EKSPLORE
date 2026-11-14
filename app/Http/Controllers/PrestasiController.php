@@ -6,6 +6,7 @@ use App\Models\Ekstrakurikuler;
 use App\Models\Prestasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PrestasiController extends Controller
 {
@@ -88,8 +89,16 @@ class PrestasiController extends Controller
             'tingkat' => ['required', 'string', 'max:100'],
             'tanggal' => ['nullable', 'date'],
             'lokasi' => ['nullable', 'string', 'max:255'],
-            'dokumentasi' => ['nullable', 'string', 'max:500'],
+            'dokumentasi' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ], [
+            'dokumentasi.image' => 'Dokumentasi harus berupa gambar.',
+            'dokumentasi.mimes' => 'Format dokumentasi harus JPG, JPEG, PNG, atau WEBP.',
+            'dokumentasi.max' => 'Ukuran dokumentasi maksimal 2 MB.',
         ]);
+
+        if ($request->hasFile('dokumentasi')) {
+            $data['dokumentasi'] = $request->file('dokumentasi')->store('prestasi', 'public');
+        }
 
         $ekskul = Ekstrakurikuler::where(
             'id',
@@ -147,8 +156,22 @@ class PrestasiController extends Controller
             'tingkat' => ['required', 'string', 'max:100'],
             'tanggal' => ['nullable', 'date'],
             'lokasi' => ['nullable', 'string', 'max:255'],
-            'dokumentasi' => ['nullable', 'string', 'max:500'],
+            'dokumentasi' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ], [
+            'dokumentasi.image' => 'Dokumentasi harus berupa gambar.',
+            'dokumentasi.mimes' => 'Format dokumentasi harus JPG, JPEG, PNG, atau WEBP.',
+            'dokumentasi.max' => 'Ukuran dokumentasi maksimal 2 MB.',
         ]);
+
+        if ($request->hasFile('dokumentasi')) {
+            if ($prestasi->dokumentasi && Storage::disk('public')->exists($prestasi->dokumentasi)) {
+                Storage::disk('public')->delete($prestasi->dokumentasi);
+            }
+
+            $data['dokumentasi'] = $request->file('dokumentasi')->store('prestasi', 'public');
+        } else {
+            unset($data['dokumentasi']);
+        }
 
         $prestasi->update($data);
 
@@ -181,6 +204,10 @@ class PrestasiController extends Controller
             return back()->withErrors([
                 'akses' => 'Kamu tidak memiliki akses ke prestasi ini.',
             ]);
+        }
+
+        if ($prestasi->dokumentasi && Storage::disk('public')->exists($prestasi->dokumentasi)) {
+            Storage::disk('public')->delete($prestasi->dokumentasi);
         }
 
         $prestasi->delete();

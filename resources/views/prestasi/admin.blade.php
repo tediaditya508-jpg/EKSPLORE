@@ -349,6 +349,51 @@
             font-weight: 600;
         }
 
+        .dokumentasi-preview {
+            padding: 0;
+            border: 2px solid var(--admin-border);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            overflow: hidden;
+            line-height: 0;
+            transition: all 0.2s ease;
+        }
+
+        .dokumentasi-preview:hover {
+            border-color: var(--admin-primary);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.18);
+        }
+
+        .dokumentasi-preview img {
+            width: 72px;
+            height: 48px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .dokumentasi-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 9px;
+            border: 1px solid var(--admin-border);
+            background: var(--admin-soft);
+            color: var(--admin-primary-dark);
+            font-size: 12.5px;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dokumentasi-button:hover {
+            background: var(--admin-primary);
+            border-color: var(--admin-primary);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .admin-hero { padding: 44px 20px 76px; }
             .hero-text h1 { font-size: 26px; }
@@ -474,7 +519,31 @@
 
                                     <td>{{ $lokasi }}</td>
 
-                                    <td>{{ $dokumentasi }}</td>
+                                    <td>
+                                        @if ($item->dokumentasi_gambar)
+                                            <button
+                                                type="button"
+                                                class="dokumentasi-preview"
+                                                data-url="{{ $item->dokumentasi_url }}"
+                                                onclick="window.open(this.dataset.url, '_blank', 'noopener,noreferrer')"
+                                                title="Lihat dokumentasi"
+                                            >
+                                                <img src="{{ $item->dokumentasi_url }}" alt="Dokumentasi {{ $namaPrestasi }}">
+                                            </button>
+                                        @elseif ($item->dokumentasi_url)
+                                            <button
+                                                type="button"
+                                                class="dokumentasi-button"
+                                                data-url="{{ $item->dokumentasi_url }}"
+                                                onclick="window.open(this.dataset.url, '_blank', 'noopener,noreferrer')"
+                                            >
+                                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                                                Lihat Dokumentasi
+                                            </button>
+                                        @else
+                                            {{ $dokumentasi }}
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

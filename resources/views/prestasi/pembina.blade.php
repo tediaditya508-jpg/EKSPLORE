@@ -223,6 +223,89 @@
             resize: vertical;
         }
 
+        .form-group input[type="file"] {
+            padding: 9px 12px;
+            cursor: pointer;
+        }
+
+        .file-hint {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .form-error {
+            margin-top: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #b91c1c;
+        }
+
+        .dokumentasi-current {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .dokumentasi-current img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-dokumentasi {
+            flex-wrap: wrap;
+        }
+
+        .dokumentasi-preview {
+            padding: 0;
+            border: 2px solid var(--emerald-border);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            overflow: hidden;
+            line-height: 0;
+            transition: all 0.2s ease;
+        }
+
+        .dokumentasi-preview:hover {
+            border-color: var(--primary-emerald);
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.18);
+        }
+
+        .dokumentasi-preview img {
+            width: 96px;
+            height: 64px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .dokumentasi-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 9px;
+            border: 1px solid var(--emerald-border);
+            background: var(--emerald-soft);
+            color: var(--primary-emerald-hover);
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dokumentasi-button:hover {
+            background: var(--primary-emerald);
+            border-color: var(--primary-emerald);
+            color: white;
+        }
+
         .button {
             width: 100%;
             border: none;
@@ -479,7 +562,7 @@
                     Tambah Prestasi Baru
                 </h2>
 
-                <form action="{{ route('pembina.prestasi.store') }}" method="POST">
+                <form action="{{ route('pembina.prestasi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group">
@@ -541,14 +624,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="dokumentasi">Dokumentasi / Keterangan Tautan</label>
+                        <label for="dokumentasi">Dokumentasi (Upload Gambar)</label>
                         <input
-                            type="text"
+                            type="file"
                             name="dokumentasi"
                             id="dokumentasi"
-                            value="{{ old('dokumentasi') }}"
-                            placeholder="Link foto atau keterangan sertifikat"
+                            accept=".jpg,.jpeg,.png,.webp"
                         >
+                        <small class="file-hint">Format JPG, JPEG, PNG, atau WEBP. Maksimal 2 MB.</small>
+                        @error('dokumentasi')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <button type="submit" class="button">
@@ -599,10 +685,33 @@
                                     @endif
 
                                     @if ($prestasi->dokumentasi)
-                                        <p class="info">
+                                        <div class="info info-dokumentasi">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                                            <strong>Dokumentasi:</strong> {{ $prestasi->dokumentasi }}
-                                        </p>
+                                            <strong>Dokumentasi:</strong>
+                                            @if ($prestasi->dokumentasi_gambar)
+                                                <button
+                                                    type="button"
+                                                    class="dokumentasi-preview"
+                                                    data-url="{{ $prestasi->dokumentasi_url }}"
+                                                    onclick="window.open(this.dataset.url, '_blank', 'noopener,noreferrer')"
+                                                    title="Lihat dokumentasi"
+                                                >
+                                                    <img src="{{ $prestasi->dokumentasi_url }}" alt="Dokumentasi {{ $prestasi->nama_prestasi }}">
+                                                </button>
+                                            @elseif ($prestasi->dokumentasi_url)
+                                                <button
+                                                    type="button"
+                                                    class="dokumentasi-button"
+                                                    data-url="{{ $prestasi->dokumentasi_url }}"
+                                                    onclick="window.open(this.dataset.url, '_blank', 'noopener,noreferrer')"
+                                                >
+                                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                                                    Lihat Dokumentasi
+                                                </button>
+                                            @else
+                                                {{ $prestasi->dokumentasi }}
+                                            @endif
+                                        </div>
                                     @endif
 
                                     {{-- TOMBOL EDIT DAN HAPUS --}}
@@ -638,7 +747,7 @@
                                             Edit Data Prestasi
                                         </div>
 
-                                        <form action="{{ route('pembina.prestasi.update', $prestasi->id) }}" method="POST">
+                                        <form action="{{ route('pembina.prestasi.update', $prestasi->id) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             @method('PUT')
 
@@ -684,13 +793,29 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Dokumentasi</label>
+                                                <label>Dokumentasi (Upload Gambar)</label>
                                                 <input
-                                                    type="text"
+                                                    type="file"
                                                     name="dokumentasi"
-                                                    value="{{ $prestasi->dokumentasi }}"
-                                                    placeholder="Link atau keterangan dokumentasi"
+                                                    accept=".jpg,.jpeg,.png,.webp"
                                                 >
+                                                <small class="file-hint">Biarkan kosong jika tidak ingin mengganti dokumentasi. Format JPG, JPEG, PNG, atau WEBP, maksimal 2 MB.</small>
+                                                @if ($prestasi->dokumentasi_url)
+                                                    <div class="dokumentasi-current">
+                                                        @if ($prestasi->dokumentasi_gambar)
+                                                            <img src="{{ $prestasi->dokumentasi_url }}" alt="Dokumentasi {{ $prestasi->nama_prestasi }}">
+                                                        @else
+                                                            <span>Dokumentasi saat ini: tautan lama</span>
+                                                        @endif
+                                                    </div>
+                                                @elseif ($prestasi->dokumentasi)
+                                                    <div class="dokumentasi-current">
+                                                        <span>{{ $prestasi->dokumentasi }}</span>
+                                                    </div>
+                                                @endif
+                                                @error('dokumentasi')
+                                                    <div class="form-error">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <div class="edit-actions">

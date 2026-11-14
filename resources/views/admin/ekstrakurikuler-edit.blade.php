@@ -167,6 +167,42 @@
             resize: vertical;
         }
 
+        .form-group input[type="file"] {
+            padding: 9px 12px;
+            cursor: pointer;
+        }
+
+        .file-hint {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .field-error {
+            margin-top: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #b91c1c;
+        }
+
+        .current-image {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .current-image img {
+            width: 140px;
+            height: 84px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -307,7 +343,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.ekstrakurikuler.update', $ekskul->id) }}" method="POST">
+            <form action="{{ route('admin.ekstrakurikuler.update', $ekskul->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -432,15 +468,26 @@
                 <div class="form-group">
                     <label for="gambar">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                        Gambar / Banner Ekskul
+                        Banner / Gambar Ekstrakurikuler
                     </label>
                     <input
-                        type="text"
+                        type="file"
                         id="gambar"
                         name="gambar"
-                        value="{{ old('gambar', $ekskul->gambar) }}"
-                        placeholder="Nama file / URL gambar banner"
+                        accept=".jpg,.jpeg,.png,.webp"
                     >
+                    <small class="file-hint">Format JPG, JPEG, PNG, atau WEBP. Maksimal 2 MB. Biarkan kosong jika tidak ingin mengganti gambar.</small>
+
+                    @if ($ekskul->gambar && \Illuminate\Support\Facades\Storage::disk('public')->exists($ekskul->gambar))
+                        <div class="current-image">
+                            <img src="{{ asset('storage/' . $ekskul->gambar) }}" alt="Banner {{ $ekskul->nama_ekskul }}">
+                            <span>Gambar saat ini</span>
+                        </div>
+                    @endif
+
+                    @error('gambar')
+                        <div class="field-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="button-area">

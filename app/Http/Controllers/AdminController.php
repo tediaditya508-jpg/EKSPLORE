@@ -13,6 +13,7 @@ use App\Models\Pengumuman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class AdminController extends Controller
@@ -478,8 +479,10 @@ class AdminController extends Controller
 
                 'gambar' => [
                     'nullable',
-                    'string',
-                    'max:255',
+                    'file',
+                    'image',
+                    'mimes:jpg,jpeg,png,webp',
+                    'max:2048',
                 ],
 
                 'kuota' => [
@@ -499,6 +502,9 @@ class AdminController extends Controller
                 'pembina_id.exists' => 'Pembina yang dipilih tidak ditemukan.',
                 'kuota.integer' => 'Kuota harus berupa angka.',
                 'kuota.min' => 'Kuota minimal 1.',
+                'gambar.image' => 'File gambar harus berupa gambar.',
+                'gambar.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
+                'gambar.max' => 'Ukuran gambar maksimal 2 MB.',
             ]
         );
 
@@ -516,6 +522,16 @@ class AdminController extends Controller
             }
         }
 
+        $gambar = $ekskul->gambar;
+
+        if ($request->hasFile('gambar')) {
+            if ($gambar && Storage::disk('public')->exists($gambar)) {
+                Storage::disk('public')->delete($gambar);
+            }
+
+            $gambar = $request->file('gambar')->store('ekstrakurikuler', 'public');
+        }
+
         $ekskul->update([
             'nama_ekskul' => $data['nama_ekskul'],
             'deskripsi' => $data['deskripsi'] ?? null,
@@ -523,7 +539,7 @@ class AdminController extends Controller
             'jadwal' => $data['jadwal'] ?? null,
             'jam' => $data['jam'] ?? null,
             'lokasi' => $data['lokasi'] ?? null,
-            'gambar' => $data['gambar'] ?? null,
+            'gambar' => $gambar,
             'kuota' => $data['kuota'] ?? null,
             'persyaratan' => $data['persyaratan'] ?? null,
         ]);
@@ -552,6 +568,10 @@ class AdminController extends Controller
         }
 
         $ekskul = Ekstrakurikuler::findOrFail($id);
+
+        if ($ekskul->gambar && Storage::disk('public')->exists($ekskul->gambar)) {
+            Storage::disk('public')->delete($ekskul->gambar);
+        }
 
         $ekskul->delete();
 
