@@ -160,6 +160,10 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/admin/kenaikan-kelas', [KenaikanKelasController::class, 'index'])
         ->name('admin.kenaikan-kelas');
 
+    Route::put('/admin/kenaikan-kelas/{id}/kelas', [KenaikanKelasController::class, 'updateKelas'])
+        ->whereNumber('id')
+        ->name('admin.kenaikan-kelas.kelas');
+
     Route::post('/admin/kenaikan-kelas', [KenaikanKelasController::class, 'proses'])
         ->name('admin.kenaikan-kelas.proses');
 
