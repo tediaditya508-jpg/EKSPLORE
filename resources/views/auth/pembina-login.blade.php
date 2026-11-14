@@ -625,26 +625,53 @@
         }
 
         /* =========================
-           MOBILE
+           MOBILE & TABLET (RESPONSIF)
         ========================= */
 
-        @media (max-width: 850px) {
+        @media (max-width: 900px) {
 
             body {
                 padding: 15px;
+                align-items: flex-start;
             }
 
             .login-wrapper {
                 grid-template-columns: 1fr;
 
-                max-width: 460px;
+                max-width: 480px;
 
                 min-height: auto;
             }
 
-            /* Di tablet & HP, form langsung tampil tanpa panel marketing. */
+            /* Panel kiri (gambar & teks) tetap tampil di HP/tablet tanpa terpotong */
             .left-side {
-                display: none;
+                padding: 32px 28px;
+                text-align: center;
+            }
+
+            .brand {
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+
+            .logo-area img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .left-title {
+                font-size: 24px;
+                max-width: 100%;
+                margin: 0 auto 10px;
+            }
+
+            .left-description {
+                max-width: 100%;
+                margin: 0 auto 16px;
+            }
+
+            .features {
+                justify-content: center;
             }
 
             .right-side {
@@ -665,18 +692,16 @@
             }
 
             .left-side {
-                min-height: 520px;
-
-                padding: 30px 25px;
+                padding: 28px 20px;
             }
 
             .logo-area img {
-                width: 145px;
-                height: 145px;
+                width: 130px;
+                height: 130px;
             }
 
             .left-title {
-                font-size: 26px;
+                font-size: 22px;
             }
 
             .right-side {
