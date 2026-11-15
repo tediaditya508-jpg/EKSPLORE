@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 WORKDIR /var/www/html
 
@@ -37,12 +37,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+    -e 's/<VirtualHost \*:80>/<VirtualHost *:10000>/' \
     /etc/apache2/sites-available/000-default.conf \
-    /etc/apache2/apache2.conf
+    /etc/apache2/apache2.conf \
+    && sed -ri 's/^Listen 80$/Listen 10000/' /etc/apache2/ports.conf
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-EXPOSE 80
+EXPOSE 10000
 
 CMD ["apache2-foreground"]
