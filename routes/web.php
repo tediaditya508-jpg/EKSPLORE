@@ -13,6 +13,7 @@ use App\Http\Controllers\PengajuanPindahEkskulController;
 use App\Http\Controllers\AbsensiController; 
 use App\Http\Controllers\PrestasiController; 
 use App\Http\Controllers\PengumumanController; 
+use App\Http\Controllers\LaporanSiswaController;
 use App\Http\Controllers\NotifikasiController; 
 use App\Http\Controllers\ProfileController; 
 use App\Http\Controllers\GaleriController; 
@@ -448,6 +449,14 @@ Route::middleware('role:admin')->group(function () {
         
 Route::post('/admin/laporan/riwayat', [AdminController::class, 'simpanRiwayatLaporan'])
     ->name('admin.laporan.riwayat.simpan');
+
+    // Mengirim laporan kepada siswa
+Route::post('/admin/laporan/siswa', [LaporanSiswaController::class, 'store'])
+    ->name('admin.laporan.siswa.store');
+
+// Memperbarui status laporan siswa
+Route::patch('/admin/laporan/siswa/{laporanSiswa}/status', [LaporanSiswaController::class, 'updateStatus'])
+    ->name('admin.laporan.siswa.status');
 
     // Export data siswa
     Route::get('/admin/export-siswa', [ExportSiswaController::class, 'export'])

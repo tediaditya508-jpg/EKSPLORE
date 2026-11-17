@@ -336,6 +336,48 @@
             .notification-header { flex-direction: column; align-items: flex-start; }
             .notification-date { white-space: normal; }
         }
+
+        /* NOTIFIKASI KHUSUS PERINGATAN ADMIN */
+.notification-card.admin-warning {
+    border: 1px solid #fecaca;
+    border-left: 5px solid #dc2626;
+    background: linear-gradient(135deg, #fffafa, #fff1f2);
+}
+
+.admin-warning .notification-title {
+    color: #b91c1c;
+}
+
+.warning-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 9px;
+    margin-bottom: 8px;
+    padding: 5px 11px;
+    border-radius: 30px;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .4px;
+}
+
+.admin-warning .notification-message {
+    color: #7f1d1d;
+}
+
+.admin-warning .btn-read {
+    background: #dc2626;
+    color: #fff;
+    border-color: #dc2626;
+}
+
+.admin-warning .btn-read:hover {
+    background: #b91c1c;
+}
+
     </style>
     <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
@@ -382,13 +424,26 @@
 
             @forelse ($notifikasi as $item)
 
-                <div class="notification-card {{ !$item->dibaca ? 'unread' : '' }}">
+                @php
+    $isPeringatan = str_starts_with(
+        $item->judul ?? '',
+        '🚨 Peringatan dari Admin'
+    );
+@endphp
+
+<div class="notification-card {{ !$item->dibaca ? 'unread' : '' }} {{ $isPeringatan ? 'admin-warning' : '' }}">
 
                     <div class="notification-header">
                         <div>
-                            <div class="notification-title">
-                                {{ $item->judul }}
-                            </div>
+                           <div class="notification-title">
+    {{ $item->judul }}
+</div>
+
+@if ($isPeringatan)
+    <div class="warning-label">
+        ⚠️ PERINGATAN ADMIN
+    </div>
+@endif
 
                             @if (!$item->dibaca)
                                 <span class="badge badge-unread">

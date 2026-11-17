@@ -17,7 +17,6 @@ class RiwayatLaporan extends Model
     ];
 
     protected $casts = [
-        'filter' => 'array',
         'jumlah_data' => 'integer',
     ];
 

@@ -11,6 +11,7 @@ use App\Models\Absensi;
 use App\Models\Prestasi;
 use App\Models\Pengumuman;
 use App\Models\RiwayatLaporan;
+use App\Models\LaporanSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -731,6 +732,10 @@ class AdminController extends Controller
             ->latest()
             ->get();
 
+            $laporanSiswa = LaporanSiswa::with(['admin', 'siswa'])
+            ->latest()
+            ->get();
+
 
         return view('admin.laporan', [
             'admin' => $admin,
@@ -754,6 +759,7 @@ class AdminController extends Controller
             'daftarEkskul' => $daftarEkskul,
             'daftarKelas' => $daftarKelas,
             'riwayatLaporan' => $riwayatLaporan,
+            'laporanSiswa' => $laporanSiswa,
         ]);
     }
 
@@ -858,14 +864,14 @@ public function simpanRiwayatLaporan(Request $request)
     RiwayatLaporan::create([
         'admin_id' => $admin->id,
         'jenis_laporan' => $jenis,
-        'filter' => [
-            'cari' => $cari,
-            'ekskul_id' => $ekskulId,
-            'kelas' => $kelas,
-            'status' => $status,
-            'tanggal_awal' => $tanggalAwal,
-            'tanggal_akhir' => $tanggalAkhir,
-        ],
+        'filter' => json_encode([
+        'cari' => $cari,
+        'ekskul_id' => $ekskulId,
+        'kelas' => $kelas,
+        'status' => $status,
+        'tanggal_awal' => $tanggalAwal,
+        'tanggal_akhir' => $tanggalAkhir,
+    ]),
         'jumlah_data' => $jumlahData,
     ]);
 

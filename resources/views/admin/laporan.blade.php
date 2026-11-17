@@ -546,6 +546,277 @@
                 gap: 15px;
             }
         }
+
+        /* MODAL LAPORAN SISWA */
+.modal-laporan-siswa {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-laporan-siswa.active {
+    display: flex;
+}
+
+.modal-laporan-content {
+    width: 100%;
+    max-width: 560px;
+    background: #fff;
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.2);
+    animation: modalMasuk .2s ease;
+}
+
+@keyframes modalMasuk {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-laporan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.modal-laporan-header h2 {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.modal-laporan-close {
+    border: none;
+    background: transparent;
+    font-size: 26px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.modal-laporan-content label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #334155;
+}
+
+.modal-laporan-content input,
+.modal-laporan-content textarea {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 13px 15px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    outline: none;
+}
+
+.modal-laporan-content input:focus,
+.modal-laporan-content textarea:focus {
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.modal-laporan-content textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.btn-laporkan-siswa {
+    border: none;
+    background: #dc2626;
+    color: #fff;
+    padding: 9px 14px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.btn-laporkan-siswa:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+}
+
+.btn-laporkan-siswa:hover {
+    background: var(--admin-primary-dark);
+}
+
+.modal-laporan-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-laporan-actions button {
+    border: none;
+    border-radius: 10px;
+    padding: 11px 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-batal-laporan {
+    background: #f1f5f9;
+    color: #334155;
+}
+
+.btn-kirim-laporan {
+    background: var(--admin-primary);
+    color: #fff;
+}
+
+/* TABEL DAFTAR LAPORAN SISWA */
+.laporan-siswa-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.laporan-siswa-table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+.laporan-siswa-table th {
+    padding: 16px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 800;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.laporan-siswa-table td {
+    padding: 16px;
+    color: #334155;
+    font-size: 13px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+    overflow-wrap: anywhere;
+}
+
+.laporan-siswa-table th:nth-child(1),
+.laporan-siswa-table td:nth-child(1) {
+    width: 55px;
+}
+
+.laporan-siswa-table th:nth-child(2),
+.laporan-siswa-table td:nth-child(2) {
+    width: 150px;
+}
+
+.laporan-siswa-table th:nth-child(3),
+.laporan-siswa-table td:nth-child(3) {
+    width: 170px;
+}
+
+.laporan-siswa-table th:nth-child(4),
+.laporan-siswa-table td:nth-child(4) {
+    width: 260px;
+}
+
+.laporan-siswa-table th:nth-child(5),
+.laporan-siswa-table td:nth-child(5) {
+    width: 160px;
+    white-space: nowrap;
+}
+
+.laporan-siswa-table th:nth-child(6),
+.laporan-siswa-table td:nth-child(6) {
+    width: 160px;
+}
+
+.laporan-siswa-table th:nth-child(7),
+.laporan-siswa-table td:nth-child(7) {
+    width: 230px;
+}
+
+.laporan-siswa-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.laporan-siswa-table select {
+    min-width: 145px;
+    padding: 9px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.laporan-siswa-table button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #dc2626;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+.laporan-siswa-table button:hover {
+    background: #b91c1c;
+}
+
+/* FORM UBAH STATUS LAPORAN */
+.laporan-siswa-table td:last-child form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 320px;
+    margin: 0;
+}
+
+.laporan-siswa-table td:last-child select {
+    flex: 1;
+    min-width: 170px;
+    height: 42px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    outline: none;
+}
+
+.laporan-siswa-table td:last-child select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.laporan-siswa-table td:last-child button {
+    flex-shrink: 0;
+    height: 42px;
+    margin: 0;
+    padding: 0 16px;
+    white-space: nowrap;
+}
+
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
@@ -870,6 +1141,7 @@
                             @endif
 
                             <th style="width: 120px;">Status</th>
+                            <th style="width: 130px;">Aksi</th>
                         </tr>
                     </thead>
 
@@ -917,12 +1189,30 @@
                                         {{ ucfirst($item->status ?? '-') }}
                                     </span>
                                 </td>
+
+                                  <td>
+    @if($siswa)
+        <button
+            type="button"
+            class="btn-laporkan-siswa"
+            onclick="bukaModalLaporanSiswa(
+                {{ $siswa->id }},
+                @js($namaSiswa)
+            )"
+        >
+            🚨 Laporkan
+        </button>
+    @else
+        -
+    @endif
+</td>      
+
                             </tr>
 
                         @empty
 
                             <tr>
-                                <td colspan="7" class="empty-data">
+                                <td colspan="8" class="empty-data">
                                     Belum ada data laporan yang sesuai dengan filter.
                                 </td>
                             </tr>
@@ -935,6 +1225,97 @@
         </div>
 
     </section>
+
+    {{-- DAFTAR LAPORAN SISWA --}}
+<section class="report-section" style="margin-bottom: 30px;">
+
+    <h2 class="section-title">
+        Daftar Laporan Siswa
+    </h2>
+
+    <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">
+        Kelola laporan yang telah dikirim kepada siswa dan perbarui status penanganannya.
+    </p>
+
+    <div class="laporan-siswa-wrapper">
+    <table class="laporan-siswa-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Siswa</th>
+                    <th>Judul</th>
+                    <th>Pesan</th>
+                    <th>Tanggal</th>
+                    <th>Status</th>
+                    <th>Ubah Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @forelse($laporanSiswa as $index => $laporan)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+
+                        <td>
+                            <strong>
+                                {{ $laporan->siswa?->nama ?? $laporan->siswa?->name ?? '-' }}
+                            </strong>
+                        </td>
+
+                        <td>{{ $laporan->judul }}</td>
+
+                        <td>{{ $laporan->pesan }}</td>
+
+                        <td>
+                            {{ $laporan->created_at?->format('d-m-Y H:i') ?? '-' }}
+                        </td>
+
+                        <td>
+                            {{ $laporan->status }}
+                        </td>
+
+                        <td>
+                            <form
+                                action="{{ route('admin.laporan.siswa.status', $laporan->id) }}"
+                                method="POST"
+                            >
+                                @csrf
+                                @method('PATCH')
+
+                                <select name="status" required>
+                                    <option value="Belum Ditinjau"
+                                        @selected($laporan->status === 'Belum Ditinjau')>
+                                        Belum Ditinjau
+                                    </option>
+
+                                    <option value="Diproses"
+                                        @selected($laporan->status === 'Diproses')>
+                                        Diproses
+                                    </option>
+
+                                    <option value="Selesai"
+                                        @selected($laporan->status === 'Selesai')>
+                                        Selesai
+                                    </option>
+                                </select>
+
+                                <button type="submit" class="btn-laporkan-siswa">
+                                    Simpan
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="empty-data">
+                            Belum ada laporan siswa.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</section>
 
     {{-- RINGKASAN AKTIVITAS SISTEM --}}
     <div class="summary">
@@ -992,6 +1373,103 @@
     </div>
 
 </div>
+
+{{-- MODAL LAPORAN SISWA --}}
+<div class="modal-laporan-siswa" id="modalLaporanSiswa">
+    <div class="modal-laporan-content">
+
+        <div class="modal-laporan-header">
+            <h2>Laporkan Siswa</h2>
+            <button
+                type="button"
+                class="modal-laporan-close"
+                onclick="tutupModalLaporanSiswa()"
+            >&times;</button>
+        </div>
+
+        <form
+            action="{{ route('admin.laporan.siswa.store') }}"
+            method="POST"
+        >
+            @csrf
+
+            <input
+                type="hidden"
+                name="siswa_id"
+                id="laporanSiswaId"
+            >
+
+            <label>Nama Siswa</label>
+            <input
+                type="text"
+                id="laporanNamaSiswa"
+                readonly
+            >
+
+            <label for="laporanJudul">Judul Laporan</label>
+            <input
+                type="text"
+                name="judul"
+                id="laporanJudul"
+                maxlength="150"
+                placeholder="Masukkan judul laporan"
+                required
+            >
+
+            <label for="laporanPesan">Pesan / Keterangan</label>
+            <textarea
+                name="pesan"
+                id="laporanPesan"
+                maxlength="2000"
+                placeholder="Tuliskan alasan atau keterangan laporan..."
+                required
+            ></textarea>
+
+            <div class="modal-laporan-actions">
+                <button
+                    type="button"
+                    class="btn-batal-laporan"
+                    onclick="tutupModalLaporanSiswa()"
+                >
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-kirim-laporan"
+                >
+                    Kirim Laporan
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function bukaModalLaporanSiswa(id, nama) {
+        document.getElementById('laporanSiswaId').value = id;
+        document.getElementById('laporanNamaSiswa').value = nama;
+
+        document.getElementById('modalLaporanSiswa')
+            .classList.add('active');
+    }
+
+    function tutupModalLaporanSiswa() {
+        document.getElementById('modalLaporanSiswa')
+            .classList.remove('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('modalLaporanSiswa');
+
+        modal.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                tutupModalLaporanSiswa();
+            }
+        });
+    });
+</script>
 
 <script src="{{ asset('js/eksplore.js') }}" defer></script>
 
