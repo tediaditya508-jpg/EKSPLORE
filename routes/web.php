@@ -443,7 +443,11 @@ Route::middleware('role:admin')->group(function () {
  
     // Melihat ringkasan data dan aktivitas ekstrakurikuler 
     Route::get('/admin/laporan', [AdminController::class, 'laporan']) 
-        ->name('admin.laporan'); 
+        ->name('admin.laporan');
+        
+        
+Route::post('/admin/laporan/riwayat', [AdminController::class, 'simpanRiwayatLaporan'])
+    ->name('admin.laporan.riwayat.simpan');
 
     // Export data siswa
     Route::get('/admin/export-siswa', [ExportSiswaController::class, 'export'])

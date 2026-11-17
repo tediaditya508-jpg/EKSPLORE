@@ -10,6 +10,7 @@ use App\Models\Jadwal;
 use App\Models\Absensi;
 use App\Models\Prestasi;
 use App\Models\Pengumuman;
+use App\Models\RiwayatLaporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -586,7 +587,7 @@ class AdminController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function laporan()
+    public function laporan(Request $request)
     {
         $admin = Auth::user();
 
@@ -618,6 +619,119 @@ class AdminController extends Controller
 
         $totalPengumuman = Pengumuman::count();
 
+
+        // ==========================================
+        // FILTER DAN PENGAMBILAN DATA LAPORAN
+        // ==========================================
+
+        $jenisLaporan = $request->input('jenis_laporan', 'pendaftaran');
+
+        if (!in_array($jenisLaporan, ['pendaftaran', 'anggota', 'absensi'], true)) {
+            $jenisLaporan = 'pendaftaran';
+        }
+
+        $filters = $request->validate([
+            'cari' => ['nullable', 'string', 'max:100'],
+            'ekskul_id' => ['nullable', 'integer', 'exists:ekstrakurikuler,id'],
+            'kelas' => ['nullable', 'string', 'max:50'],
+            'status' => ['nullable', 'string', 'max:30'],
+            'tanggal_awal' => ['nullable', 'date'],
+            'tanggal_akhir' => ['nullable', 'date', 'after_or_equal:tanggal_awal'],
+        ]);
+
+        $cari = $filters['cari'] ?? null;
+        $ekskulId = $filters['ekskul_id'] ?? null;
+        $kelas = $filters['kelas'] ?? null;
+        $status = $filters['status'] ?? null;
+        $tanggalAwal = $filters['tanggal_awal'] ?? null;
+        $tanggalAkhir = $filters['tanggal_akhir'] ?? null;
+
+        if ($jenisLaporan === 'pendaftaran') {
+            $queryLaporan = Pendaftaran::with([
+                'siswa',
+                'ekstrakurikuler',
+            ]);
+
+            $queryLaporan
+                ->when($cari, function ($query) use ($cari) {
+                    $query->where(function ($subQuery) use ($cari) {
+                        $subQuery->where('nama', 'ilike', "%{$cari}%")
+                            ->orWhere('nis', 'ilike', "%{$cari}%");
+                    });
+                })
+                ->when($ekskulId, fn ($query) => $query->where('ekskul_id', $ekskulId))
+                ->when($kelas, fn ($query) => $query->where('kelas', $kelas))
+                ->when($status, fn ($query) => $query->where('status', $status))
+                ->when($tanggalAwal, fn ($query) => $query->whereDate('created_at', '>=', $tanggalAwal))
+                ->when($tanggalAkhir, fn ($query) => $query->whereDate('created_at', '<=', $tanggalAkhir));
+
+            $dataLaporan = $queryLaporan->latest()->get();
+
+        } elseif ($jenisLaporan === 'anggota') {
+            $queryLaporan = AnggotaEkskul::with([
+                'siswa',
+                'ekstrakurikuler',
+            ]);
+
+            $queryLaporan
+                ->when($cari, function ($query) use ($cari) {
+                    $query->whereHas('siswa', function ($subQuery) use ($cari) {
+                        $subQuery->where('name', 'ilike', "%{$cari}%")
+                            ->orWhere('nama', 'ilike', "%{$cari}%")
+                            ->orWhere('nis', 'ilike', "%{$cari}%");
+                    });
+                })
+                ->when($ekskulId, fn ($query) => $query->where('ekskul_id', $ekskulId))
+                ->when($kelas, function ($query) use ($kelas) {
+                    $query->whereHas('siswa', fn ($subQuery) => $subQuery->where('kelas', $kelas));
+                })
+                ->when($status, fn ($query) => $query->where('status', $status))
+                ->when($tanggalAwal, fn ($query) => $query->whereDate('tanggal_daftar', '>=', $tanggalAwal))
+                ->when($tanggalAkhir, fn ($query) => $query->whereDate('tanggal_daftar', '<=', $tanggalAkhir));
+
+            $dataLaporan = $queryLaporan->latest()->get();
+
+        } else {
+            $queryLaporan = Absensi::with([
+                'anggota.siswa',
+                'anggota.ekstrakurikuler',
+            ]);
+
+            $queryLaporan
+                ->when($cari, function ($query) use ($cari) {
+                    $query->whereHas('anggota.siswa', function ($subQuery) use ($cari) {
+                        $subQuery->where('name', 'ilike', "%{$cari}%")
+                            ->orWhere('nama', 'ilike', "%{$cari}%")
+                            ->orWhere('nis', 'ilike', "%{$cari}%");
+                    });
+                })
+                ->when($ekskulId, function ($query) use ($ekskulId) {
+                    $query->whereHas('anggota', fn ($subQuery) => $subQuery->where('ekskul_id', $ekskulId));
+                })
+                ->when($kelas, function ($query) use ($kelas) {
+                    $query->whereHas('anggota.siswa', fn ($subQuery) => $subQuery->where('kelas', $kelas));
+                })
+                ->when($status, fn ($query) => $query->where('status', $status))
+                ->when($tanggalAwal, fn ($query) => $query->whereDate('tanggal', '>=', $tanggalAwal))
+                ->when($tanggalAkhir, fn ($query) => $query->whereDate('tanggal', '<=', $tanggalAkhir));
+
+            $dataLaporan = $queryLaporan->latest('tanggal')->get();
+        }
+
+        $daftarEkskul = Ekstrakurikuler::orderBy('nama_ekskul')->get();
+
+        $daftarKelas = User::where('role', 'siswa')
+            ->whereNotNull('kelas')
+            ->where('kelas', '!=', '')
+            ->distinct()
+            ->orderBy('kelas')
+            ->pluck('kelas');
+
+        $riwayatLaporan = RiwayatLaporan::with('admin')
+            ->latest()
+            ->get();
+
+
         return view('admin.laporan', [
             'admin' => $admin,
 
@@ -633,8 +747,140 @@ class AdminController extends Controller
             'totalAbsensi' => $totalAbsensi,
             'totalPrestasi' => $totalPrestasi,
             'totalPengumuman' => $totalPengumuman,
+
+            'jenisLaporan' => $jenisLaporan,
+            'filters' => $filters,
+            'dataLaporan' => $dataLaporan,
+            'daftarEkskul' => $daftarEkskul,
+            'daftarKelas' => $daftarKelas,
+            'riwayatLaporan' => $riwayatLaporan,
         ]);
     }
+
+
+/*
+|--------------------------------------------------------------------------
+| SIMPAN RIWAYAT LAPORAN
+|--------------------------------------------------------------------------
+*/
+
+
+public function simpanRiwayatLaporan(Request $request)
+{
+    $validated = $request->validate([
+        'jenis_laporan' => [
+            'required',
+            'in:pendaftaran,anggota,absensi',
+        ],
+        'cari' => ['nullable', 'string', 'max:100'],
+        'ekskul_id' => [
+            'nullable',
+            'integer',
+            'exists:ekstrakurikuler,id',
+        ],
+        'kelas' => ['nullable', 'string', 'max:50'],
+        'status' => ['nullable', 'string', 'max:30'],
+        'tanggal_awal' => ['nullable', 'date'],
+        'tanggal_akhir' => [
+            'nullable',
+            'date',
+            'after_or_equal:tanggal_awal',
+        ],
+    ]);
+
+    $admin = Auth::user();
+
+    if (!$admin || $admin->role !== 'admin') {
+        abort(403, 'Akses hanya untuk admin.');
+    }
+
+    $jenis = $validated['jenis_laporan'];
+    $cari = $validated['cari'] ?? null;
+    $ekskulId = $validated['ekskul_id'] ?? null;
+    $kelas = $validated['kelas'] ?? null;
+    $status = $validated['status'] ?? null;
+    $tanggalAwal = $validated['tanggal_awal'] ?? null;
+    $tanggalAkhir = $validated['tanggal_akhir'] ?? null;
+
+    if ($jenis === 'pendaftaran') {
+        $query = Pendaftaran::query()
+            ->when($cari, function ($q) use ($cari) {
+                $q->where(function ($sub) use ($cari) {
+                    $sub->where('nama', 'ilike', "%{$cari}%")
+                        ->orWhere('nis', 'ilike', "%{$cari}%");
+                });
+            })
+            ->when($ekskulId, fn ($q) => $q->where('ekskul_id', $ekskulId))
+            ->when($kelas, fn ($q) => $q->where('kelas', $kelas))
+            ->when($status, fn ($q) => $q->where('status', $status))
+            ->when($tanggalAwal, fn ($q) => $q->whereDate('created_at', '>=', $tanggalAwal))
+            ->when($tanggalAkhir, fn ($q) => $q->whereDate('created_at', '<=', $tanggalAkhir));
+
+    } elseif ($jenis === 'anggota') {
+        $query = AnggotaEkskul::query()
+            ->when($cari, function ($q) use ($cari) {
+                $q->whereHas('siswa', function ($sub) use ($cari) {
+                    $sub->where('name', 'ilike', "%{$cari}%")
+                        ->orWhere('nama', 'ilike', "%{$cari}%")
+                        ->orWhere('nis', 'ilike', "%{$cari}%");
+                });
+            })
+            ->when($ekskulId, fn ($q) => $q->where('ekskul_id', $ekskulId))
+            ->when($kelas, function ($q) use ($kelas) {
+                $q->whereHas('siswa', fn ($sub) => $sub->where('kelas', $kelas));
+            })
+            ->when($status, fn ($q) => $q->where('status', $status))
+            ->when($tanggalAwal, fn ($q) => $q->whereDate('tanggal_daftar', '>=', $tanggalAwal))
+            ->when($tanggalAkhir, fn ($q) => $q->whereDate('tanggal_daftar', '<=', $tanggalAkhir));
+
+    } else {
+        $query = Absensi::query()
+            ->when($cari, function ($q) use ($cari) {
+                $q->whereHas('anggota.siswa', function ($sub) use ($cari) {
+                    $sub->where('name', 'ilike', "%{$cari}%")
+                        ->orWhere('nama', 'ilike', "%{$cari}%")
+                        ->orWhere('nis', 'ilike', "%{$cari}%");
+                });
+            })
+            ->when($ekskulId, function ($q) use ($ekskulId) {
+                $q->whereHas('anggota', fn ($sub) => $sub->where('ekskul_id', $ekskulId));
+            })
+            ->when($kelas, function ($q) use ($kelas) {
+                $q->whereHas('anggota.siswa', fn ($sub) => $sub->where('kelas', $kelas));
+            })
+            ->when($status, fn ($q) => $q->where('status', $status))
+            ->when($tanggalAwal, fn ($q) => $q->whereDate('tanggal', '>=', $tanggalAwal))
+            ->when($tanggalAkhir, fn ($q) => $q->whereDate('tanggal', '<=', $tanggalAkhir));
+    }
+
+    $jumlahData = $query->count();
+
+    RiwayatLaporan::create([
+        'admin_id' => $admin->id,
+        'jenis_laporan' => $jenis,
+        'filter' => [
+            'cari' => $cari,
+            'ekskul_id' => $ekskulId,
+            'kelas' => $kelas,
+            'status' => $status,
+            'tanggal_awal' => $tanggalAwal,
+            'tanggal_akhir' => $tanggalAkhir,
+        ],
+        'jumlah_data' => $jumlahData,
+    ]);
+
+    return redirect()
+        ->route('admin.laporan', [
+            'jenis_laporan' => $jenis,
+            'cari' => $cari,
+            'ekskul_id' => $ekskulId,
+            'kelas' => $kelas,
+            'status' => $status,
+            'tanggal_awal' => $tanggalAwal,
+            'tanggal_akhir' => $tanggalAkhir,
+        ])
+        ->with('success', 'Riwayat laporan berhasil disimpan ke database.');
+}
 
     /*
     |--------------------------------------------------------------------------
