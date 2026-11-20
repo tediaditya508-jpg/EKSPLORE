@@ -14,6 +14,7 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\PrestasiController; 
 use App\Http\Controllers\PengumumanController; 
 use App\Http\Controllers\LaporanSiswaController;
+use App\Http\Controllers\PenilaianEkskulController;
 use App\Http\Controllers\NotifikasiController; 
 use App\Http\Controllers\ProfileController; 
 use App\Http\Controllers\GaleriController; 
@@ -128,6 +129,20 @@ Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])
  
 Route::post('/admin/login', [AuthController::class, 'adminLogin']) 
     ->name('admin.login.process'); 
+
+
+
+    /*
+|--------------------------------------------------------------------------
+| LOGIN WALI KELAS
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/wali-kelas/login', [AuthController::class, 'showWaliKelasLogin'])
+    ->name('wali-kelas.login');
+
+Route::post('/wali-kelas/login', [AuthController::class, 'waliKelasLogin'])
+    ->name('wali-kelas.login.process');
  
  
 /* 
@@ -258,6 +273,10 @@ Route::middleware('role:admin')->group(function () {
         ->middleware('role:admin')
         ->name('admin.dashboard'); 
  
+        // Dashboard Wali Kelas
+Route::get('/wali-kelas/dashboard', [DashboardController::class, 'waliKelas'])
+    ->middleware('role:wali_kelas')
+    ->name('wali-kelas.dashboard');
  
    
     /*
@@ -639,6 +658,20 @@ Route::put('/pembina/pendaftaran/{id}', [PendaftaranController::class, 'updateSt
         ->name('admin.galeri'); 
 
         });
+
+        /*
+|--------------------------------------------------------------------------
+| PENILAIAN EKSTRAKURIKULER PEMBINA
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('role:pembina')->group(function () {
+    Route::get('/pembina/penilaian', [PenilaianEkskulController::class, 'index'])
+        ->name('pembina.penilaian');
+
+    Route::post('/pembina/penilaian/{anggotaId}', [PenilaianEkskulController::class, 'store'])
+        ->name('pembina.penilaian.store');
+});
  
  
     /* 

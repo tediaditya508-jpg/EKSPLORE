@@ -195,6 +195,47 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function waliKelas()
+{
+    abort_unless(Auth::user()?->role === 'wali_kelas', 403);
+
+    $waliKelas = Auth::user();
+
+    // Wali kelas wajib memiliki data kelas.
+    if (empty($waliKelas->kelas)) {
+        return view('dashboard.wali-kelas', [
+            'waliKelas' => $waliKelas,
+            'siswa' => collect(),
+            'pesan' => 'Kelas untuk akun Wali Kelas ini belum diatur.',
+        ]);
+    }
+
+    // Ambil siswa yang berada di kelas Wali Kelas.
+    $siswa = User::where('role', 'siswa')
+        ->where('kelas', $waliKelas->kelas)
+        ->where(function ($query) {
+            $query->whereNull('status_siswa')
+                ->orWhere('status_siswa', 'aktif');
+        })
+        ->with([
+            'anggotaEkskul' => function ($query) {
+                $query->where('status', 'aktif');
+            },
+            'anggotaEkskul.ekstrakurikuler',
+            'anggotaEkskul.penilaian' => function ($query) {
+                $query->orderByDesc('created_at');
+            },
+        ])
+        ->orderBy('nama')
+        ->get();
+
+    return view('dashboard.wali-kelas', [
+        'waliKelas' => $waliKelas,
+        'siswa' => $siswa,
+        'pesan' => null,
+    ]);
+}
+
     public function admin()
     {
         abort_unless(Auth::user()?->role === 'admin', 403);

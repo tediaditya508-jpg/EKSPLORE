@@ -546,6 +546,50 @@ public function pembinaLogin(Request $request)
     }
 
 
+/*
+|--------------------------------------------------------------------------
+| LOGIN WALI KELAS
+|--------------------------------------------------------------------------
+*/
+
+public function showWaliKelasLogin()
+{
+    return view('auth.wali-kelas-login');
+}
+
+public function waliKelasLogin(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'string', 'email', 'max:255'],
+        'password' => ['required', 'string'],
+    ]);
+
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        if ($user->role !== 'wali_kelas') {
+            Auth::logout();
+
+            return back()
+                ->withErrors([
+                    'email' => 'Akun ini tidak diizinkan melalui login Wali Kelas.',
+                ])
+                ->onlyInput('email');
+        }
+
+        $request->session()->regenerate();
+
+        return redirect()->route('wali-kelas.dashboard');
+    }
+
+    return back()
+        ->withErrors([
+            'email' => 'Email atau password Wali Kelas salah.',
+        ])
+        ->onlyInput('email');
+}
+
+
     /*
     |--------------------------------------------------------------------------
     | LOGIN ADMIN

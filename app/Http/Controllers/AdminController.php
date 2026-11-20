@@ -114,11 +114,19 @@ class AdminController extends Controller
                     'unique:user,email,' . $user->id,
                 ],
 
-                'role' => [
-                    'required',
-                    'in:siswa,pembina,admin',
-                ],
+               'role' => [
+    'required',
+    'in:siswa,pembina,admin,wali_kelas',
+],
+
+'kelas' => [
+    'required_if:role,wali_kelas',
+    'nullable',
+    'string',
+    'max:50',
+],
             ],
+            
             [
                 'name.required' => 'Nama wajib diisi.',
                 'email.required' => 'Email wajib diisi.',
@@ -126,15 +134,18 @@ class AdminController extends Controller
                 'email.unique' => 'Email tersebut sudah digunakan.',
                 'role.required' => 'Role wajib dipilih.',
                 'role.in' => 'Role pengguna tidak valid.',
+                'kelas.required_if' => 'Kelas yang diampu wajib diisi untuk Wali Kelas.',
+                'kelas.max' => 'Nama kelas maksimal 50 karakter.',
             ]
         );
 
         $user->update([
-            'name' => $data['name'],
-            'nama' => $data['name'],
-            'email' => $data['email'],
-            'role' => $data['role'],
-        ]);
+    'name' => $data['name'],
+    'nama' => $data['name'],
+    'email' => $data['email'],
+    'role' => $data['role'],
+    'kelas' => $data['kelas'] ?? $user->kelas,
+]);
 
         return redirect()
             ->route('admin.pengguna')
@@ -180,9 +191,16 @@ class AdminController extends Controller
                 ],
 
                 'role' => [
-                    'required',
-                    'in:siswa,pembina,admin',
-                ],
+    'required',
+    'in:siswa,pembina,admin,wali_kelas',
+],
+
+'kelas' => [
+    'required_if:role,wali_kelas',
+    'nullable',
+    'string',
+    'max:50',
+],
             ],
             [
                 'name.required' => 'Nama wajib diisi.',
@@ -194,6 +212,8 @@ class AdminController extends Controller
                 'password.confirmed' => 'Konfirmasi password tidak cocok.',
                 'role.required' => 'Role wajib dipilih.',
                 'role.in' => 'Role pengguna tidak valid.',
+                'kelas.required_if' => 'Kelas yang diampu wajib diisi untuk Wali Kelas.',
+                'kelas.max' => 'Nama kelas maksimal 50 karakter.',
             ]
         );
 
@@ -203,6 +223,7 @@ class AdminController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
+            'kelas' => $data['kelas'] ?? null,
         ]);
 
         return redirect()

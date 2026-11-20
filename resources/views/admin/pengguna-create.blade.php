@@ -377,9 +377,22 @@
                         <option value="">-- Pilih Role --</option>
                         <option value="siswa" {{ old('role') === 'siswa' ? 'selected' : '' }}>Siswa</option>
                         <option value="pembina" {{ old('role') === 'pembina' ? 'selected' : '' }}>Pembina</option>
+                        <option value="wali_kelas" {{ old('role') === 'wali_kelas' ? 'selected' : '' }}>Wali Kelas</option>
                         <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
                     </select>
                 </div>
+
+                {{-- KELAS WALI KELAS --}}
+<div class="form-group" id="kelas-group" style="display: none;">
+    <label for="kelas">Kelas yang Diampu</label>
+    <input
+        type="text"
+        id="kelas"
+        name="kelas"
+        value="{{ old('kelas') }}"
+        placeholder="Contoh: XI RPL 1"
+    >
+</div>
 
                 {{-- BUTTON --}}
                 <div class="actions">
@@ -403,6 +416,27 @@
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
 
 @include('partials.app-sidebar-end')
+
+<script>
+    const roleSelect = document.getElementById('role');
+    const kelasGroup = document.getElementById('kelas-group');
+    const kelasInput = document.getElementById('kelas');
+
+    function toggleKelasField() {
+        const isWaliKelas = roleSelect.value === 'wali_kelas';
+
+        kelasGroup.style.display = isWaliKelas ? 'block' : 'none';
+        kelasInput.required = isWaliKelas;
+
+        if (!isWaliKelas) {
+            kelasInput.value = '';
+        }
+    }
+
+    roleSelect.addEventListener('change', toggleKelasField);
+    toggleKelasField();
+</script>
+
 </body>
 
 </html>

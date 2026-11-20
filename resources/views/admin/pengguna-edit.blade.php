@@ -341,6 +341,14 @@
                         >
                             Pembina
                         </option>
+
+                        <option
+    value="wali_kelas"
+    {{ old('role', $user->role) === 'wali_kelas' ? 'selected' : '' }}
+>
+    Wali Kelas
+</option>
+
                         <option
                             value="admin"
                             {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}
@@ -349,6 +357,18 @@
                         </option>
                     </select>
                 </div>
+
+                {{-- KELAS WALI KELAS --}}
+<div class="form-group" id="kelas-group" style="display: none;">
+    <label for="kelas">Kelas yang Diampu</label>
+    <input
+        type="text"
+        id="kelas"
+        name="kelas"
+        value="{{ old('kelas', $user->kelas) }}"
+        placeholder="Contoh: XI RPL 1"
+    >
+</div>
 
                 <div class="button-group">
                     <a href="{{ route('admin.pengguna') }}" class="button button-back">
@@ -371,5 +391,22 @@
     <script src="{{ asset('js/eksplore.js') }}" defer></script>
 
 @include('partials.app-sidebar-end')
+
+<script>
+    const roleSelect = document.getElementById('role');
+    const kelasGroup = document.getElementById('kelas-group');
+    const kelasInput = document.getElementById('kelas');
+
+    function toggleKelasField() {
+        const isWaliKelas = roleSelect.value === 'wali_kelas';
+
+        kelasGroup.style.display = isWaliKelas ? 'block' : 'none';
+        kelasInput.required = isWaliKelas;
+    }
+
+    roleSelect.addEventListener('change', toggleKelasField);
+    toggleKelasField();
+</script>
+
 </body>
 </html>

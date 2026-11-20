@@ -147,6 +147,17 @@
             color: #ffffff;
         }
 
+        .btn-hero-print {
+    background: #ffffff;
+    color: #6d28d9;
+    border: 1px solid #ffffff;
+}
+
+.btn-hero-print:hover {
+    background: #f5f3ff;
+    color: #5b21b6;
+}
+
         /* =========================
            CONTAINER UTAMA
         ========================= */
@@ -402,6 +413,295 @@
             .card { padding: 20px; }
             .card-header { flex-direction: column; align-items: flex-start; }
         }
+
+        /* =========================
+   PRINT DATA SISWA
+========================= */
+/* =====================================
+   PRINT DATA SISWA - EKSPLORE
+===================================== */
+/* =========================================
+   EKSPLORE - PROFESSIONAL PRINT REPORT
+========================================= */
+/* =========================================
+   EKSPLORE - PROFESSIONAL PRINT REPORT
+========================================= */
+@media print {
+
+    @page {
+        size: A4 landscape;
+        margin: 10mm 12mm;
+    }
+
+    html,
+    body {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: visible !important;
+    }
+
+    /* Sembunyikan semua elemen selain area print */
+    body * {
+        visibility: hidden !important;
+    }
+
+    #print-data-siswa,
+    #print-data-siswa * {
+        visibility: visible !important;
+    }
+
+    .admin-hero,
+    .kpi-grid,
+    .alert-box,
+    .app-sidebar,
+    .sidebar,
+    button,
+    .btn,
+    .action-buttons,
+    .pagination {
+        display: none !important;
+    }
+
+    .container,
+    main,
+    section {
+        position: static !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    /* Area utama laporan */
+    #print-data-siswa {
+        position: static !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+    }
+
+    /* Kop / Identitas instansi di atas judul */
+    #print-data-siswa::before {
+        content: "EKSPLORE • SISTEM INFORMASI EKSTRAKURIKULER — Dokumen Administrasi Data Siswa";
+        display: block;
+        font-size: 8.5pt;
+        font-weight: 600;
+        color: #64748b;
+        letter-spacing: 0.3px;
+        margin-bottom: 6px;
+    }
+
+    /* Header judul laporan */
+    #print-data-siswa .card-header {
+        display: flex !important;
+        align-items: baseline !important;
+        justify-content: space-between !important;
+        margin: 0 0 12px 0 !important;
+        padding: 0 0 10px 0 !important;
+        border: none !important;
+        border-bottom: 2px solid #4c1d95 !important;
+        background: transparent !important;
+    }
+
+    #print-data-siswa .card-header h2 {
+        color: #1e1b4b !important;
+        font-size: 16pt !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.3px !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    #print-data-siswa .card-header h2::after {
+        content: "LAPORAN DATA SISWA TERDAFTAR";
+        display: inline-block;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: #f5f3ff !important;
+        border: 1px solid #ddd6fe !important;
+        color: #5b21b6 !important;
+        font-size: 7.5pt !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.6px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    #print-data-siswa .card-header a,
+    #print-data-siswa .card-header button {
+        display: none !important;
+    }
+
+    /* Wrapper tabel */
+    #print-data-siswa .table-wrapper,
+    #print-data-siswa .table-responsive,
+    #print-data-siswa .table-scroll {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+    }
+
+    /* Tabel laporan */
+    #print-data-siswa table {
+        width: 100% !important;
+        min-width: 0 !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+        font-size: 8.5pt !important;
+        margin: 0 !important;
+    }
+
+    #print-data-siswa thead {
+        display: table-header-group !important;
+    }
+
+    #print-data-siswa thead th {
+        background: #4c1d95 !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 8pt !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.4px !important;
+        padding: 8px 10px !important;
+        border: 1px solid #4c1d95 !important;
+        text-align: left !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    #print-data-siswa tbody td {
+        padding: 7px 10px !important;
+        border: 1px solid #e2e8f0 !important;
+        font-size: 8.5pt !important;
+        line-height: 1.35 !important;
+        color: #0f172a !important;
+        vertical-align: middle !important;
+        word-wrap: break-word !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    /* Proporsi lebar kolom (asumsi 6 kolom data + 1 kolom aksi yang disembunyikan) */
+    #print-data-siswa th:nth-child(1),
+    #print-data-siswa td:nth-child(1) {
+        width: 6% !important;
+        text-align: center !important;
+    }
+
+    #print-data-siswa th:nth-child(2),
+    #print-data-siswa td:nth-child(2) {
+        width: 22% !important;
+        font-weight: 600 !important;
+    }
+
+    #print-data-siswa th:nth-child(3),
+    #print-data-siswa td:nth-child(3) {
+        width: 30% !important;
+    }
+
+    #print-data-siswa th:nth-child(4),
+    #print-data-siswa td:nth-child(4) {
+        width: 15% !important;
+    }
+
+    #print-data-siswa th:nth-child(5),
+    #print-data-siswa td:nth-child(5) {
+        width: 14% !important;
+    }
+
+    #print-data-siswa th:nth-child(6),
+    #print-data-siswa td:nth-child(6) {
+        width: 13% !important;
+        text-align: center !important;
+    }
+
+    /* Zebra striping halus */
+    #print-data-siswa tbody tr:nth-child(even) td {
+        background: #faf8ff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Sembunyikan kolom aksi terakhir */
+    #print-data-siswa th:last-child,
+    #print-data-siswa td:last-child {
+        display: none !important;
+    }
+
+    /* Hindari baris terpotong antar halaman */
+    #print-data-siswa tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Footer catatan cetak */
+    #print-data-siswa::after {
+        content: "Dokumen resmi dicetak melalui sistem EKSPLORE.";
+        display: block;
+        margin-top: 10px;
+        padding-top: 6px;
+        border-top: 1px solid #cbd5e1;
+        color: #64748b;
+        font-size: 7.5pt;
+        font-style: italic;
+        text-align: right;
+    }
+}
+
+.print-school-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.print-school-header img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+}
+
+.print-school-header h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: #312e81;
+}
+
+.print-school-header p {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 3px;
+}
+
+.print-school-header span {
+    font-size: 10px;
+    color: #64748b;
+}
+
+@media print {
+    .print-school-header {
+        display: flex !important;
+    }
+
+    .print-school-header img {
+        width: 85px !important;
+        height: 85px !important;
+    }
+}
     </style>
     <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
@@ -414,6 +714,7 @@
         $dataSiswa = isset($users) ? $users->where('role', 'siswa') : collect();
         $dataPembina = isset($users) ? $users->where('role', 'pembina') : collect();
         $dataAdmin = isset($users) ? $users->where('role', 'admin') : collect();
+         $dataWaliKelas = isset($users) ? $users->where('role', 'wali_kelas') : collect();
     @endphp
 
     <!-- HERO SECTION ADMIN -->
@@ -433,6 +734,21 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                     Download Excel Siswa
                 </a>
+
+                <button type="button"
+        class="btn-hero-action btn-hero-print"
+        onclick="window.print()"
+        style="cursor: pointer; font-family: inherit;">
+    <svg width="16" height="16" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor"
+         stroke-width="2.5">
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+    </svg>
+    Print Data Siswa
+</button>
+
                 <a href="{{ route('admin.pengguna.create') }}" class="btn-hero-action">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
                     Tambah Pengguna Baru
@@ -502,15 +818,28 @@
         {{-- =====================================================
              TABEL SISWA
         ====================================================== --}}
-        <div class="card">
-            <div class="card-header">
-                <h2>
-                    👨‍🎓 Data Siswa
-                </h2>
-                <a href="{{ route('admin.pengguna.create') }}" class="button-edit" style="background: var(--admin-primary); color: white; border-color: var(--admin-primary);">
-                    + Tambah Pengguna
-                </a>
-            </div>
+        <div class="card" id="print-data-siswa">
+             <div class="card-header">
+    <div class="print-school-header">
+        <img src="{{ asset('images/logo-smk-budi-bakti.jpeg') }}"
+             alt="Logo SMK Budi Bakti Ciwidey">
+
+        <div>
+            <h2>SMK BUDI BAKTI CIWIDEY</h2>
+            <p>KABUPATEN BANDUNG</p>
+            <ul style="list-style: none; padding-left: 0; font-weight: bold; color: black;">
+            </li>Jl. Babakan Tiga No.82, Ciwidey, Kec. Ciwidey,
+                Kabupaten Bandung, Jawa Barat 40973
+            </li>
+            </ul>
+            <span>SISTEM INFORMASI EKSTRAKURIKULER EKSPLORE</span>
+        </div>
+    </div>
+
+    <a href="{{ route('admin.pengguna.create') }}" class="button-edit">
+        + Tambah Pengguna
+    </a>
+</div>
 
             @if ($dataSiswa->count() > 0)
                 <div class="table-wrapper">
@@ -691,6 +1020,78 @@
                 </div>
             @endif
         </div>
+
+
+{{-- =====================================================
+     TABEL WALI KELAS
+====================================================== --}}
+<div class="card">
+    <div class="card-header">
+        <h2>👨‍🏫 Data Wali Kelas</h2>
+        <a href="{{ route('admin.pengguna.create') }}" class="button-edit"
+           style="background: var(--admin-primary); color: white; border-color: var(--admin-primary);">
+            + Tambah Pengguna
+        </a>
+    </div>
+
+    @if ($dataWaliKelas->count() > 0)
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">No</th>
+                        <th>Nama Lengkap</th>
+                        <th>Email</th>
+                        <th>Kelas Diampu</th>
+                        <th style="width: 140px;">Terdaftar</th>
+                        <th style="width: 180px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($dataWaliKelas as $user)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><strong>{{ $user->name }}</strong></td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->kelas ?? '-' }}</td>
+                            <td>{{ $user->created_at?->format('d-m-Y') ?? '-' }}</td>
+                            <td>
+                                <div class="aksi-wrapper">
+                                    <a href="{{ route('admin.pengguna.edit', $user->id) }}"
+                                       class="button-edit">
+                                        ✏️ Edit
+                                    </a>
+
+                                    @if ($user->id !== $admin->id)
+                                        <form action="{{ route('admin.pengguna.destroy', $user->id) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('Yakin ingin menghapus pengguna {{ $user->name }}?');"
+                                              style="margin: 0;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="button-delete">
+                                                🗑️ Hapus
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span style="color: var(--text-muted); font-size: 11.5px; font-weight: 600;">
+                                            Akun Sedang Digunakan
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @else
+        <div class="empty">
+            Belum ada data Wali Kelas terdaftar.
+        </div>
+    @endif
+</div>
+
 
     </main>
 
