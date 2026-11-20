@@ -70,6 +70,7 @@
                     ['label' => 'Jadwal', 'url' => route('pembina.jadwal'), 'icon' => $sidebarIcons['calendar'], 'active' => ['pembina.jadwal*']],
                     ['label' => 'Anggota', 'url' => route('pembina.anggota'), 'icon' => $sidebarIcons['member'], 'active' => ['pembina.anggota*']],
                     ['label' => 'Absensi', 'url' => route('pembina.absensi'), 'icon' => $sidebarIcons['file'], 'active' => ['pembina.absensi*']],
+                    ['label' => 'Penilaian', 'url' => route('pembina.penilaian'), 'icon' => $sidebarIcons['chart'], 'active' => ['pembina.penilaian*']],
                     ['label' => 'Pendaftaran', 'url' => route('pembina.pendaftaran'), 'icon' => $sidebarIcons['clipboard'], 'active' => ['pembina.pendaftaran*']],
                     ['label' => 'Pindah Ekskul', 'url' => route('pembina.pindah_ekskul'), 'icon' => $sidebarIcons['swap'], 'active' => ['pembina.pindah_ekskul*']],
                     ['label' => 'Prestasi', 'url' => route('pembina.prestasi'), 'icon' => $sidebarIcons['trophy'], 'active' => ['pembina.prestasi*']],

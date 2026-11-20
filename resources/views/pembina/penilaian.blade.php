@@ -18,76 +18,7 @@
             color: #1e293b;
         }
 
-        .sidebar {
-            position: fixed;
-            inset: 0 auto 0 0;
-            width: 260px;
-            padding: 28px 20px;
-            background: white;
-            border-right: 1px solid #e2e8f0;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .brand-icon {
-            display: grid;
-            place-items: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 13px;
-            background: #047857;
-            color: white;
-            font-size: 22px;
-            font-weight: 800;
-        }
-
-        .brand-name { font-weight: 800; font-size: 17px; }
-        .brand-sub { font-size: 11px; color: #64748b; margin-top: 3px; }
-
-        .menu-label {
-            margin: 28px 0 12px;
-            color: #94a3b8;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .menu-link {
-            display: block;
-            padding: 14px;
-            border-radius: 11px;
-            color: #047857;
-            background: #ecfdf5;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .logout {
-            position: absolute;
-            bottom: 25px;
-            left: 20px;
-            right: 20px;
-        }
-
-        .logout button {
-            width: 100%;
-            padding: 14px;
-            border: 0;
-            border-radius: 11px;
-            background: #fff1f2;
-            color: #dc2626;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
         .main {
-            margin-left: 260px;
             padding: 35px;
         }
 
@@ -213,34 +144,16 @@
         }
 
         @media (max-width: 900px) {
-            .sidebar { width: 220px; }
-            .main { margin-left: 220px; padding: 22px; }
+            .main { padding: 22px; }
             .score-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/eksplore.css') }}">
 </head>
 
 <body>
 
-<aside class="sidebar">
-    <div class="brand">
-        <div class="brand-icon">E</div>
-        <div>
-            <div class="brand-name">EKSPLORE</div>
-            <div class="brand-sub">SMK Budi Bakti Ciwidey</div>
-        </div>
-    </div>
-
-    <div class="menu-label">MENU PEMBINA</div>
-    <a href="{{ route('pembina.dashboard') }}" class="menu-link">▦ Dashboard</a>
-
-    <div class="logout">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit">↪ Logout</button>
-        </form>
-    </div>
-</aside>
+@include('partials.app-sidebar')
 
 <main class="main">
     <div class="header">
@@ -417,5 +330,6 @@
     });
 </script>
 
+@include('partials.app-sidebar-end')
 </body>
 </html>

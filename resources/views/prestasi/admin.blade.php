@@ -424,7 +424,7 @@
                     Pusat Arsip Prestasi Sekolah
                 </div>
                 <h1>Data <span>Prestasi Ekstrakurikuler</span></h1>
-                <p>Kelola dan pantau rekam jejak pencapaian serta penghargaan bergengsi yang diraih oleh seluruh ekstrakurikuler sekolah[cite: 15].</p>
+                <p>Kelola dan pantau rekam jejak pencapaian serta penghargaan bergengsi yang diraih oleh seluruh ekstrakurikuler sekolah.</p>
             </div>
         </div>
     </section>
@@ -555,7 +555,7 @@
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
                     </div>
                     <h3>Belum Ada Data Prestasi</h3>
-                    <p>Belum terdapat rekam jejak prestasi atau penghargaan ekstrakurikuler yang tercatat[cite: 15].</p>
+                    <p>Belum terdapat rekam jejak prestasi atau penghargaan ekstrakurikuler yang tercatat.</p>
                 </div>
             @endif
         </div>

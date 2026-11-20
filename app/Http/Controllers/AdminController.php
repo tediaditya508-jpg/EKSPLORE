@@ -609,6 +609,22 @@ class AdminController extends Controller
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Pencarian teks case-insensitive yang kompatibel dengan
+     * PostgreSQL maupun SQLite (operator ILIKE hanya ada di PostgreSQL).
+     */
+    private function whereCariTeks($query, array $kolom, string $cari): void
+    {
+        $nilai = '%' . mb_strtolower($cari) . '%';
+
+        $query->where(function ($subQuery) use ($kolom, $nilai) {
+            foreach ($kolom as $index => $field) {
+                $metode = $index === 0 ? 'whereRaw' : 'orWhereRaw';
+                $subQuery->{$metode}("LOWER({$field}) LIKE ?", [$nilai]);
+            }
+        });
+    }
+
     public function laporan(Request $request)
     {
         $admin = Auth::user();
@@ -675,12 +691,7 @@ class AdminController extends Controller
             ]);
 
             $queryLaporan
-                ->when($cari, function ($query) use ($cari) {
-                    $query->where(function ($subQuery) use ($cari) {
-                        $subQuery->where('nama', 'ilike', "%{$cari}%")
-                            ->orWhere('nis', 'ilike', "%{$cari}%");
-                    });
-                })
+                ->when($cari, fn ($query) => $this->whereCariTeks($query, ['nama', 'nis'], $cari))
                 ->when($ekskulId, fn ($query) => $query->where('ekskul_id', $ekskulId))
                 ->when($kelas, fn ($query) => $query->where('kelas', $kelas))
                 ->when($status, fn ($query) => $query->where('status', $status))
@@ -696,13 +707,10 @@ class AdminController extends Controller
             ]);
 
             $queryLaporan
-                ->when($cari, function ($query) use ($cari) {
-                    $query->whereHas('siswa', function ($subQuery) use ($cari) {
-                        $subQuery->where('name', 'ilike', "%{$cari}%")
-                            ->orWhere('nama', 'ilike', "%{$cari}%")
-                            ->orWhere('nis', 'ilike', "%{$cari}%");
-                    });
-                })
+                ->when($cari, fn ($query) => $query->whereHas(
+                    'siswa',
+                    fn ($subQuery) => $this->whereCariTeks($subQuery, ['name', 'nama', 'nis'], $cari)
+                ))
                 ->when($ekskulId, fn ($query) => $query->where('ekskul_id', $ekskulId))
                 ->when($kelas, function ($query) use ($kelas) {
                     $query->whereHas('siswa', fn ($subQuery) => $subQuery->where('kelas', $kelas));
@@ -720,13 +728,10 @@ class AdminController extends Controller
             ]);
 
             $queryLaporan
-                ->when($cari, function ($query) use ($cari) {
-                    $query->whereHas('anggota.siswa', function ($subQuery) use ($cari) {
-                        $subQuery->where('name', 'ilike', "%{$cari}%")
-                            ->orWhere('nama', 'ilike', "%{$cari}%")
-                            ->orWhere('nis', 'ilike', "%{$cari}%");
-                    });
-                })
+                ->when($cari, fn ($query) => $query->whereHas(
+                    'anggota.siswa',
+                    fn ($subQuery) => $this->whereCariTeks($subQuery, ['name', 'nama', 'nis'], $cari)
+                ))
                 ->when($ekskulId, function ($query) use ($ekskulId) {
                     $query->whereHas('anggota', fn ($subQuery) => $subQuery->where('ekskul_id', $ekskulId));
                 })
@@ -831,12 +836,7 @@ public function simpanRiwayatLaporan(Request $request)
 
     if ($jenis === 'pendaftaran') {
         $query = Pendaftaran::query()
-            ->when($cari, function ($q) use ($cari) {
-                $q->where(function ($sub) use ($cari) {
-                    $sub->where('nama', 'ilike', "%{$cari}%")
-                        ->orWhere('nis', 'ilike', "%{$cari}%");
-                });
-            })
+            ->when($cari, fn ($q) => $this->whereCariTeks($q, ['nama', 'nis'], $cari))
             ->when($ekskulId, fn ($q) => $q->where('ekskul_id', $ekskulId))
             ->when($kelas, fn ($q) => $q->where('kelas', $kelas))
             ->when($status, fn ($q) => $q->where('status', $status))
@@ -845,13 +845,10 @@ public function simpanRiwayatLaporan(Request $request)
 
     } elseif ($jenis === 'anggota') {
         $query = AnggotaEkskul::query()
-            ->when($cari, function ($q) use ($cari) {
-                $q->whereHas('siswa', function ($sub) use ($cari) {
-                    $sub->where('name', 'ilike', "%{$cari}%")
-                        ->orWhere('nama', 'ilike', "%{$cari}%")
-                        ->orWhere('nis', 'ilike', "%{$cari}%");
-                });
-            })
+            ->when($cari, fn ($q) => $q->whereHas(
+                'siswa',
+                fn ($sub) => $this->whereCariTeks($sub, ['name', 'nama', 'nis'], $cari)
+            ))
             ->when($ekskulId, fn ($q) => $q->where('ekskul_id', $ekskulId))
             ->when($kelas, function ($q) use ($kelas) {
                 $q->whereHas('siswa', fn ($sub) => $sub->where('kelas', $kelas));
@@ -862,13 +859,10 @@ public function simpanRiwayatLaporan(Request $request)
 
     } else {
         $query = Absensi::query()
-            ->when($cari, function ($q) use ($cari) {
-                $q->whereHas('anggota.siswa', function ($sub) use ($cari) {
-                    $sub->where('name', 'ilike', "%{$cari}%")
-                        ->orWhere('nama', 'ilike', "%{$cari}%")
-                        ->orWhere('nis', 'ilike', "%{$cari}%");
-                });
-            })
+            ->when($cari, fn ($q) => $q->whereHas(
+                'anggota.siswa',
+                fn ($sub) => $this->whereCariTeks($sub, ['name', 'nama', 'nis'], $cari)
+            ))
             ->when($ekskulId, function ($q) use ($ekskulId) {
                 $q->whereHas('anggota', fn ($sub) => $sub->where('ekskul_id', $ekskulId));
             })

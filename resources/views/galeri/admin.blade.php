@@ -420,7 +420,7 @@
                     Pusat Arsip Dokumentasi Sekolah
                 </div>
                 <h1>Galeri <span>Kegiatan</span></h1>
-                <p>Lihat dan pantau seluruh dokumentasi visual serta potret kegiatan ekstrakurikuler siswa[cite: 15].</p>
+                <p>Lihat dan pantau seluruh dokumentasi visual serta potret kegiatan ekstrakurikuler siswa.</p>
             </div>
         </div>
     </section>
@@ -482,7 +482,7 @@
                 @foreach ($galeri as $item)
                     @php
                         $namaEkskul = $item->ekstrakurikuler ? ($item->ekstrakurikuler->nama_ekskul ?? 'Ekstrakurikuler') : 'Ekstrakurikuler';
-                        $keterangan = $item->keterangan ?: 'Dokumentasi kegiatan ekstrakurikuler[cite: 15].';
+                        $keterangan = $item->keterangan ?: 'Dokumentasi kegiatan ekstrakurikuler.';
                         $tgl = $item->created_at?->format('d M Y') ?? '-';
                         $searchHaystack = strtolower($namaEkskul . ' ' . $keterangan . ' ' . $tgl);
                     @endphp
@@ -522,7 +522,7 @@
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                 </div>
                 <h3>Belum Ada Galeri</h3>
-                <p>Belum ada dokumentasi kegiatan ekstrakurikuler yang diunggah ke dalam sistem[cite: 15].</p>
+                <p>Belum ada dokumentasi kegiatan ekstrakurikuler yang diunggah ke dalam sistem.</p>
             </div>
         @endif
 

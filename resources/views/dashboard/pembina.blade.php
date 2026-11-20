@@ -845,6 +845,11 @@
                     <span>Absensi</span>
                 </a>
 
+                <a href="{{ route('pembina.penilaian') }}" class="sidebar-link {{ request()->routeIs('pembina.penilaian*') ? 'active' : '' }}" title="Penilaian">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                    <span>Penilaian</span>
+                </a>
+
                 <a href="{{ route('pembina.pendaftaran') }}" class="sidebar-link {{ request()->routeIs('pembina.pendaftaran*') ? 'active' : '' }}" title="Pendaftaran">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/></svg>
                     <span>Pendaftaran</span>
@@ -1042,7 +1047,7 @@
                             </h3>
                             <p class="section-subtext">Pusat kontrol cepat operasional pembinaan ekskul</p>
                         </div>
-                        <div class="total-modul-badge">6 Modul Aktif</div>
+                        <div class="total-modul-badge">7 Modul Aktif</div>
                     </div>
 
                     <div class="management-grid">
@@ -1102,6 +1107,20 @@
                             <span class="mgmt-card-link">Buka Menu <span class="arrow">→</span></span>
                         </a>
 
+                        <a href="{{ route('pembina.penilaian') }}" class="mgmt-card">
+                            <div class="mgmt-card-top">
+                                <div class="mgmt-card-icon">
+                                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                                </div>
+                                <span class="mgmt-tag tag-ops">Nilai</span>
+                            </div>
+                            <div>
+                                <h4>Penilaian</h4>
+                                <p>Isi nilai kehadiran & kinerja anggota.</p>
+                            </div>
+                            <span class="mgmt-card-link">Buka Menu <span class="arrow">→</span></span>
+                        </a>
+
                         <a href="{{ route('pembina.pendaftaran') }}" class="mgmt-card">
                             <div class="mgmt-card-top">
                                 <div class="mgmt-card-icon">
@@ -1157,6 +1176,14 @@
                             <div class="item-info">
                                 <strong>🖼️ Upload Dokumentasi</strong>
                                 <span>Kelola foto aktivitas ekstrakurikuler</span>
+                            </div>
+                            <svg class="icon" style="color:var(--primary)" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+
+                        <a href="{{ route('pembina.penilaian') }}" class="list-item" style="text-decoration:none;">
+                            <div class="item-info">
+                                <strong>📝 Isi Penilaian Anggota</strong>
+                                <span>Catat nilai kehadiran dan kinerja siswa</span>
                             </div>
                             <svg class="icon" style="color:var(--primary)" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                         </a>

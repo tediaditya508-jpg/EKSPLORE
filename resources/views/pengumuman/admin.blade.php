@@ -411,7 +411,7 @@
                     Pusat Informasi & Mading Sekolah
                 </div>
                 <h1>Kelola <span>Pengumuman</span></h1>
-                <p>Bagikan informasi penting, pengumuman resmi, dan agenda terbaru kepada seluruh warga sekolah melalui sistem EKSPLORE[cite: 16].</p>
+                <p>Bagikan informasi penting, pengumuman resmi, dan agenda terbaru kepada seluruh warga sekolah melalui sistem EKSPLORE.</p>
             </div>
 
             <a href="{{ route('admin.pengumuman.create') }}" class="btn-hero-add">
@@ -508,7 +508,7 @@
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 </div>
                 <h3>Belum Ada Pengumuman</h3>
-                <p>Belum terdapat informasi atau pengumuman resmi yang dibagikan dalam sistem[cite: 16].</p>
+                <p>Belum terdapat informasi atau pengumuman resmi yang dibagikan dalam sistem.</p>
             </div>
         @endif
 

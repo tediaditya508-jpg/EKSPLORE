@@ -1030,6 +1030,26 @@
 
         </form>
 
+        {{-- SIMPAN RIWAYAT LAPORAN --}}
+        <form
+            action="{{ route('admin.laporan.riwayat.simpan') }}"
+            method="POST"
+        >
+            @csrf
+
+            <input type="hidden" name="jenis_laporan" value="{{ $jenisLaporan }}">
+            <input type="hidden" name="cari" value="{{ $filters['cari'] ?? '' }}">
+            <input type="hidden" name="ekskul_id" value="{{ $filters['ekskul_id'] ?? '' }}">
+            <input type="hidden" name="kelas" value="{{ $filters['kelas'] ?? '' }}">
+            <input type="hidden" name="status" value="{{ $filters['status'] ?? '' }}">
+            <input type="hidden" name="tanggal_awal" value="{{ $filters['tanggal_awal'] ?? '' }}">
+            <input type="hidden" name="tanggal_akhir" value="{{ $filters['tanggal_akhir'] ?? '' }}">
+
+            <div class="filter-actions">
+                <button type="submit" class="btn-reset">Simpan Riwayat Laporan</button>
+            </div>
+        </form>
+
         @php
             $jumlahHasil = $dataLaporan->count();
 
@@ -1092,13 +1112,13 @@
                 )
                     Belum terdapat data
                     {{ strtolower($namaJenisLaporan[$jenisLaporan] ?? 'laporan') }}
-                    yang dapat ditampilkan[cite: 13].
+                    yang dapat ditampilkan.
                 @else
                     Tidak ditemukan data
                     {{ strtolower($namaJenisLaporan[$jenisLaporan] ?? 'laporan') }}
                     yang sesuai dengan filter yang dipilih.
                     Silakan periksa kembali pencarian, ekstrakurikuler,
-                    kelas, status, atau rentang tanggal[cite: 13].
+                    kelas, status, atau rentang tanggal.
                 @endif
             </div>
 
