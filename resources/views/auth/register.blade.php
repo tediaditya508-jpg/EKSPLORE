@@ -516,30 +516,15 @@
                         <label for="kelas">Kelas</label>
                         <select id="kelas" name="kelas" required>
                             <option value="">-- Pilih Kelas --</option>
-                            <optgroup label="RPL">
-                                @foreach (['10 RPL 1', '10 RPL 2', '10 RPL 3', '10 RPL 4'] as $kelas)
-                                    <option value="{{ $kelas }}" @selected(old('kelas') == $kelas)>
-                                        {{ $kelas }}
-                                    </option>
-                                @endforeach
-                            </optgroup>
-                            <optgroup label="BRP">
-                                @foreach ([
-                                    '10 BRP 1', '10 BRP 2', '10 BRP 3',
-                                    '10 BRP 4', '10 BRP 5', '10 BRP 6', '10 BRP 7'
-                                ] as $kelas)
-                                    <option value="{{ $kelas }}" @selected(old('kelas') == $kelas)>
-                                        {{ $kelas }}
-                                    </option>
-                                @endforeach
-                            </optgroup>
-                            <optgroup label="DKV">
-                                @foreach (['10 DKV 1', '10 DKV 2'] as $kelas)
-                                    <option value="{{ $kelas }}" @selected(old('kelas') == $kelas)>
-                                        {{ $kelas }}
-                                    </option>
-                                @endforeach
-                            </optgroup>
+                            @foreach ($kelasPerJurusan as $jurusan => $daftarKelasJurusan)
+                                <optgroup label="{{ $jurusan }}">
+                                    @foreach ($daftarKelasJurusan as $kelas)
+                                        <option value="{{ $kelas }}" @selected(old('kelas') === $kelas)>
+                                            {{ $kelas }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
+                            @endforeach
                         </select>
                         @error('kelas')
                             <div class="error">{{ $message }}</div>

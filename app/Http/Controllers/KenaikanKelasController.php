@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\KelasSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,45 +12,20 @@ use Illuminate\Validation\ValidationException;
 class KenaikanKelasController extends Controller
 {
     /**
-     * Daftar kelas yang dikenali oleh sistem kenaikan kelas.
+     * Daftar kelas valid dalam format romawi (X, XI, XII).
      */
     private function daftarKelas(): array
     {
-        $kelas = [];
-
-        foreach ([10, 11, 12] as $tingkat) {
-            foreach ([
-                'RPL' => 4,
-                'BRP' => $tingkat === 10 ? 7 : 6,
-                'DKV' => $tingkat === 10 ? 2 : 3,
-            ] as $jurusan => $jumlah) {
-                for ($i = 1; $i <= $jumlah; $i++) {
-                    $kelas[] = "$tingkat $jurusan $i";
-                }
-            }
-        }
-
-        return $kelas;
+        return KelasSiswa::daftarKelas();
     }
 
     /**
      * Kelas lanjutan untuk satu tingkat, tanpa memeriksa ketersediaan.
-     * Mengembalikan null untuk kelas 12 karena keluar dari daftar kelas.
+     * Mengembalikan null untuk kelas XII karena keluar dari daftar kelas.
      */
     private function kelasBerikutnya(?string $kelas): ?string
     {
-        if (! is_string($kelas)
-            || ! preg_match('/^(10|11|12) (RPL|BRP|DKV) (\d+)$/', $kelas, $bagian)) {
-            return null;
-        }
-
-        $tingkat = (int) $bagian[1];
-
-        if ($tingkat === 12) {
-            return null;
-        }
-
-        return ($tingkat + 1)." {$bagian[2]} {$bagian[3]}";
+        return KelasSiswa::berikutnya($kelas);
     }
 
     /**
@@ -58,18 +34,16 @@ class KenaikanKelasController extends Controller
      */
     private function kelasTujuan(?string $kelas): ?string
     {
-        if (! is_string($kelas)
-            || ! preg_match('/^(10|11|12) (RPL|BRP|DKV) (\d+)$/', $kelas, $bagian)) {
-            return null;
-        }
+        return KelasSiswa::tujuan($kelas);
+    }
 
-        if ((int) $bagian[1] === 12) {
-            return 'alumni';
-        }
-
-        $tujuan = $this->kelasBerikutnya($kelas);
-
-        return in_array($tujuan, $this->daftarKelas(), true) ? $tujuan : null;
+    /**
+     * Kelas lama berformat angka (10/11/12) tetap dikenali agar data lama
+     * tidak perlu diperbaiki manual sebelum proses kenaikan kelas.
+     */
+    private function kelasDikenali(?string $kelas): bool
+    {
+        return KelasSiswa::parse($kelas) !== null;
     }
 
     /**
@@ -102,17 +76,17 @@ class KenaikanKelasController extends Controller
         $jumlahAlumni = $siswa->where('status_siswa', 'alumni')->count();
 
         $siswaTanpaKelas = $siswaAktif
-            ->filter(function ($item) use ($kelasValid) {
-                return ! in_array($item->kelas, $kelasValid, true);
+            ->filter(function ($item) {
+                return ! $this->kelasDikenali($item->kelas);
             })
             ->sortBy('name')
             ->values();
 
         // Siswa dengan kelas saat ini valid, tetapi kelas tujuannya tidak ada.
-        // Contoh: 10 BRP 7 -> 11 BRP 7, sedangkan BRP 11 hanya rombel 1-6.
+        // Contoh: X BRP 7 → XI BRP 7, sedangkan XI BRP hanya rombel 1-6.
         $siswaTujuanTidakValid = $siswaAktif
-            ->filter(function ($item) use ($kelasValid) {
-                return in_array($item->kelas, $kelasValid, true)
+            ->filter(function ($item) {
+                return $this->kelasDikenali($item->kelas)
                     && $this->kelasTujuan($item->kelas) === null;
             })
             ->sortBy('name')
@@ -131,12 +105,14 @@ class KenaikanKelasController extends Controller
                 ];
             })
             ->concat($siswaTujuanTidakValid->map(function ($item) use ($kelasValid) {
-                $tingkat = explode(' ', $item->kelas)[0];
+                $parsed = KelasSiswa::parse($item->kelas);
+                $tingkat = $parsed ? KelasSiswa::labelTingkat($parsed['tingkat']) : null;
 
                 $opsi = array_values(array_filter(
                     $kelasValid,
                     function ($kelas) use ($tingkat) {
-                        return str_starts_with($kelas, $tingkat.' ')
+                        return $tingkat !== null
+                            && str_starts_with($kelas, $tingkat.' ')
                             && $this->kelasTujuan($kelas) !== null;
                     }
                 ));
@@ -157,9 +133,9 @@ class KenaikanKelasController extends Controller
         $jumlahSiapProses = $jumlahAktif - $siswaPerluPenempatan->count();
 
         $jumlahPerKelas = $siswaAktif
-            ->groupBy(function ($item) use ($kelasValid) {
-                return in_array($item->kelas, $kelasValid, true)
-                    ? $item->kelas
+            ->groupBy(function ($item) {
+                return $this->kelasDikenali($item->kelas)
+                    ? KelasSiswa::normalisasi($item->kelas)
                     : 'Belum mengisi kelas';
             })
             ->sortKeys(SORT_NATURAL);
@@ -299,9 +275,8 @@ class KenaikanKelasController extends Controller
                 ]);
             }
 
-            $kelasValid = $this->daftarKelas();
-            $tidakValid = $siswa->filter(function ($item) use ($kelasValid) {
-                return ! in_array($item->kelas, $kelasValid, true);
+            $tidakValid = $siswa->filter(function ($item) {
+                return ! $this->kelasDikenali($item->kelas);
             });
 
             if ($tidakValid->isNotEmpty()) {

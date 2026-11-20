@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\KelasSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -71,7 +73,10 @@ public function login(Request $request)
 
     public function showRegister()
     {
-        return view('auth.register');
+        $kelasPerJurusan = collect(KelasSiswa::daftarKelas(10))
+            ->groupBy(fn (string $kelas) => explode(' ', $kelas)[1]);
+
+        return view('auth.register', compact('kelasPerJurusan'));
     }
 
     public function register(Request $request)
@@ -90,7 +95,11 @@ public function login(Request $request)
     $data = $request->validate([
     'name' => ['required', 'string', 'max:255'],
     'nis' => ['required', 'string', 'max:50'],
-    'kelas' => ['required', 'string', 'max:100'],
+    'kelas' => [
+        'required',
+        'string',
+        Rule::in(KelasSiswa::daftarKelas(10)),
+    ],
     'no_hp' => [
         'required',
         'string',
@@ -118,6 +127,7 @@ public function login(Request $request)
     'name.required' => 'Nama wajib diisi.',
     'nis.required' => 'NIS wajib diisi.',
     'kelas.required' => 'Kelas wajib diisi.',
+    'kelas.in' => 'Kelas yang dipilih tidak valid.',
     'no_hp.required' => 'Nomor HP wajib diisi.',
     'no_hp.min' => 'Nomor HP minimal 10 karakter.',
     'no_hp.max' => 'Nomor HP maksimal 15 karakter.',
