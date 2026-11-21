@@ -34,6 +34,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && npm run build \
     && rm -rf /var/lib/apt/lists/*
 
+
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
@@ -42,8 +43,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/apache2.conf \
     && sed -ri 's/^Listen 80$/Listen 10000/' /etc/apache2/ports.conf
 
-RUN chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+RUN sed -ri '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
 
 EXPOSE 10000
 
