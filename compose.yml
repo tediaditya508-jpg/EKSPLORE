@@ -7,7 +7,7 @@ services:
     container_name: eksplore-app
     restart: unless-stopped
     ports:
-     - "10000:10000"
+     - "10000"
     env_file:
       - .env
     healthcheck:
