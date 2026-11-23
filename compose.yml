@@ -11,9 +11,6 @@ services:
     env_file:
       - .env
     environment:
-      # Supabase memakai PostgreSQL dan mewajibkan koneksi SSL.
-      # Kredensial DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, dan DB_PASSWORD
-      # tetap dibaca dari .env melalui env_file di atas.
       DB_CONNECTION: pgsql
       DB_SSLMODE: require
     healthcheck:
